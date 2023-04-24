@@ -7,11 +7,11 @@ const quotes={
 				let el=document.createElement('div');
 
 				el.innerHTML=`
-				<div class="card row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 style="max-width:200px";">
+				<div class="card" style="width: 22rem;">
 				<div class="card-body">
 			<h5 class="card-title" style="color: #FFCD95; font-size:45px;">${user.firstName} ${user.lastName}</h5>
 			  <p class="card-text" style="color: #FFCD95; font-size:20px">${user.emailAddress}</p>
-			  <a href="userDetail.html?userID=${user.userID}" class="card-link">Card link</a>
+			  <a href="userDetail.html?userID=${user.userID}"  class="btn btn-outline-dark">Details</a>
 			</div>`;
 
 				document.getElementById('userdetails').append(el);
