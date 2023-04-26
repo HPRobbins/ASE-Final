@@ -2,6 +2,23 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+app.route('/signUp/')
+	.get((req, res) =>{
+	  res.send('Got a GET request')
+	})
+	.post((req, res) => {
+	  res.send('Got a POST request')
+	})
+	.put((req, res) => {
+	  res.send('Got a PUT request')
+	})
+	.patch((req, res) => {
+	  res.send('Got a PATCH request')
+	})
+	.delete((req, res) => {
+	  res.send('Got a DELETE request')
+	})
+
 app.route('/users/')
 	.get((req, res) =>{
 	  res.send('Got a GET request')
