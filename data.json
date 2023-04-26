@@ -1,0 +1,117 @@
+{
+	"users": [
+	  {
+		"userID": "1",
+		"firstName": "Sarah",
+		"lastName": "Riley",
+		"emailAddress": "sarahmarierileyedu@gmail.com",
+		"password": "password"
+	  },
+	  {
+		"userID": "2",
+		"firstName": "Amaya",
+		"lastName": "Bryant",
+		"emailAddress": "amaya@gmail.com",
+		"password": "password"
+	  },
+	  {
+		"userID": "3",
+		"firstName": "Pam",
+		"lastName": "Pepper",
+		"emailAddress": "pam@gmail.com",
+		"password": "password"
+	  },
+	  {
+		"userID": "4",
+		"firstName": "Hailey",
+		"lastName": "Robbins",
+		"emailAddress": "hailey@gmail.com",
+		"password": "password"
+	  }
+	],
+	"pets": [
+	  {
+		"petID": "1",
+		"userID": "1",
+		"petName": "Wobbles",
+		"petType": "Cat",
+		"petSex": "Female",
+		"petBreed": "Ragdoll",
+		"petWeight": "10"
+	  },
+	  {
+		"petID": "2",
+		"userID": "1",
+		"petName": "Whiskers",
+		"petType": "Cat",
+		"petSex": "Female",
+		"petBreed": "Birman",
+		"petWeight": "11"
+	  },
+	  {
+		"petID": "3",
+		"userID": "2",
+		"petName": "Bob",
+		"petType": "Dog",
+		"petSex": "Male",
+		"petBreed": "Pomeranian",
+		"petWeight": "12"
+	  },
+	  {
+		"petID": "4",
+		"userID": "3",
+		"petName": "Smudge",
+		"petType": "Bunny",
+		"petSex": "Female",
+		"petBreed": "French Lop",
+		"petWeight": "8"
+	  }
+	],
+	"medications": [
+	  {
+		"medicationID": "1",
+		"petID": "1",
+		"medicationName": "med1",
+		"medType": "Antibiotic",
+		"dosage": "10 mg",
+		"numberOfDailyDoses": "2",
+		"medNotes": "Take with food"
+	  },
+	  {
+		  "medicationID": "2",
+		"petID": "1",
+		"medicationName": "med2",
+		"medType": "Probiotic",
+		"dosage": "25 mg",
+		"numberOfDailyDoses": "2",
+		"medNotes": "Take with food"
+	  },
+	  {
+		"medicationID": "3",
+		"petID": "1",
+		"medicationName": "med3",
+		"medType": "Antidiareal",
+		"dosage": "20 mg",
+		"numberOfDailyDoses": "1",
+		"medNotes": "Give plenty of water"
+	  },
+	  {
+		"medicationID": "4",
+		"petID": "2",
+		"medicationName": "med4",
+		"medType": "Antibiotic",
+		"dosage": "15 mg",
+		"numberOfDailyDoses": "2",
+		"medNotes": "Take with food, Give plenty of water"
+	  },
+	  {
+		"medicationID": "5",
+		"petID": "3",
+		"medicationName": "med5",
+		"medType": "Pain Killer",
+		"dosage": "25 mg",
+		"numberOfDailyDoses": "1",
+		"medNotes": "Take with food, Give once a day as needed"
+	  }
+	]
+  }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body style="background-color: #FFF0DF;">
+<h1>Pet Edit</h1>
+<a href="index.html">Back to index</a>
+<div id="loading">Loading pet...</div>
+<form>
+	<div class="form-group">
+	  <label for="userFirstName">User's First Name:</label>
+	  <input type="text" class="form-control" id="userFirstNameInput" name="userFirstNameInput" aria-describedby="userFirstNameInput" placeholder="Enter first name">
+	</div>
+	<div class="form-group">
+		<label for="userLastName">User's Last Name:</label>
+		<input type="text" class="form-control" id="userLastNameInput" name="userLastNameInput" placeholder="Enter last name">
+	  </div>
+	  <div class="form-group">
+		  <label for="petBreed">Email:</label>
+		  <input type="text" class="form-control" id="userEmailInput" name="userEmailInput" placeholder="Enter email">
+	</div>
+
+	<button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="assets/api.js"></script>
+<script src="assets/database.js"></script>
+<script src="assets/getAllURLParams.js"></script>
+<script src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<script>
+	quotes.userupdate(getAllUrlParams().index);
+</script>
+</body>
+</html>
