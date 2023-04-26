@@ -1,16 +1,27 @@
-# ASE-Final
+#NKU ASE220 Mid-term starter package
+This repository is designed for the ASE220 - Full-stack development course. This repository contains a starter application for the midterm that demonstrates how to create a full-stack Content Management System (CMS) that leverages JSONblob.com as a remote database.
 
-Things to pin down:
- = How we handle the data from MangoDB
-    = Specifically what do our APIs look like? What are they returning? What do we send to them? (Do they return everything out of the database and let the server side code chop it up into appropriate (based on authentication, user-pet relationship, etc) bits or do they return only what was asked for?)
-    - example rough draft: DELETE api - receives ID of target and which collection its in as parameters of the request, returns the response of status of the deletion (success, 404 file not found, connection error, etc)
-   = How does incorporating authentication work?
- = Express.js - getting the modules necesscary. How do we split up the different paths? (Ex: Pepper handles /users/:user/pets/:pet pages and /users/:user/pets/ pages)
- 
+### The application demostrates:
+- client-side application design
+- the use of RESTful APIs
+- CRUD operations
+- client-server communication
 
-DATA APIS
-GET - Recieves the target collection, outputs all the data in the specific collection (filtration handled on programming side) and status response.
-POST - Recieves the target collection and the data to be inserted as a JSON, outputs the status response of the insertion.
-PUT - Receives the target collection and data on the page (full rewrite of old data) and the ID of the data to be updated, outputs a status response.
-DELETE - Recieves the target collection and the ID of the data to be updated, outputs a status response.
+I did not implement any fancy HTML/CSS design because the focus of this application is to understand how a client application would interact with the server-side component via REST APIs.
 
+### How to start
+1. Load the folder into Visual Studio code and start the live server
+2. Browse index.html
+
+### How it works
+The assets folder contains the following "libraries":
+- api.js: this libary realizes API calls to exchange information between the client and the server in JSON format. API calls are based on AXIOS (https://axios-http.com/docs/intro).
+- database.js: this library manages CRUD database operations and standardizes them, providing an interface to the API libary.
+- getAllURLParams.js: this library retrieves query string parameters, which are utilized to view, edit, or delete a single quote.
+
+This application is built using the Model-View-Controller approach, to best separate the interface (HTML), the data (API/JSON), and the logic. This is implemented as follows:
+- The HTML files only contain HTML code and links to external JavaScript files.
+- The app.js file contains the logic of the application: it manipulates the DOM, listens to events, and communicates with the database
+- The database and APIs provide the application with data storage/retrieval capabilities.
+
+Have fun!

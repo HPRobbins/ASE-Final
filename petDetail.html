@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+        main{
+	        background-color:#FFF0DF;
+	        margin:20px;
+        }
+        div .form-group{
+            padding:10px;
+            margin:20px;
+        }
+        #card{
+            border-radius: 25px;
+            border: 2px solid #a6763f;
+            padding: 20px; 
+            width: 200px;
+            height: 150px;
+        }
+    </style>
+</head>
+<body style="background-color:#FFF0DF">
+    <h1>Pet Detail</h1>
+    <!-- TODO: fix back to user link-->
+    <a href="index.html">Back to index</a> | <a href="userDetail.html">Back to User</a> |  <a id="btn-edit" href="">Edit pet</a> | <button type="button" id="btn-delete">Delete pet</button>
+    <div id="loading">Loading Pet...</div>
+
+    <!--This will hold the photo-->
+        <div id="pet-photo"></div>
+        <!--This will hold both pet ID and pet Name-->
+        <div id="pet-ident"></div>
+        <!-- This will hold both pet type and breed-->
+        <div id="pet-kind"></div>
+        <!-- This will hold pet sex, age, and weight-->
+        <div id="pet-stats"></div>
+        <!-- This will hold the pagination for the medication-->
+        <div id="medication-pages" class="row"></div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="assets/api.js"></script>
+    <script src="assets/database.js"></script>
+    <script src="assets/getAllURLParams.js"></script>
+    <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script>
+        quotes.petdetail(getAllUrlParams().index);
+    </script>
+</body>
+</html>
