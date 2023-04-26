@@ -7,3 +7,10 @@ Things to pin down:
    = How does incorporating authentication work?
  = Express.js - getting the modules necesscary. How do we split up the different paths? (Ex: Pepper handles /users/:user/pets/:pet pages and /users/:user/pets/ pages)
  
+
+DATA APIS
+GET - Recieves the target collection, outputs all the data in the specific collection (filtration handled on programming side) and status response.
+POST - Recieves the target collection and the data to be inserted as a JSON, outputs the status response of the insertion.
+PUT - Receives the target collection and data on the page (full rewrite of old data) and the ID of the data to be updated, outputs a status response.
+DELETE - Recieves the target collection and the ID of the data to be updated, outputs a status response.
+
