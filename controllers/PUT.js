@@ -4,20 +4,17 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 // TODO: Modify to align with README
 
-client.connect(function(err,db){
+client.connect(function(targetID,targetCollection,replacement,err,db){
 	if(err) throw err
-	console.log('Connected to database')
-
-	const database=db.db('mydatabase')
-	database.collection('users').updateOne({firstname:'John'},{$set:{firstname:'James'}},function(err,result){
+	const database=db.db('Pet-Website-Project')
+	database.collection(targetCollection).replaceOne({id:targetID},replacement,function(err,result){
 		if (err) throw err
-		console.log(result)
+		// console.log(result)
 	})
 	// needs to be called from the .updateOne function or put inside of it.
-	database.collection('users').find({}).toArray(function(err, result){
+	database.collection(targetCollection).find({}).toArray(function(err, result){
 		if (err) throw err
-		console.log(result)
+		// console.log(result)
 		db.close()
 	})
 })
-

@@ -3,20 +3,19 @@ const uri = "mongodb+srv://AHPS:j3ldAJkolXfMb41x@cluster0.znw2b0b.mongodb.net/?r
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 // TODO: modify to align with README file
 
-client.connect(function(err,db){
+client.connect(function(targetID,targetCollection,err,db){
 	if(err) throw err
 	console.log('Connected to database')
 
-	const database=db.db('mydatabase')
-	database.collection('users').deleteOne({firstname:'Nicholas'},function(err,result){
+	const database=db.db('Pet-Website-Project')
+	database.collection('targetCollection').deleteOne({id:targetID},function(err,result){
 		if (err) throw err
-		console.log(result)
+		// console.log(result)
 
-		database.collection('users').find({}).toArray(function(err, result){
+		database.collection('targetCollection').find({}).toArray(function(err, result){
 			if (err) throw err
-			console.log(result)
+			// console.log(result)
 			db.close()
 		})
 	})
 })
-
