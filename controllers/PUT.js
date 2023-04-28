@@ -7,7 +7,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(function(targetID,targetCollection,replacement,err,db){
 	if(err) throw err
 	const database=db.db('Pet-Website-Project')
-	database.collection(targetCollection).replaceOne({id:targetID},replacement,function(err,result){
+	database.collection(targetCollection).replaceOne({_id:targetID},replacement,function(err,result){
 		if (err) throw err
 		// console.log(result)
 	})
