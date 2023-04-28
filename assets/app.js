@@ -1,7 +1,7 @@
-const quotes={
+const pages={
 	documentID:'1079866388960788480',
 	index:function(){
-		database.index(quotes.documentID,function(item){
+		database.index(pages.documentID,function(item){
 			for(let i=0;i<item.length;i++){
 				let user=item[i];
 				let el=document.createElement('div');
@@ -22,7 +22,7 @@ const quotes={
 	// For fetching the info for petDetail page
 	petdetail:function(petID){
 		// The info from the JSONBlob at the index is passed in as item, should be 1 pet from the array.
-		database.petDetail(quotes.documentID,petID,function(item){
+		database.petDetail(pages.documentID,petID,function(item){
 			const cPetID = getAllUrlParams().petid;
 			for(let i=0;i<item.length;i++){
 				if(item[i].petID==cPetID){
@@ -49,7 +49,7 @@ const quotes={
 			// This should add all medications taken by the pet as cards. Pagination can be added later.
 			// creates a card and APPENDS it to the innerHTML to create multiple cards.
 			// run a loop through medications, check that userID and petID in medication object matches current pet.
-			database.medicationArray(quotes.documentID,cPetID,function(item){
+			database.medicationArray(pages.documentID,cPetID,function(item){
 				for(let i=0;i<item.length;i++){
 					// if PetID matches, add medication page
 					if(item[i].petID==cPetID){
@@ -72,7 +72,7 @@ const quotes={
 
 			let deleteButton=document.getElementById('btn-delete');
 			deleteButton.addEventListener('click',function(){
-				database.petDelete(quotes.documentID,index);
+				database.petDelete(pages.documentID,index);
 			});
 		});
 	},
@@ -85,7 +85,7 @@ const quotes={
 		});
 	},
 	userupdate:function(index){
-		database.petDetail(quotes.documentID,index,function(item){
+		database.petDetail(pages.documentID,index,function(item){
 			document.getElementById('loading').style.display='none';
 			document.querySelector('form input[name=userFirstNameInput]').value=item.userFirstNameInput;
 			document.querySelector('form input[name=userLastNameInput]').value=item.userLastNameInput;
@@ -102,12 +102,12 @@ const quotes={
 					userLastName:item.lastName,
 					userEmail:item.emailAddress
 				}
-				database.userUpdate(quotes.documentID,index,newUser);
+				database.userUpdate(pages.documentID,index,newUser);
 			});
 		});
 	},
 	medupdates:function(index){
-		database.medicationDetail(quotes.documentID,index,function(item){
+		database.medicationDetail(pages.documentID,index,function(item){
 			console.log(item);
 			document.querySelector('form input[name=medicationName]').value=item.medicationName;
 			document.querySelector('form input[name=medType]').value=item.medType;
@@ -133,12 +133,12 @@ const quotes={
 					medNotes:medNotes.value,
 					medicationID:medicationID.value,
 				}
-				database.medicationEdit(quotes.documentID,index,newMed);
+				database.medicationEdit(pages.documentID,index,newMed);
 			});
 		});
 	},
 	petupdate:function(petID){
-		database.petDetail(quotes.documentID,petID,function(item){
+		database.petDetail(pages.documentID,petID,function(item){
 			const cPetID = getAllUrlParams().petid;
 			//
 			document.getElementById('loading').style.display='none';
@@ -180,7 +180,7 @@ const quotes={
 					petWeight:petWeight.value,
 					petDoB:petDoB.value,
 				}
-				database.petUpdate(quotes.documentID,cPetID,newPet);
+				database.petUpdate(pages.documentID,cPetID,newPet);
 			});
 		});
 	}
