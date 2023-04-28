@@ -4,10 +4,10 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 // TODO: Modify to align with README
 
-client.connect(function(targetID,targetCollection,replacement,err,db){
+client.connect(function(err,db,targetIdent,targetCollection,replacement){
 	if(err) throw err
 	const database=db.db('Pet-Website-Project')
-	database.collection(targetCollection).replaceOne({_id:targetID},replacement,function(err,result){
+	database.collection(targetCollection).replaceOne(targetIdent,replacement,function(err,result){
 		if (err) throw err
 		// console.log(result)
 	})
