@@ -4,10 +4,11 @@ const app = express()
 const fs = require('fs')
 const port = 3000
 const bodyParser = require('body-parser')
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://appclient:LbSgYnUaMQ8jTACg@pet-website-project.ksy84iw.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 app.use(bodyParser.json())
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const uri = "mongodb+srv://appclient:LbSgYnUaMQ8jTACg@pet-website-project.ksy84iw.mongodb.net/?retryWrites=true&w=majority"
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
+ObjectID = require('mongodb').ObjectID
 app.set('view engine', 'ejs')
 var db=null
 
@@ -84,12 +85,20 @@ app.route('/users/')
 	.get(async function(req, res){
         // everything in the Users collection is put into an array called result
       let result=await find(db,'Pet-Website-Project','Users',{})
+       
+       // rewrites result array to create userID field and add _id as a string.
+        result.forEach(user => {
+            user['userID'] = user._id.toString();
+        })
+
+        // console.log(result)
+        
         // passes the array to the index page to replace instances of 'users'
       res.render('pages/index',{
         users:result
       });
 	})
-    // possibly unneeded
+    // possibly unneeded, can be ignored/removed.
 	.post((req, res) => {
 	  res.send('Got a POST request')
 	})
@@ -105,22 +114,29 @@ app.route('/users/')
 	})
     
     // calls the userDetail page
-app.route('/users/:userID')
+app.route('/userDetail/:userID')
     // get details of user & the userDetail page
     // also returns all pets owned by user.
     .get(async function(req, res){
-    // res.send('Got a GET request')
+        // res.send('Got a GET request')
         let ownerID = req.params.userID
 
         // finds specific user as json object
-        // TODO: fix _id in mongoDB
-        let thisperson=await find(db,'Pet-Website-Project','Users',{_id:ownerID})
+        // TODO: fix to search for :userID as a ObjectID
+        // from string to objectID
+        let mdbUserID = new ObjectId(ownerID);
+
+        let thisPerson=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        console.log(thisPerson)
         // TODO: make sure this returns *all* data points that fit the criteria
+        // made the variable different but similiar to what it is replacing to avoid pepper confusion.
         let animals=await find(db,'Pet-Website-Project','Pets',{userID:ownerID})
+        console.log(animals)
         res.render('pages/userDetail',{
-        users:result,
-        pets:animals
-      });
+           //  users:thisPerson,
+            // pets:animals
+        });
+
     })
     // maybe for adding new animals?
     // calls addPet.html if so.
