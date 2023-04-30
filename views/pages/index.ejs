@@ -11,10 +11,15 @@
 <body style="background-color: #FFF0DF;">
 		<div id="loading"></div>
 		<div id="userdetails">
-			<div id="userfn"></div>
-			<div id="userln"></div>
-			<div id="emailadd"></div>
-			<div id="user-page"></div>
+			<!-- the <% %> and <%= %> tags are necesscary and their purpose is detailed on the npm page for ejs. -->
+			<% users.forEach(function(user) { %>
+				<div class="card" style="width: 22rem;">
+							<div class="card-body">
+						<h5 class="card-title" style="color: #FFCD95; font-size:45px;"><%= user.firstName %> <%=user.lastName %></h5>
+						  <p class="card-text" style="color: #FFCD95; font-size:20px"><%= user.emailAddress %></p>
+						  <a href="userDetail/<%= user.userID %>"  class="btn btn-outline-dark">Details</a>
+						</div>`;
+			<% }); %>
 			</div>
 		</div>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

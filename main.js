@@ -31,7 +31,6 @@ async function insert(db,database,collection,document){
   async function find(db,database,collection,criteria){
     let dbo=db.db(database)
     let result=await dbo.collection(collection).find(criteria).toArray()
-    //console.log(result)
     return result;
   }
 
@@ -62,8 +61,7 @@ app.route('/signUp')
 	.get(async function(req, res) {
 	  // displays intial signUp page.
       console.log(req);
-      let signUp=fs.readFileSync('./public/signUp.html', 'utf8');
-      res.send(signUp);
+      res.render('pages/signUp')
 	})
     // yes! Creating new user in database
 	.post((req, res) => {
@@ -84,10 +82,12 @@ app.route('/signUp')
 app.route('/users/')
     // would return index.html and the list of users
 	.get(async function(req, res){
+        // everything in the Users collection is put into an array called result
       let result=await find(db,'Pet-Website-Project','Users',{})
-      console.log(result)
-
-      res.render('pages/index');
+        // passes the array to the index page to replace instances of 'users'
+      res.render('pages/index',{
+        users:result
+      });
 	})
     // possibly unneeded
 	.post((req, res) => {
@@ -108,13 +108,19 @@ app.route('/users/')
 app.route('/users/:userID')
     // get details of user & the userDetail page
     // also returns all pets owned by user.
-    .get((req, res) =>{
+    .get(async function(req, res){
     // res.send('Got a GET request')
-        let userID = req.params.userID
-     // should this be calling userDetails or userDetail?
-     // TODO: have it pull the data from the database and populate the html page.
-        let userDetail=fs.readFileSync('./public/Users/userDetail.html', 'utf8');
-        res.send(userDetail);
+        let ownerID = req.params.userID
+
+        // finds specific user as json object
+        // TODO: fix _id in mongoDB
+        let thisperson=await find(db,'Pet-Website-Project','Users',{_id:ownerID})
+        // TODO: make sure this returns *all* data points that fit the criteria
+        let animals=await find(db,'Pet-Website-Project','Pets',{userID:ownerID})
+        res.render('pages/userDetail',{
+        users:result,
+        pets:animals
+      });
     })
     // maybe for adding new animals?
     // calls addPet.html if so.

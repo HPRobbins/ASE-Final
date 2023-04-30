@@ -1,0 +1,38 @@
+
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<header>
+   <%- include('../partials/header') %>
+</header>
+    
+<h1 style="padding: 20px; background-color: #FFCD95;">User Detail</h1>
+<div class="container"></div>
+        <a href="index.html">Back to index</a> | <a id="btn-edit" href="userEdit.html">Edit user</a> | <button onclick="window.location.href='addPet.html';" type="button" id="btn-add">Add Pet</button> | <button type="button" id="btn-delete">Delete User</button>
+        
+        <div id="loading">Loading User...</div>
+</div>
+    
+    <div style="padding: 20px;">
+        <div class="card text-center">
+            <div class="card-body">
+            <h5 class="card-title" id="nameOfUser"></h5>
+            <p class="card-text" id="userEmail"></p>
+            </div>  
+        </div>
+    </div>
+
+    <div class="container text-center"><b>Pets</b></div>
+
+    <div style="padding: 20px;">
+        <div class="card text-center">
+            <div class="card-body">
+                <p style="font-style:italic; text-decoration:none;" class="card-text" id="listOfUserPets"></p>
+            </div>  
+        </div>
+    </div>
+   
+    <footer>
+        <%- include('../partials/footer') %>
+    </footer>
