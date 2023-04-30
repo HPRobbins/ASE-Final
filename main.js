@@ -162,8 +162,20 @@ app.route('/userDetail/:userID')
      // calls the userEdit page for a specific user
 app.route('/userEdit/:userID')
     // get details of user & the userEdit page
-    .get((req, res) =>{
-        res.send('Got a GET request')
+    .get(async function(req, res){
+        let ownerID = req.params.userID
+
+        // convert userID as string into ObjectID for search in MongoDB
+        let mdbUserID = new ObjectId(ownerID);
+        // returns the single user as part of an array
+        let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        // pull the user out of the array.
+        user=user[0];
+        
+        // send variables to the page to be used.
+        res.render('pages/userDetail',{
+            user:user
+       });
     })
     // unneeded, remove/ignore
     .post((req, res) => {
