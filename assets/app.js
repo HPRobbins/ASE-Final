@@ -16,8 +16,7 @@ const pages={
 
 				document.getElementById('userdetails').append(el);
 			}
-		}
-		)
+		})
 	},
 	// For fetching the info for petDetail page
 	petdetail:function(petID){

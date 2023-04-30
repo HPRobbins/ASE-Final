@@ -1,14 +1,45 @@
 const express = require('express')
+const { join } = require('path')
 const app = express()
+const fs = require('fs')
 const port = 3000
+const bodyParser = require('body-parser')
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://appclient:LbSgYnUaMQ8jTACg@pet-website-project.ksy84iw.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+app.use(bodyParser.json())
+app.set('view engine', 'ejs');
+var db=null
+
+// our connect function.
+async function connect(){
+	let connection=await client.connect()
+	return connection
+}
+
+// TODO: equivalents to PUT and DELETE, alter and remove
+
+// PUSHes data to mongoDB
+async function insert(db,database,collection,document){
+    let dbo=db.db(database)
+    let result=await dbo.collection(collection).insertOne(document)
+    // console.log(result)
+    return result;
+  }
+  
+  // GETS data from mongoDB
+  async function find(db,database,collection,criteria){
+    let dbo=db.db(database)
+    let result=await dbo.collection(collection).find(criteria).toArray()
+    //console.log(result)
+    return result;
+  }
 
 // for default page, should take user to welcomePage
 app.route('/')
     // fetching the basic page. return welcomePage.html
-	.get((req, res) =>{
-	  // res.send('Got a GET request')
-      let homepage=fs.readFileSync('./public/welcomePage.html', 'utf8');
-      res.send(homepage);
+	.get(async function(req, res){
+        res.render('pages/welcomePage')
 	})
     // maybe for authentication?
 	.post((req, res) => {
@@ -26,10 +57,11 @@ app.route('/')
 	  res.send('Got a DELETE request')
 	})
 
-app.route('/signUp/')
+app.route('/signUp')
     // return the signUp.html
-	.get((req, res) =>{
+	.get(async function(req, res) {
 	  // displays intial signUp page.
+      console.log(req);
       let signUp=fs.readFileSync('./public/signUp.html', 'utf8');
       res.send(signUp);
 	})
@@ -51,12 +83,11 @@ app.route('/signUp/')
     // If we are keeping index.html, keep this.
 app.route('/users/')
     // would return index.html and the list of users
-	.get((req, res) =>{
-	  // res.send('Got a GET request')
-      let index=fs.readFileSync('./public/index.html', 'utf8');
-      // TODO: need to either call pages.index in app.js or handle populating the data another way.
-      // maybe rework what's in database.js?
-      res.send(index);
+	.get(async function(req, res){
+      let result=await find(db,'Pet-Website-Project','Users',{})
+      console.log(result)
+
+      res.render('pages/index');
 	})
     // possibly unneeded
 	.post((req, res) => {
@@ -225,7 +256,14 @@ app.route('/users/:userID/pets/:petID/medlog/:medID')
         res.send('Got a DELETE request')
     })
 
+// actually starts the connection and waits for connection.
+ async function start(){
+    db=await connect()
+    console.log('mongoDB connected')
+    app.listen(port,()=>{
+      console.log(`Example app listening on port ${port}`)
+    })
+}
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+start()
+    
