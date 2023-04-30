@@ -160,10 +160,11 @@ app.route('/userDetail/:userID')
     })
 
      // calls the userEdit page for a specific user
-app.route('/userEdit/:userID')
+app.route('/users/:userID/edit')
     // get details of user & the userEdit page
     .get(async function(req, res){
         let ownerID = req.params.userID
+        console.log(req);
 
         // convert userID as string into ObjectID for search in MongoDB
         let mdbUserID = new ObjectId(ownerID);
