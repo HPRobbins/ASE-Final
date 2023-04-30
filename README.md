@@ -1,4 +1,5 @@
 Rewrite of main.js
+Done as prototype to explore alternative way to address issues with complexity of integration found from trying to adapt previous website design. Using EJS came out of a necessity of being unable to find old class example that demonstrated a different method of calling building a webpage in pieces althought the header, head, and footer of EJS is done in similiar fashion/concept.
 - The guideline for the integration of MongoDB calls directly with the Express routes comes from code_11, 16_mongodb_express from in sample code.
 - The guideline for using ejs(embedded javascript) files for the webpages comes from a chain fo sources I found by googling 'express calling dynamic html pages'
     - this stackoverflow: https://stackoverflow.com/questions/35633855/how-do-i-serve-partially-dynamic-html-pages-with-express led met to
@@ -10,6 +11,8 @@ Direct MongoDB-Express Integration
     + easier to follow (shorter paths)
     + MongoDB client is called by main.js, has a singular connection to DB instead of constantly opening and closing connections
     + Less annoying calls
+** If this were a full-scale public facing website with lots of data movement all the time, this probably would not work. we would need to offload the database calls to stand-alone blocks that could be run asynchronously from each other. **
+
 EJS (Embedded Javascript)
     + HTML pages with javascript in them.
     + MongoDB-Express integration allows use to directly pass the data we need and cuts down on javascript on the webpage itself.
@@ -23,3 +26,4 @@ mongoDB -> main.js -> page.ejs
     - the format of sending the data to replace it on ejs is different than the template from the example code but same concept.
 4) ejs page runs internal javascript to display page & data.
 5) ejs page sends api calls to main.js
+
