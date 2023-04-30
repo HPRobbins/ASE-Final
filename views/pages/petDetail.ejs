@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/head') %>
+
+    <style>
+        main{
+	        background-color:#FFF0DF;
+	        margin:20px;
+        }
+        div .form-group{
+            padding:10px;
+            margin:20px;
+        }
+        #card{
+            border-radius: 25px;
+            border: 2px solid #a6763f;
+            padding: 20px; 
+            width: 200px;
+            height: 150px;
+        }
+    </style>
+</head>
+
+
+<header>
+    <%- include('../partials/header') %>
+ </header>
+
+<body style="background-color:#FFF0DF">
+    <h1><%= pet.petName %></h1>
+    <a href="../users/">Back to index</a> | <a href="../userDetail/<%= pet.userID %>">Back to User</a> |  <a id="btn-edit" href="../petEdit/<%= pet.petID %>">Edit pet</a> | <button type="button" id="btn-delete">Delete pet</button>
+
+    <!--This will hold the photo-->
+        <div id="pet-photo"></div>
+        <!--This will hold both pet ID and pet Name-->
+        <div id="pet-ident">
+            <div class="row justify-content-start">
+                <div id="petID" class="col-4">ID #: <%= pet.petID %></div>
+                <div id="petName" class="col-4">Name: <%= pet.petName %></div>
+            </div>
+        </div>
+        <!-- This will hold both pet type and breed-->
+        <div id="pet-kind">
+            <div class="row justify-content-start">
+                <div id="petSpecies" class="col-4">Species: <%= pet.petType %></div>
+                <div id="petBreed" class="col-4">Breed: <%= pet.petBreed %></div>
+            </div>
+        </div>
+        <!-- This will hold pet sex, age, and weight-->
+    <div id="pet-stats">
+            <div class="row justify-content-start">
+            <div id="petSex" class="col-4">Sex: <%= pet.petSex %></div>
+            <div id="petDoB" class="col-4">Date of Birth: <%= pet.petDoB %></div>
+            <div id="petWeight" class="col-4">Weight: <%= pet.petWeight %></div>
+        </div>
+    </div>
+        <!-- This will hold the pagination for the medication-->
+        <div id="medication-pages" class="row">
+            <% meds.forEach(function(med) { %>
+                `<div "col-sm-6">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                        <h5 class="card-title"><%= med.medicationName %></h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><%= med.MedType %></h6>
+                        <p class="card-text">Dose Amount: <%=med.dosage %></p><p class="card-text">Timing: <% med.numberOfDailyDoses %></p>
+                        <p class="card-text">Notes: <%= med.medNotes %></p>
+                    
+                    </div>
+                </div>`
+            <% }); %>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+<footer>
+    <%- include('../partials/footer') %>
+</footer>
+</html>

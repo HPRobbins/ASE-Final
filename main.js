@@ -121,20 +121,24 @@ app.route('/userDetail/:userID')
 
         // convert userID as string into ObjectID for search in MongoDB
         let mdbUserID = new ObjectId(ownerID);
+        // returns the single user as part of an array
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        // pull the user out of the array.
         user=user[0];
+        // readd the string version ofthe _id
+        user.userID = ownerID
 
-        let animals=await find(db,'Pet-Website-Project','Pets',{userID:ownerID})
+        let pets=await find(db,'Pet-Website-Project','Pets',{userID:ownerID})
 
         // convert _ID to a string & add to animal array
-        animals.forEach(animal => {
-            animals['petID'] = animal._id.toString();
+        pets.forEach(pet => {
+            pet['petID'] = pet._id.toString();
         })
 
-        // made the variable different but similiar to what it is replacing to avoid pepper confusion.
+        // send variables to the page to be used.
         res.render('pages/userDetail',{
              user:user,
-             pets:animals
+             pets:pets
         });
 
     })
@@ -156,7 +160,7 @@ app.route('/userDetail/:userID')
     })
 
      // calls the userEdit page for a specific user
-app.route('/users/:userID/edit')
+app.route('/userEdit/:userID')
     // get details of user & the userEdit page
     .get((req, res) =>{
         res.send('Got a GET request')
@@ -176,33 +180,34 @@ app.route('/users/:userID/edit')
     res.send('Got a DELETE request')
     })
 
-    // This whole route is unneeded. we do not have a page that lists only the pets of a user.
-    /* app.route('/users/:userID/pets')
-        .get((req, res) =>{
-            res.send('Got a GET request')
-        })
-        .post((req, res) => {
-            res.send('Got a POST request')
-        })
-        .put((req, res) => {
-            res.send('Got a PUT request')
-        })
-        .patch((req, res) => {
-            res.send('Got a PATCH request')
-        })
-        .delete((req, res) => {
-            res.send('Got a DELETE request')
-        })
-        */
-    
     // detail page for a specific pet
-app.route('/users/:userID/pets/:petID')
+app.route('/petDetail/:petID')
     // returns petDetail with information of the specific pet and any medicines its on.
-    .get((req, res) =>{
+    .get(async function(req, res){
         // res.send('Got a GET request')
-        let petDetail=fs.readFileSync('./public/pet/petDetail.html', 'utf8');
+        let animalID = req.params.petID
+        let mdbPetID = new ObjectId(animalID);
+
+        let pet=await find(db,'Pet-Website-Project','Users',{_id:mdbPetID})
+        // pull the user out of the array.
+        pet=pet[0];
+        // readd the string version ofthe _id
+        // pet.petID = animalID
+
+        console.log(pet);
+
+        let meds=await find(db,'Pet-Website-Project','MedLog',{petID:mdbPetID})
+
+        // convert _ID to a string & add to animal array
+        meds.forEach(med => {
+            meds['medID'] = meds._id.toString();
+        })
+
         // should petDetail be turned into a template? How do we integrate databse pull with that?
-        res.send(petDetail);
+        res.render('pages/userDetail',{
+            pet:pet,
+            meds:meds
+       });
     })
     // unneeded, remove/ignore
     .post((req, res) => {
@@ -220,7 +225,8 @@ app.route('/users/:userID/pets/:petID')
     })
 
     // edit page for specific pet
-app.route('/users/:userID/pets/:petID/edit')
+    // TODO: create ejs, run the strings.
+app.route('/petEdit/:petID')
     // calls the petEdit page for the specific pet.
     .get((req, res) =>{
         res.send('Got a GET request')
@@ -240,25 +246,6 @@ app.route('/users/:userID/pets/:petID/edit')
         res.send('Got a DELETE request')
     })
 
-    // we don't have a page that lists all the medications of a specific pet, good future feature
-    // irl use case: print out list of medications to take to the vet
-app.route('/users/:userID/pets/:petID/medlog')
-	.get((req, res) =>{
-	  res.send('Got a GET request')
-	})
-	.post((req, res) => {
-	  res.send('Got a POST request')
-	})
-	.put((req, res) => {
-	  res.send('Got a PUT request')
-	})
-	.patch((req, res) => {
-	  res.send('Got a PATCH request')
-	})
-	.delete((req, res) => {
-	  res.send('Got a DELETE request')
-	})
-    
     // detail page of a medicine
 app.route('/users/:userID/pets/:petID/medlog/:medID')
     // call the medDetail page and fills in the information.
