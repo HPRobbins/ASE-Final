@@ -91,8 +91,6 @@ app.route('/users/')
             user['userID'] = user._id.toString();
         })
 
-        // console.log(result)
-        
         // passes the array to the index page to replace instances of 'users'
       res.render('pages/index',{
         users:result
@@ -121,20 +119,22 @@ app.route('/userDetail/:userID')
         // res.send('Got a GET request')
         let ownerID = req.params.userID
 
-        // finds specific user as json object
-        // TODO: fix to search for :userID as a ObjectID
-        // from string to objectID
+        // convert userID as string into ObjectID for search in MongoDB
         let mdbUserID = new ObjectId(ownerID);
+        let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        user=user[0];
 
-        let thisPerson=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
-        console.log(thisPerson)
-        // TODO: make sure this returns *all* data points that fit the criteria
-        // made the variable different but similiar to what it is replacing to avoid pepper confusion.
         let animals=await find(db,'Pet-Website-Project','Pets',{userID:ownerID})
-        console.log(animals)
+
+        // convert _ID to a string & add to animal array
+        animals.forEach(animal => {
+            animals['petID'] = animal._id.toString();
+        })
+
+        // made the variable different but similiar to what it is replacing to avoid pepper confusion.
         res.render('pages/userDetail',{
-           //  users:thisPerson,
-            // pets:animals
+             user:user,
+             pets:animals
         });
 
     })
