@@ -10,17 +10,21 @@
 
 <body style="background-color: #FFF0DF;">
 	<div style="padding: 20px;">
-		<div id="userdetails">
-			<!-- the <% %> denotes javascript. <%= %> denotes a replacement/variable.-->
-			<% users.forEach(function(user) { %>
-				<div class="card" style="width: 22rem;">
-					<div class="card-body">
-						<h5 class="card-title" style="color: #FFCD95; font-size:45px;"><%= user.firstName %> <%=user.lastName %></h5>
-						<p class="card-text" style="color: #FFCD95; font-size:20px">Email: <%= user.emailAddress %></p>
-						<a href="../userDetail/<%= user.userID %>"  class="btn btn-outline-dark">Details</a>
+		<div id="userdetails" class="container mt-3">
+			<div class="row justify-content-center">
+				<!-- the <% %> denotes javascript. <%= %> denotes a replacement/variable.-->
+				<% users.forEach(function(user) { %>
+					<div class="col-lg-4">
+						<div class="card mb-4" style="min-width: 18rem; max-width: 18rem;">
+							<div class="card-body">
+								<h5 class="card-title" style="color: #FFCD95; font-size:40px;"><%= user.firstName %> <%=user.lastName %></h5>
+								<p class="card-text" style="color: #FFCD95; font-size:20px">Email: <%= user.emailAddress %></p>
+								<a href="../userDetail/<%= user.userID %>"  class="btn btn-outline-dark">Details</a>
+							</div>
+						</div>
 					</div>
-				</div>
-			<% }); %>
+				<% }); %>
+			</div>
 		</div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
