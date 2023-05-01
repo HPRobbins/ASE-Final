@@ -27,3 +27,4 @@ mongoDB -> main.js -> page.ejs
 4) ejs page runs internal javascript to display page & data.
 5) ejs page sends api calls to main.js
 
+Icon credits: Image by <a href="https://pixabay.com/users/mk_al-19145027/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6063639">Maks</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6063639">Pixabay</a>

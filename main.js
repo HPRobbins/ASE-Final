@@ -1,6 +1,7 @@
 const express = require('express')
 const { join } = require('path')
 const app = express()
+const path = require('path');
 const fs = require('fs')
 const port = 3000
 const bodyParser = require('body-parser')
@@ -160,7 +161,7 @@ app.route('/userDetail/:userID')
     })
 
      // calls the userEdit page for a specific user
-app.route('/users/:userID/edit')
+app.route('/userDetail/:userID/edit')
     // get details of user & the userEdit page
     .get(async function(req, res){
         let ownerID = req.params.userID
