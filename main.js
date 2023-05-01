@@ -62,7 +62,7 @@ app.route('/signUp')
     // return the signUp.html
 	.get(async function(req, res) {
 	  // displays intial signUp page.
-      console.log(req);
+      // console.log(req);
       res.render('pages/signUp')
 	})
     // yes! Creating new user in database
@@ -157,16 +157,20 @@ app.route('/userDetail/:userID')
         res.send('Got a PATCH request')
     })
     .delete((req, res) => {
-        res.send('Got a DELETE request')
+        res.send('Got a DELETE request from /users/:userID')
+        // check that the user has no pets associated with them, if they do, deny the request or delete the pets too.
+
     })
 
      // calls the userEdit page for a specific user
-app.route('/userDetail/:userID/edit')
+app.route('/:userID/edit')
     // get details of user & the userEdit page
     .get(async function(req, res){
         let ownerID = req.params.userID
-        console.log(req);
+        console.log("in /userDetail/:userID/edit")
+        console.log(req.params)
 
+        let pets = 0;
         // convert userID as string into ObjectID for search in MongoDB
         let mdbUserID = new ObjectId(ownerID);
         // returns the single user as part of an array
@@ -176,7 +180,8 @@ app.route('/userDetail/:userID/edit')
         
         // send variables to the page to be used.
         res.render('pages/userDetail',{
-            user:user
+            user:user,
+            pets:pets
        });
     })
     // unneeded, remove/ignore

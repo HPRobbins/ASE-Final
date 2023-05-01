@@ -4,6 +4,7 @@ Done as prototype to explore alternative way to address issues with complexity o
 - The guideline for using ejs(embedded javascript) files for the webpages comes from a chain fo sources I found by googling 'express calling dynamic html pages'
     - this stackoverflow: https://stackoverflow.com/questions/35633855/how-do-i-serve-partially-dynamic-html-pages-with-express led met to
     - this guide about using ejs in express routes with examples of how to pass data: https://www.digitalocean.com/community/tutorials/how-to-use-ejs-to-template-your-node-application
+         - Better explanation of ejs https://blog.logrocket.com/how-to-use-ejs-template-node-js-application/
     - further details taken from https://www.npmjs.com/package/ejs
 
 Direct MongoDB-Express Integration
@@ -14,7 +15,7 @@ Direct MongoDB-Express Integration
 ** If this were a full-scale public facing website with lots of data movement all the time, this probably would not work. we would need to offload the database calls to stand-alone blocks that could be run asynchronously from each other. **
 
 EJS (Embedded Javascript)
-    + HTML pages with javascript in them.
+    + Templating engine that looks like html.
     + MongoDB-Express integration allows use to directly pass the data we need and cuts down on javascript on the webpage itself.
     + Can be used with both static and dynamic pages and enables us to more easily integrate partial pages (header, head, and footer examples)
 
@@ -26,5 +27,23 @@ mongoDB -> main.js -> page.ejs
     - the format of sending the data to replace it on ejs is different than the template from the example code but same concept.
 4) ejs page runs internal javascript to display page & data.
 5) ejs page sends api calls to main.js
+
+
+Pages Converted:
+index
+petDetail
+signUp
+userDetail
+userEdit - conversion done, not accepting navigation
+welcomePage
+
+Pages to be converted:
+addPet
+petEdit
+medDetail
+medicationEdit
+
+
+
 
 Icon credits: Image by <a href="https://pixabay.com/users/mk_al-19145027/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6063639">Maks</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6063639">Pixabay</a>
