@@ -159,7 +159,6 @@ app.route('/userDetail/:userID')
     .delete((req, res) => {
         res.send('Got a DELETE request from /users/:userID')
         // check that the user has no pets associated with them, if they do, deny the request or delete the pets too.
-
     })
 
      // calls the userEdit page for a specific user
@@ -167,10 +166,6 @@ app.route('/:userID/edit')
     // get details of user & the userEdit page
     .get(async function(req, res){
         let ownerID = req.params.userID
-        console.log("in /userDetail/:userID/edit")
-        console.log(req.params)
-
-        let pets = 0;
         // convert userID as string into ObjectID for search in MongoDB
         let mdbUserID = new ObjectId(ownerID);
         // returns the single user as part of an array
@@ -179,25 +174,27 @@ app.route('/:userID/edit')
         user=user[0];
         
         // send variables to the page to be used.
-        res.render('pages/userDetail',{
-            user:user,
-            pets:pets
+        res.render('pages/userEdit',{
+            user:user
        });
     })
     // unneeded, remove/ignore
     .post((req, res) => {
         res.send('Got a POST request')
     })
-    .put((req, res) => {
-        res.send('Got a PUT request')
+    .put(async function(req, res){
+        let ownerID = req.params.userID
+        let mdbUserID = new ObjectId(ownerID);
+        console.log(req);
     })
     .patch((req, res) => {
         res.send('Got a PATCH request')
     })
     // unneeded, remove/ignore
     .delete((req, res) => {
-    res.send('Got a DELETE request')
+        res.send('Got a DELETE request')
     })
+
 
     // detail page for a specific pet
 app.route('/petDetail/:petID')
@@ -223,7 +220,7 @@ app.route('/petDetail/:petID')
         })
 
         // should petDetail be turned into a template? How do we integrate databse pull with that?
-        res.render('pages/userDetail',{
+        res.render('pages/petDetail',{
             pet:pet,
             meds:meds
        });
