@@ -268,12 +268,30 @@ app.route('/petEdit/:petID')
     // detail page of a medicine
 app.route('/users/:userID/pets/:petID/medlog/:medID')
     // call the medDetail page and fills in the information.
-    .get((req, res) =>{
-        res.send('Got a GET request')
+    .get(async function(req, res){
+        let medicineID = req.params.medID
+        let mdbMedID = new ObjectId(medicineID)
+
+        let med=await find(db,'Pet-Website-Project','MedLog',{_id:mdbMedID})
+
+        med=med[0];
+        med.medID = medicineID;
+
+        let meds=await find(db,'Pet-Website-Project','Pets',{medID:medicineID})
+
+        meds.forEach(individualMed => {
+            individualMed['medID'] = med._id.toString();
+        })
+
+        res.render('pages/medDetail',{
+            med:med,
+            meds:meds
+          });
     })
     .post((req, res) => {
         res.send('Got a POST request')
     })
+    //medEdit handles this
     .put((req, res) => {
         res.send('Got a PUT request')
     })

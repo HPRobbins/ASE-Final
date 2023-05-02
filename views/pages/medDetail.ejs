@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/head') %>
+
+    <style>
+        main{
+	        background-color:#FFF0DF;
+	        margin:20px;
+        }
+        div .form-group{
+            padding:10px;
+            margin:20px;
+        }
+        #card{
+            border-radius: 25px;
+            border: 2px solid #a6763f;
+            padding: 20px; 
+            width: 200px;
+            height: 150px;
+        }
+    </style>
+</head>
+
+
+<header>
+    <%- include('../partials/header') %>
+ </header>
+
+<body style="background-color:#FFF0DF">
+	<h1><%= individualMed.medName %></h1>
+
+    <div id="buttons" class="col-12">
+        <a href="petDetail.html?petID=${pet.petID}">Back to Pet</a> | <a id="btn-edit" href="MedicationEdit.html?${med.medicationID}">Edit Info</a> | <button type="button" id="btn-delete">Delete Info</button>
+    </div>
+
+	<div id="medInfo"class="col-lg-6 row-1">
+        <!--medication identity-->
+        <div id="med-ident">
+            <div class="row justify-content-start">
+                <div id="medID" class="col-4">ID #: <%= individualMed.medID %></div>
+                <div id="medPet" class="col-4">Pet: <%= individualMed.petID %></div>
+            </div>
+        </div>
+<!--medication type-->
+        <div id="med-kind">
+            <div class="row justify-content-start">
+                <div id="medType" class="col-4">Type: <%= individualMed.medType %></div>
+                <div id="medName" class="col-4">Name: <%= individualMed.medicationName %></div>
+            </div>
+        </div>
+<!--medication stats-->
+        <div id="med-stats">
+            <div class="row justify-content-start">
+                <div id="medDosage" class="col-4">Dosage: <%= individualMed.dosage %></div>
+                <div id="medDailyDoses" class="col-4">Number of Daily Doses: <%= individualMed.numberOfDailyDoses %></div>
+                <div id="medNote" class="col-4">Notes: <%= individualMed.medNotes %></div>
+            </div>
+        </div>
+		
+	</div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+<footer>
+    <%- include('../partials/footer') %>
+</footer>
+</html>
