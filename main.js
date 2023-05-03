@@ -36,6 +36,13 @@ async function insert(db,database,collection,document){
     return result;
   }
 
+  // PUT data
+  async function update(db,database, collection, documentID, document){
+    let dbo=db.db(database)
+    let result=await dbo.collection(collection).replaceOne({_id:documentID},document)
+    return result;
+  }
+
 // for default page, should take user to welcomePage
 app.route('/')
     // fetching the basic page. return welcomePage.html
@@ -86,16 +93,23 @@ app.route('/users/')
 	.get(async function(req, res){
         // everything in the Users collection is put into an array called result
       let result=await find(db,'Pet-Website-Project','Users',{})
-       
-       // rewrites result array to create userID field and add _id as a string.
-        result.forEach(user => {
-            user['userID'] = user._id.toString();
-        })
+      
+      if(result.length==0)
+      {
+        res.send("404: No users found in database.")
+      }
+      else{
+        // rewrites result array to create userID field and add _id as a string.
+         result.forEach(user => {
+             user['userID'] = user._id.toString();
+         })
+ 
+         // passes the array to the index page to replace instances of 'users'
+       res.render('pages/index',{
+         users:result
+       });
 
-        // passes the array to the index page to replace instances of 'users'
-      res.render('pages/index',{
-        users:result
-      });
+      }
 	})
     // possibly unneeded, can be ignored/removed.
 	.post((req, res) => {
@@ -124,24 +138,29 @@ app.route('/userDetail/:userID')
         let mdbUserID = new ObjectId(ownerID);
         // returns the single user as part of an array
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
-        // pull the user out of the array.
-        user=user[0];
-        // readd the string version ofthe _id
-        user.userID = ownerID
+        if(user.length==0)
+        {
+            res.send("404: Target not found.")
+        }
+        else{
+            // pull the user out of the array.
+            user=user[0];
+            // readd the string version ofthe _id
+            user.userID = ownerID
 
-        let pets=await find(db,'Pet-Website-Project','Pets',{userID:ownerID})
+            let pets=await find(db,'Pet-Website-Project','Pets',{userID:ownerID})
 
-        // convert _ID to a string & add to animal array
-        pets.forEach(pet => {
-            pet['petID'] = pet._id.toString();
-        })
+            // convert _ID to a string & add to animal array
+            pets.forEach(pet => {
+                pet['petID'] = pet._id.toString();
+            })
 
-        // send variables to the page to be used.
-        res.render('pages/userDetail',{
-             user:user,
-             pets:pets
-        });
-
+            // send variables to the page to be used.
+            res.render('pages/userDetail',{
+                user:user,
+                pets:pets
+            });
+        }
     })
     // maybe for adding new animals?
     // calls addPet.html if so.
@@ -159,6 +178,8 @@ app.route('/userDetail/:userID')
     .delete((req, res) => {
         res.send('Got a DELETE request from /users/:userID')
         // check that the user has no pets associated with them, if they do, deny the request or delete the pets too.
+        // run a find for any pets with the user's ID set o a variable.
+        // if els statement: if pets of user exist, send "cannot delete user that has pets", else delete user.
     })
 
      // calls the userEdit page for a specific user
@@ -186,6 +207,7 @@ app.route('/:userID/edit')
     .put(async function(req, res){
         let ownerID = req.params.userID
         let mdbUserID = new ObjectId(ownerID);
+        
         console.log("in user/edit put")
         console.log(res.body);
     })
