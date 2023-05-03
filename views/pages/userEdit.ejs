@@ -2,6 +2,7 @@
 <html>
 <head>
     <%- include('../partials/head') %>
+	<script src="../../public/assets/axios.min.js"></script>
 </head>
 
 <header>
@@ -21,7 +22,7 @@
 	  </div>
 	  <div class="form-group">
 		  <label for="emailAddress">Email:</label>
-		  <input type="text" class="form-control" id="emailAddress" name="emailAddress" value="<%= user.emailAddress %>">
+		  <input type="text" class="form-control" id="emailAddress" name="email" value="<%= user.emailAddress %>">
 	</div>
 
 	<button type="submit" class="btn btn-primary" >Submit</button>
@@ -36,11 +37,12 @@
 		let emailAddress=document.querySelectorAll('[name="email"]')[0]
 		let firstName=document.querySelectorAll('[name="firstName"]')[0]
 		let lastName=document.querySelectorAll('[name="lastName"]')[0]
+		let userID=getAllUrlParams().userID
 
 		//let password=document.querySelectorAll('[name="password"]')[0]
 		axios({
 		  method: 'post',
-		  url: '/user/edit/:userID',
+		  url: '/user/edit/'+ userID,
 		  data: {
 			firstName:firstName.value,
 			lastName:lastName.value,
@@ -48,6 +50,7 @@
 		  }/*,
 			validateStatus:()=>true*/
 		})
+			console.log(url)
 		  .then(function (response) {
 			console.log(response);
 		  })
@@ -56,6 +59,9 @@
 		  });
 	})
   </script>
+
+	<script src="/public/assets/getAllURLParams.js"></script>
+
 
 </body>
 

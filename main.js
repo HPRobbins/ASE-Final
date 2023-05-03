@@ -208,9 +208,10 @@ app.route('/user/edit/:userID')
         res.send('Got a POST request in :userid/edit')
         console.log(req.body.emailAddress)
         let ownerID = req.params.userID
-        let mdbUserID = new ObjectId(ownerID);
+        console.log(ownerID)
+        // let mdbUserID = new ObjectId(ownerID);
 
-        console.log(req.body)
+        console.log(mdbUserIDy)
 
     })
     .put(async function(req, res){
