@@ -9,8 +9,8 @@
 </header>
 <body style="background-color: #FFF0DF;">
 <h1>User Edit</h1>
-<a href="/users/">Back to user index</a>
-<form action="/user/edit/<%= user.userID %>" method="post">
+<a href="/users/">Back to users index</a>
+<form id="editUser" enctype="multipart/formdata">
 	<div class="form-group">
 	  <label for="firstName">User's First Name:</label>
 	  <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="userFirstNameInput" value="<%= user.firstName %>">
@@ -28,6 +28,33 @@
   </form>
 
  <script>
+	// stolen from code_12, 04, signup.html	
+	const editUser=document.getElementById('editUser')
+
+	editUser.addEventListener('submit',(e)=>{
+		e.preventDefault();
+		let emailAddress=document.querySelectorAll('[name="email"]')[0]
+		let firstName=document.querySelectorAll('[name="firstName"]')[0]
+		let lastName=document.querySelectorAll('[name="lastName"]')[0]
+
+		//let password=document.querySelectorAll('[name="password"]')[0]
+		axios({
+		  method: 'post',
+		  url: '/user/edit/:userID',
+		  data: {
+			firstName:firstName.value,
+			lastName:lastName.value,
+			emailAddress:email.value
+		  }/*,
+			validateStatus:()=>true*/
+		})
+		  .then(function (response) {
+			console.log(response);
+		  })
+		  .catch(function (error) {
+			console.log(error);
+		  });
+	})
   </script>
 
 </body>
