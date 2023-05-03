@@ -282,10 +282,10 @@ app.route('/users/:userID/pets/:petID/medlog/:medID')
         meds.forEach(individualMed => {
             individualMed['medID'] = med._id.toString();
         })
-
+        //TODO: check if petID matches the MedID
         res.render('pages/medDetail',{
             med:med,
-            meds:meds
+            individualMed:individualMed
           });
     })
     .post((req, res) => {
