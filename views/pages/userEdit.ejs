@@ -10,22 +10,26 @@
 <body style="background-color: #FFF0DF;">
 <h1>User Edit</h1>
 <a href="../users/">Back to index</a>
-<form method="put">
+<form action="/user/edit/<%= user.userID %>" method="post">
 	<div class="form-group">
-	  <label for="userFirstName">User's First Name:</label>
-	  <input type="text" class="form-control" id="userFirstNameInput" name="userFirstNameInput" aria-describedby="userFirstNameInput" value="<%= user.firstName %>">
+	  <label for="firstName">User's First Name:</label>
+	  <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="userFirstNameInput" value="<%= user.firstName %>">
 	</div>
 	<div class="form-group">
-		<label for="userLastName">User's Last Name:</label>
-		<input type="text" class="form-control" id="userLastNameInput" name="userLastNameInput" value="<%= user.lastName %>">
+		<label for="lastName">User's Last Name:</label>
+		<input type="text" class="form-control" id="lastName" name="lastName" value="<%= user.lastName %>">
 	  </div>
 	  <div class="form-group">
-		  <label for="userEmail">Email:</label>
-		  <input type="text" class="form-control" id="userEmailInput" name="userEmailInput" value="<%= user.emailAddress %>">
+		  <label for="emailAddress">Email:</label>
+		  <input type="text" class="form-control" id="emailAddress" name="emailAddress" value="<%= user.emailAddress %>">
 	</div>
 
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="submit" class="btn btn-primary" >Submit</button>
   </form>
+
+ <script>
+  </script>
+
 </body>
 
 <footer>

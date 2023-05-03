@@ -138,6 +138,7 @@ app.route('/userDetail/:userID')
         let mdbUserID = new ObjectId(ownerID);
         // returns the single user as part of an array
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        // check that the user exists
         if(user.length==0)
         {
             res.send("404: Target not found.")
@@ -183,7 +184,7 @@ app.route('/userDetail/:userID')
     })
 
      // calls the userEdit page for a specific user
-app.route('/:userID/edit')
+app.route('/user/edit/:userID')
     // get details of user & the userEdit page
     .get(async function(req, res){
         let ownerID = req.params.userID
@@ -200,9 +201,15 @@ app.route('/:userID/edit')
             user:user
        });
     })
-    // unneeded, remove/ignore
     .post((req, res) => {
-        res.send('Got a POST request')
+        // using post becaue PUT doesn't work for the form.
+        res.send('Got a POST request in :userid/edit')
+        console.log(req.body.emailAddress)
+        let ownerID = req.params.userID
+        let mdbUserID = new ObjectId(ownerID);
+
+        console.log(req.body)
+
     })
     .put(async function(req, res){
         let ownerID = req.params.userID

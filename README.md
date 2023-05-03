@@ -20,7 +20,8 @@ EJS (Embedded Javascript)
     + Can be used with both static and dynamic pages and enables us to more easily integrate partial pages (header, head, and footer examples)
 
 Current Data Flow
-mongoDB -> main.js -> page.ejs
+ mongodb <-> main.js <-> page.ejs
+ 
 1) main.js is called by the server and establishes connection with mongoDB
 2) main.js sends mongoDB queries as requested depending on location in the routes.
 3) main.js sends data to ejs page data in similiar fashion to the template from code_10, 5_request_object example from class.
@@ -34,7 +35,7 @@ index
 petDetail
 signUp
 userDetail
-userEdit - conversion done, not accepting navigation
+userEdit 
 welcomePage
 
 Pages to be converted:
