@@ -29,7 +29,7 @@
 
 <body style="background-color:#FFF0DF">
     <h1><%= pet.petName %></h1>
-    <a href="../users/">Back to index</a> | <a href="../userDetail/<%= pet.userID %>">Back to User</a> |  <a id="btn-edit" href="../petEdit/<%= pet.petID %>">Edit pet</a> | <button type="button" id="btn-delete">Delete pet</button>
+    <a href="../users/">Back to index</a> | <a href="../userDetail/<%= pet.userID %>">Back to User</a> |  <a id="btn-edit" href="../<%= pet.petID %>">Edit pet</a> | <button type="button" id="btn-delete">Delete pet</button>
 
     <!--This will hold the photo-->
         <div id="pet-photo"></div>

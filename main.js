@@ -172,6 +172,7 @@ app.route('/:userID/edit')
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
         // pull the user out of the array.
         user=user[0];
+        console.log("in userID/edit/get")
         
         // send variables to the page to be used.
         res.render('pages/userEdit',{
@@ -185,7 +186,8 @@ app.route('/:userID/edit')
     .put(async function(req, res){
         let ownerID = req.params.userID
         let mdbUserID = new ObjectId(ownerID);
-        console.log(req);
+        console.log("in user/edit put")
+        console.log(res.body);
     })
     .patch((req, res) => {
         res.send('Got a PATCH request')
@@ -202,15 +204,16 @@ app.route('/petDetail/:petID')
     .get(async function(req, res){
         // res.send('Got a GET request')
         let animalID = req.params.petID
-        let mdbPetID = new ObjectId(animalID);
+        let mdbPetID = new ObjectId(animalID)
 
-        let pet=await find(db,'Pet-Website-Project','Users',{_id:mdbPetID})
+        let pet=await find(db,'Pet-Website-Project','Pets',{_id:mdbPetID})
         // pull the user out of the array.
         pet=pet[0];
         // readd the string version ofthe _id
-        // pet.petID = animalID
+        pet.petID = animalID
 
-        console.log(pet);
+        let date = pet.petDoB
+        pet.petDoB = date.toDateString()
 
         let meds=await find(db,'Pet-Website-Project','MedLog',{petID:mdbPetID})
 
@@ -242,7 +245,7 @@ app.route('/petDetail/:petID')
 
     // edit page for specific pet
     // TODO: create ejs, run the strings.
-app.route('/petEdit/:petID')
+app.route('/:petID/edit')
     // calls the petEdit page for the specific pet.
     .get((req, res) =>{
         res.send('Got a GET request')
