@@ -15,47 +15,75 @@
                     <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                         <div class="card shadow-2-strong" style="border-radius: 1rem;">
-                        <div class="card-body p-5 text-center">
-                            <!--Sign up-->
-                            <h3 class="mb-5">Sign Up</h3>
-                
-                            <div class="form-outline mb-4">
-                                <input type="text" id="firstName" class="form-control form-control-lg" />
-                                <label class="form-label" for="firstName">First Name</label>
-                            </div>
-                            <div class="form-outline mb-4">
-                                <input type="text" id="lastName" class="form-control form-control-lg" />
-                                <label class="form-label" for="lastName">Last Name</label>
-                            </div>
+                            <div class="card-body p-5 text-center">
+                                <!--Sign up-->
+                                <h3 class="mb-5">Sign Up</h3>
+                            
+                                <form id="signup">
+                                    <div class="form-outline mb-4">
+                                        <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="firstName">First Name</label>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input type="text" id="lastName" name="lastName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="lastName">Last Name</label>
+                                    </div>
 
-                            <div class="form-outline mb-4">
-                                <input type="email" id="typeEmailX-2" class="form-control form-control-lg" />
-                                <label class="form-label" for="typeEmailX-2">Email</label>
+                                    <div class="form-outline mb-4">
+                                        <input type="email" id="typeEmailX-2" name="email" class="form-control form-control-lg" />
+                                        <label class="form-label" for="typeEmailX-2">Email</label>
+                                    </div>
+                        
+                                    <div class="form-outline mb-4">
+                                        <input type="password" id="typePasswordX-2" name="password" class="form-control form-control-lg" />
+                                        <label class="form-label" for="typePasswordX-2">Password</label>
+                                    </div>
+                        
+                                    <button class="btn btn-primary btn-lg btn-block" type="submit">Sign Up</button>
+                                </form>
                             </div>
-                
-                            <div class="form-outline mb-4">
-                                <input type="password" id="typePasswordX-2" class="form-control form-control-lg" />
-                                <label class="form-label" for="typePasswordX-2">Password</label>
-                            </div>
-                
-                            <button onclick = "window.location.href='index.html';" class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
-                        </div>
                         </div>
                     </div>
                     </div>
                 </div>
                 </section>
-        </div>
+        </div
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script src="assets/api.js"></script>
-        <script src="assets/database.js"></script>
-        <script src="app.js"></script>
-        <script>
-            quotes.index();
-        </script>
+	    <script src="/assets/getAllURLParams.js"></script>
+	    <script src="/assets/cookies.js"></script>
+
+        <script> 
+            // taken from code_12, 04, signup.html	
+            const signup=document.getElementById('signup')
+    
+            signup.addEventListener('submit',(e)=>{
+                e.preventDefault();
+                let emailAddress=document.querySelectorAll('[name="email"]')[0]
+                let password=document.querySelectorAll('[name="password"]')[0]
+                let firstName=document.querySelectorAll('[name="firstName"]')[0]
+                let lastName=document.querySelectorAll('[name="lastName"]')[0]
+        
+                axios({
+                method: 'post',
+                url: '/signUp',
+                data: {
+                    firstName:firstName.value,
+                    lastName:lastName.value,
+                    emailAddress:emailAddress.value,
+                    password:password.value
+                },
+                    validateStatus:()=>true
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            })
+        </script> 
     </body>
+    
     <footer>
         <%- include('../partials/footer') %>
     </footer>

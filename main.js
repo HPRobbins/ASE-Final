@@ -17,7 +17,15 @@ const uri = "mongodb+srv://appclient:LbSgYnUaMQ8jTACg@pet-website-project.ksy84i
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 ObjectID = require('mongodb').ObjectID
 var db=null
+var database='Pet-Website-Project'
 
+const bcrypt=require('bcrypt')
+
+const jwt=require('jsonwebtoken')
+const jwt_expiration=86400000
+const jwtsalt='privatekey'
+
+const salt='$2b$10$Imnq7Q2r0RS7DqaKV0rpPe'
 
 /* Middleware */
 app.use(express.static('views'))
@@ -36,7 +44,7 @@ async function connect(){
 async function insert(db,database,collection,document){
     let dbo=db.db(database)
     let result=await dbo.collection(collection).insertOne(document)
-    // console.log(result)
+    console.log(result)
     return result;
   }
   
@@ -48,12 +56,25 @@ async function insert(db,database,collection,document){
   }
 
   // PUT data
-  async function update(db,database, collection, documentID, document){
+  async function update(db, database, collection, documentID, document){
     let dbo=db.db(database)
     let result=await dbo.collection(collection).replaceOne({_id:documentID},document)
     
     return result;
   }
+
+  // checks the currently logged in user.
+async function checkUser(token){
+	let result=await database.collection('users').find({jwt:token},{_id:1}).toArray();
+	console.log('in checkUser')
+	console.log(result)
+	if(result.length>0){
+		let authcheck = result[0]._id.toString().replace('New ObjectId("','').replace('")','')
+		console.log('in checkUser if statement')
+		return authcheck
+	}
+	return null
+}
 
 // for default page, should take user to welcomePage
 app.route('/')
@@ -85,8 +106,52 @@ app.route('/signUp')
       res.render('pages/signUp')
 	})
     // yes! Creating new user in database
-	.post((req, res) => {
-	  res.send('Got a POST request')
+	.post(async(req, res) => {
+        let email = req.params.emailAddress
+        console.log(req.body)
+
+        let result=await find(db,'Pet-Website-Project','Users',{emailAddress:email})
+        console.log('the reselt of find')
+        console.log(result)
+
+        // user already exists, display message.
+        if(result.length>0)
+        {
+            res.status(406).json({message:'User already exists'})
+        }
+        // user does not exist.
+        else
+        {
+            console.log("inserting into database")
+            req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')
+            console.log(req.body)
+            let newResult=await insert(db,'Pets-Website-Project','Users',req.body)
+            console.log(newResult)
+            res.send('pages/users/')
+        }
+
+
+
+        /*
+        // check if user exists.
+        database.collection('users').find({email:req.body.email},{email:1}).toArray(async function(err, result){
+            console.log('in /signUp/ post')
+            console.log(res.body)
+            if (err) throw err
+            // if user exists, display message.
+            if(result.length>0) res.status(406).json({message:'User already exists'})
+            // else, insert user info.
+            else{
+                req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')
+                let result=await insert(db,'Pet-Website-Project','Users',req.body)
+                console.log(result)
+                database.collection('users').insertOne(req.body,function(err,result){
+                    if (err) throw err
+                    res.status(201).json({message:'User created'})
+                })
+            }
+        })
+        */
 	})
 	.put((req, res) => {
 	  res.send('Got a PUT request')
