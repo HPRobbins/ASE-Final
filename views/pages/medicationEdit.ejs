@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <%- include('../partials/head') %>
+</head>
+
+<header>
+   <%- include('../partials/header') %>
+</header>
+<body style="background-color: #FFF0DF;">
+<h1>Medication Edit</h1>
+<a href="..\users\">Back to index</a>
+    <form>
+    <div class="form-group">
+        <label for="medicationName" style="color: #FFCD95;">Medication Name</label>
+        <input type="text" class="form-control" id="medicationNameInput" name="medicationName" aria-describedby="medicationName" placeholder="Name" value="<%= med.name %>">
+    </div>
+    <div class="form-group">
+        <label for="medType" style="color: #FFCD95;">Medication Type</label>
+        <input type="text" class="form-control" id="medTypeInput" name="medType" aria-describedby="medType" placeholder="Type" value="<%= med.type %>">
+    </div>
+    <div class="form-group">
+        <label for="dosage" style="color: #FFCD95;">Dosage</label>
+        <input type="text" class="form-control" id="dosageInput" name="dosage" aria-describedby="dosage" placeholder="Dosage" value="<%= med.dosage %>">
+    </div>
+    <div class="form-group">
+        <label for="numberOfDailyDoses" style="color: #FFCD95;">Doses Per Day</label>
+        <input type="text" class="form-control" id="numberOfDailyDosesInput" name="numberOfDailyDoses" aria-describedby="numberOfDailyDoses" placeholder="Doses Per Day" value="<%= med.numberOfDailyDoses %>">
+    </div>
+    <div class="form-group">
+        <label for="medNotes" style="color: #FFCD95;">Medication Notes</label>
+        <input type="text" class="form-control" id="medNotesInput" name="medNotes" aria-describedby="medNotes" placeholder="Notes" value="<%= med.notes %>">
+    </div>
+    <button class="btn btn-dark" type="submit">Submit</button>
+    </form>
+
+    
+
+    <footer>
+        <%- include('../partials/footer') %>
+    </footer>
+</body>
+</html>
