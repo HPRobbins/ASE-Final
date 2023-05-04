@@ -7,6 +7,8 @@ const axios = require('axios');
 
 const port = 3000
 const bodyParser = require('body-parser')
+const cookieParser=require('cookie-parser');
+
 app.use(bodyParser.json())
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://appclient:LbSgYnUaMQ8jTACg@pet-website-project.ksy84iw.mongodb.net/?retryWrites=true&w=majority"
@@ -14,6 +16,12 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 ObjectID = require('mongodb').ObjectID
 app.set('view engine', 'ejs')
 var db=null
+
+
+/* Middleware */
+app.use(express.static('views'))
+app.use(bodyParser.json())
+app.use(cookieParser())
 
 // our connect function.
 async function connect(){
@@ -196,8 +204,8 @@ app.route('/user/edit/:userID')
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
         // pull the user out of the array.
         user=user[0];
-        console.log("in userID/edit/get")
-        
+        user.userID = ownerID
+
         // send variables to the page to be used.
         res.render('pages/userEdit',{
             user:user
@@ -208,10 +216,12 @@ app.route('/user/edit/:userID')
         res.send('Got a POST request in :userid/edit')
         console.log(req.body.emailAddress)
         let ownerID = req.params.userID
+        let mdbUserID = new ObjectId(ownerID);
+
         console.log(ownerID)
         // let mdbUserID = new ObjectId(ownerID);
 
-        console.log(mdbUserIDy)
+        console.log(mdbUserID)
 
     })
     .put(async function(req, res){

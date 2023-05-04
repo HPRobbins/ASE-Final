@@ -12,6 +12,10 @@
 <a href="/users/">Back to users index</a>
 <form id="editUser" enctype="multipart/formdata">
 	<div class="form-group">
+		<label for="userID" ></label>
+		<input type="text" class="form-control" id="userID" name="userID" value="<%= user.userID %>" disabled>
+	</div>
+	<div class="form-group">
 	  <label for="firstName">User's First Name:</label>
 	  <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="userFirstNameInput" value="<%= user.firstName %>">
 	</div>
@@ -27,40 +31,42 @@
 	<button type="submit" class="btn btn-primary" >Submit</button>
   </form>
 
-	<script src="/public/assets/getAllURLParams.js"></script>
-	<script src="/public/assets/cookies.js"></script>
+	<script src="/assets/getAllURLParams.js"></script>
+	<script src="/assets/cookies.js"></script>
 
- <script>
-	// stolen from code_12, 04, signup.html	
-	const editUser=document.getElementById('editUser')
+	<script> 
+		// taken from code_12, 04, signup.html	
+		const editUser=document.getElementById('editUser')
 
-	editUser.addEventListener('submit',(e)=>{
-		e.preventDefault();
-		let emailAddress=document.querySelectorAll('[name="email"]')[0]
-		let firstName=document.querySelectorAll('[name="firstName"]')[0]
-		let lastName=document.querySelectorAll('[name="lastName"]')[0]
-		let userID=getAllUrlParams().userID
+		editUser.addEventListener('submit',(e)=>{
+			e.preventDefault();
+			let userID=document.querySelectorAll('[name="userID"]')[0]
+			let emailAddress=document.querySelectorAll('[name="email"]')[0]
+			let firstName=document.querySelectorAll('[name="firstName"]')[0]
+			let lastName=document.querySelectorAll('[name="lastName"]')[0]
 
-		//let password=document.querySelectorAll('[name="password"]')[0]
-		axios({
-		  method: 'post',
-		  url: '/user/edit/'+ userID,
-		  data: {
-			firstName:firstName.value,
-			lastName:lastName.value,
-			emailAddress:emailAddress.value
-		  }/*,
-			validateStatus:()=>true*/
+			let urlportion=userID.value
+
+			//let password=document.querySelectorAll('[name="password"]')[0]
+			axios({
+			method: 'post',
+			url: '/user/edit/'+ urlportion,
+			data: {
+				userID:userID.value,
+				firstName:firstName.value,
+				lastName:lastName.value,
+				emailAddress:emailAddress.value
+			}/*,
+				validateStatus:()=>true*/
+			})
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
 		})
-			console.log(url)
-		  .then(function (response) {
-			console.log(response);
-		  })
-		  .catch(function (error) {
-			console.log(error);
-		  });
-	})
-  </script>
+	</script> 
 
 </body>
 
