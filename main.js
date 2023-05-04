@@ -9,12 +9,13 @@ const port = 3000
 const bodyParser = require('body-parser')
 const cookieParser=require('cookie-parser');
 
+app.set('view engine', 'ejs')
 app.use(bodyParser.json())
+
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://appclient:LbSgYnUaMQ8jTACg@pet-website-project.ksy84iw.mongodb.net/?retryWrites=true&w=majority"
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 ObjectID = require('mongodb').ObjectID
-app.set('view engine', 'ejs')
 var db=null
 
 
@@ -50,6 +51,7 @@ async function insert(db,database,collection,document){
   async function update(db,database, collection, documentID, document){
     let dbo=db.db(database)
     let result=await dbo.collection(collection).replaceOne({_id:documentID},document)
+    
     return result;
   }
 
@@ -206,22 +208,31 @@ app.route('/user/edit/:userID')
         user=user[0];
         user.userID = ownerID
 
+
         // send variables to the page to be used.
         res.render('pages/userEdit',{
             user:user
        });
     })
-    .post((req, res) => {
+    .post(async (req, res) => {
         // using post becaue PUT doesn't work for the form.
-        res.send('Got a POST request in :userid/edit')
+        res.send('Got a POST request in user/edit/:userID')
         console.log(req.body.emailAddress)
         let ownerID = req.params.userID
         let mdbUserID = new ObjectId(ownerID);
 
-        console.log(ownerID)
-        // let mdbUserID = new ObjectId(ownerID);
+        console.log(req.body)
 
-        console.log(mdbUserID)
+        var newValues=req.body
+        
+         let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues,function(err,result){
+            if (err) throw err
+            console.log(err)
+         })
+
+         res.render()
+
+
 
     })
     .put(async function(req, res){
