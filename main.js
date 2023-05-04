@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs')
 const axios = require('axios');
 
-const port = 3000
+const port = 5500
 const bodyParser = require('body-parser')
 const cookieParser=require('cookie-parser');
 
@@ -320,6 +320,41 @@ app.route('/:petID/edit')
 
     // detail page of a medicine
 app.route('/users/:userID/pets/:petID/medlog/:medID')
+    // call the medDetail page and fills in the information.
+    .get(async function(req, res){
+        let medicineID = req.params.medID
+        let mdbMedID = new ObjectId(medicineID)
+
+        let med=await find(db,'Pet-Website-Project','MedLog',{_id:mdbMedID})
+
+        med=med[0];
+        med.medID = medicineID;
+
+        let meds=await find(db,'Pet-Website-Project','Pets',{medID:medicineID})
+
+        meds.forEach(individualMed => {
+            individualMed['medID'] = med._id.toString();
+        })
+        
+        res.render('pages/medDetail',{
+            med:med,
+            individualMed:individualMed
+          });
+    })
+    .post((req, res) => {
+        res.send('Got a POST request')
+    })
+    .put((req, res) => {
+        res.send('Got a PUT request')
+    })
+    .patch((req, res) => {
+        res.send('Got a PATCH request')
+    })
+    .delete((req, res) => {
+        res.send('Got a DELETE request')
+    })
+
+app.route('/:medID/edit')
     // call the medDetail page and fills in the information.
     .get((req, res) =>{
         res.send('Got a GET request')
