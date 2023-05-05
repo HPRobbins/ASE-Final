@@ -43,6 +43,7 @@ async function connect(){
 // PUSHes data to mongoDB
 async function insert(db,database,collection,document){
     let dbo=db.db(database)
+    console.log(document)
     let result=await dbo.collection(collection).insertOne(document)
     console.log(result)
     return result;
@@ -58,7 +59,7 @@ async function insert(db,database,collection,document){
   // PUT data
   async function update(db, database, collection, documentID, document){
     let dbo=db.db(database)
-    let result=await dbo.collection(collection).replaceOne({_id:documentID},document)
+    let result=await dbo.collection(collection).updateOne({_id:documentID},{$set:document})
     
     return result;
   }
@@ -107,31 +108,29 @@ app.route('/signUp')
 	})
     // yes! Creating new user in database
 	.post(async(req, res) => {
-        let email = req.params.emailAddress
-        console.log(req.body)
+        let email = req.body.emailAddress
 
         let result=await find(db,'Pet-Website-Project','Users',{emailAddress:email})
-        console.log('the reselt of find')
-        console.log(result)
-
-        // user already exists, display message.
-        if(result.length>0)
-        {
-            res.status(406).json({message:'User already exists'})
-        }
-        // user does not exist.
-        else
-        {
-            console.log("inserting into database")
-            req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')
-            console.log(req.body)
-            let newResult=await insert(db,'Pets-Website-Project','Users',req.body)
-            console.log(newResult)
-            res.send('pages/users/')
-        }
-
-
-
+            console.log(result)
+            // user already exists, display message.
+            if(result.length>0)
+            {
+                res.status(406).json({message:'User already exists'})
+                // console.log('User exists.')
+            }
+            // user does not exist.
+            else
+            {
+                console.log("inserting into database")
+                req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')
+                console.log(req.body.password)
+                let newResult=insert(db,'Pet-Website-Project','Users',req.body,function(err,result){
+                    if (err) throw err
+                    console.log(err)
+                    return newResult
+                })
+            }
+    
         /*
         // check if user exists.
         database.collection('users').find({email:req.body.email},{email:1}).toArray(async function(err, result){
@@ -281,24 +280,17 @@ app.route('/user/edit/:userID')
     })
     .post(async (req, res) => {
         // using post becaue PUT doesn't work for the form.
-        res.send('Got a POST request in user/edit/:userID')
-        console.log(req.body.emailAddress)
         let ownerID = req.params.userID
         let mdbUserID = new ObjectId(ownerID);
 
-        console.log(req.body)
-
         var newValues=req.body
+        console.log(newValues)
         
-         let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues,function(err,result){
-            if (err) throw err
-            console.log(err)
-         })
+        let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues)
+        console.log(result)
 
-         res.render()
-
-
-
+         // TODO: Send user somewhere, tell user it succeeded, something.
+        // res.render()
     })
     .put(async function(req, res){
         let ownerID = req.params.userID
