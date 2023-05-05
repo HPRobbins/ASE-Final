@@ -35,7 +35,7 @@
                                     <label class="form-check-label" for="form1Example3"> Remember password </label>
                                 </div>
                     
-                                <button onclick = "window.location.href='index.html';" class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+                                <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
                             </form>
                             <hr class="my-4">
                             <!--New user-->
@@ -72,6 +72,7 @@
                     validateStatus:()=>true
                 })
                 .then(function (response) {
+                    // once validated, move to a different page.
                     console.log(response);
                 })
                 .catch(function (error) {

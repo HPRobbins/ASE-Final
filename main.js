@@ -52,7 +52,17 @@ async function insert(db,database,collection,document){
   // returns results as an array.
   async function find(db,database,collection,criteria){
     let dbo=db.db(database)
+    console.log(criteria)
     let result=await dbo.collection(collection).find(criteria).toArray()
+    return result;
+  }
+
+  // GETS data from mongoDB
+  // returns results as an array.
+  async function loginFind(db,database,collection,criteria,criteria2){
+    let dbo=db.db(database)
+    console.log(criteria2)
+    let result=await dbo.collection(collection).find(criteria,criteria2).toArray()
     return result;
   }
 
@@ -90,52 +100,41 @@ app.route('/')
 	})
     // maybe for authentication?
 	.put(async(req, res) => {
-	  res.send('Got a PUT request for /')
+	  // res.send('Got a PUT request for /')
         let email = req.body.emailAddress
         let password = req.body.password
         let ownerID = req.body.userID
         let mdbUserID = new ObjectId(ownerID);
 
+        let criteria={emailAddress:email}
+        console.log(criteria)
+        let criteria2={_id:1,emailAddress:1,password:1}
 
-        let result=await find(db,'Pet-Website-Project','Users','{email:req.body.email},{_id:1,emailAddress:1,password:1}',function(err, result){
+        // using a specially crafted Find.
+        let result=await loginFind(db,'Pet-Website-Project','Users',criteria,criteria2,function(err, result){
             console.log(result)
             if (err) throw err
+            // if the user does not exist, send back an error message.
             if(result.length==0) res.status(406).json({message:'User is not registered'})
             else{
+                // if password is wrong, send message.
                 if(result[0].password!=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')) return res.status(406).json({message:'Wrong password'})
+                // if password is correct, handle token creation.
                 else{
                     userId=result[0]._id.toString().replace('New ObjectId("','').replace('")','')
-                    console.log(userId)
                     // creating a token
                     let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
 
+                    // actually does the update
                     let loginResult = update(db,'Pet-Website-Project','Users',{_id:mdbUserID},{$set:{jwt:token}},function(err,result){
                         if (err) throw err
+                        // if update is complete, sends this back.
                         res.status(200).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated'})
                     })
                 }
-            }
+            } 
         })
-        /*
-            database.collection('users').find({email:req.body.email},{_id:1,email:1,password:1}).toArray(function(err, result){
-		console.log(result)
-		if (err) throw err
-		if(result.length==0) res.status(406).json({message:'User is not registered'})
-		else{
-			if(result[0].password!=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')) return res.status(406).json({message:'Wrong password'})
-			else{
-				userId=result[0]._id.toString().replace('New ObjectId("','').replace('")','')
-				console.log(userId)
-				// creating a token
-				let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
-				database.collection('users').updateOne({_id:ObjectId(userId)},{$set:{jwt:token}},function(err,result){
-					if (err) throw err
-					res.status(200).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated'})
-				})
-			}
-		}
-	})
-        */
+        res.send()
 	})
 	.patch((req, res) => {
 	  res.send('Got a PATCH request')
@@ -170,7 +169,6 @@ app.route('/signUp')
             {
                 console.log("inserting into database")
                 req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')
-                console.log(req.body.password)
                 let newResult=insert(db,'Pet-Website-Project','Users',req.body,function(err,result){
                     if (err) throw err
                     console.log(err)
@@ -332,7 +330,6 @@ app.route('/user/edit/:userID')
 
         var newValues=req.body
         console.log(newValues)
-        
         
         let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues,function(err,result){
             if (err) throw err
