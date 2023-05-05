@@ -77,7 +77,6 @@ async function insert(db,database,collection,document){
 async function checkUser(token){
 	let result=await database.collection('users').find({jwt:token},{_id:1}).toArray();
 	console.log('in checkUser')
-	console.log(result)
 	if(result.length>0){
 		let authcheck = result[0]._id.toString().replace('New ObjectId("','').replace('")','')
 		console.log('in checkUser if statement')
@@ -107,35 +106,41 @@ app.route('/')
         let criteria2={_id:1,emailAddress:1,password:1}
 
         // using a specially crafted Find.
-        let userExists=await loginFind(db,'Pet-Website-Project','Users',criteria,criteria2,async function(err, result){
-            console.log(userExists)
-            if (err) throw err
-            // if the user does not exist, send back an error message.
-            if(userExists.length==0){res.status(406).json({message:'User is not registered'})} 
+        let result=await loginFind(db,'Pet-Website-Project','Users',criteria,criteria2)
+        console.log(result)
+
+        // if the user exists do stuff.
+        if(result.length>0){
+            // if password is wrong, send message.
+            if(result[0].password!=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')){
+                console.log("Bad Password.")
+                res.status(406).json({message:'Wrong password'})
+            }
+            // if password is correct, handle token creation.
             else{
-                // if password is wrong, send message.
-                if(result[0].password!=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')) return res.status(406).json({message:'Wrong password'})
-                // if password is correct, handle token creation.
-                else{
-                    userId=result[0]._id.toString().replace('New ObjectId("','').replace('")','')
-  
-                    let mdbUserID = new ObjectId(userId);
-                    console.log(mdbUserID)
+                userId=result[0]._id.toString().replace('New ObjectId("','').replace('")','')
 
-                    // creating a token
-                    let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
-                    console.log(token)
+                let mdbUserID = new ObjectId(userId);
 
-                    // actually autheticates the user
-                    let loginResult=await update(db,'Pet-Website-Project','Users',{_id:mdbUserID},{$set:{jwt:token}},function(err,result){
-                        if (err) throw err
-                        // if update is complete, sends this back.
-                        res.status(200).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated'})
-                    })
-                }
-            } 
-        })
-        // res.send()
+                // creating a token
+                let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
+
+                // puts jwt token in user's databse file.
+                let loginResult=await update(db,'Pet-Website-Project','Users',{_id:mdbUserID},{$set:{jwt:token}})
+                if(loginResult.length>0)
+                {
+                    // if update is complete, send this back.
+                    res.status(200).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated'})
+                    
+                } 
+            }
+        } 
+        else{
+            res.status(406).json({message:'User is not registered'})
+            console.log("User not found.")
+        } 
+        // TODO: SOMETHING WITH THIS? send response back.
+        console.log(res.statusCode)
 	})
 	.patch((req, res) => {
 	  res.send('Got a PATCH request')
