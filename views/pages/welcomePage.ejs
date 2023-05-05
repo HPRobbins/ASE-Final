@@ -68,26 +68,19 @@
                 data: {
                     emailAddress:emailAddress.value,
                     password:password.value
-                    }
+                    },
+			        validateStatus:()=>true
                 })
                     .then(function (response) {
                         // TODO: fix this.
                         console.log('Response given to page');
+                        console.log()
                         console.log(response)
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
             })
-        </script>
-        <script>
-            function checkIfLogged(callback){
-            $.get( '/checkUser' , function(data) {
-            alert('Result checkIfLogged: '+data);
-            callback(data);
-            console.log(data);
-    });
-}
         </script>
 
     </body>

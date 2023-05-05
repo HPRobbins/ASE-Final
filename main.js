@@ -131,7 +131,6 @@ app.route('/')
                 {
                     // if update is complete, send this back.
                     res.status(200).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated'})
-                    
                 } 
             }
         } 
@@ -139,7 +138,7 @@ app.route('/')
             res.status(406).json({message:'User is not registered'})
             console.log("User not found.")
         } 
-        // TODO: SOMETHING WITH THIS? send response back.
+        // TODO: Something with this? may not be needed. send response back.
         console.log(res.statusCode)
 	})
 	.patch((req, res) => {
