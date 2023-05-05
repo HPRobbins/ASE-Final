@@ -180,7 +180,8 @@ app.route('/signUp')
                     return newResult
                 })
             }
-            res.send()
+            // TODO: send user to userDetail/:userID
+            // res.send()
     
 	})
 	.put((req, res) => {
@@ -303,46 +304,41 @@ app.route('/user/edit/:userID')
         user=user[0];
         user.userID = ownerID
 
-
         // send variables to the page to be used.
         res.render('pages/userEdit',{
             user:user
        });
     })
     .post(async (req, res) => {
+        res.send('Got a POST request')
+    })
+    .put(async function(req, res){
         // using post becaue PUT doesn't work for the form.
         let ownerID = req.params.userID
         let mdbUserID = new ObjectId(ownerID);
 
         var newValues=req.body
-        console.log(newValues)
         
         let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues,function(err,result){
             if (err) throw err
             console.log(err)
             return result
         })
-        console.log(result)
+
         // update success!
         if(result.modifiedCount == 1)
         {
-            // alert('The user has been updated. Please return to the user detail page.')
-            console.log('The user has been updated. Please return to the user detail page.')
+            res.status(200).json({message:'User updated successfully.'})
+
         }
+        // Update failed.
         else
         {
-            console.log("TODO: error code for failure here")
+            res.status(406).json({message:'User update unsuccessful.'})
         }
 
          // TODO: Send user somewhere, tell user it succeeded, something.
         // res.render()
-    })
-    .put(async function(req, res){
-        let ownerID = req.params.userID
-        let mdbUserID = new ObjectId(ownerID);
-        
-        console.log("in user/edit put")
-        console.log(res.body);
     })
     .patch((req, res) => {
         res.send('Got a PATCH request')
