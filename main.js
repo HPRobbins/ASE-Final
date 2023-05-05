@@ -52,7 +52,6 @@ async function insert(db,database,collection,document){
   // returns results as an array.
   async function find(db,database,collection,criteria){
     let dbo=db.db(database)
-    console.log(criteria)
     let result=await dbo.collection(collection).find(criteria).toArray()
     return result;
   }
@@ -61,9 +60,8 @@ async function insert(db,database,collection,document){
   // returns results as an array.
   async function loginFind(db,database,collection,criteria,criteria2){
     let dbo=db.db(database)
-    console.log(criteria2)
     let result=await dbo.collection(collection).find(criteria,criteria2).toArray()
-    return result;
+    return result
   }
 
   // PUT data in database via an Update.
@@ -102,31 +100,34 @@ app.route('/')
 	.put(async(req, res) => {
 	  // res.send('Got a PUT request for /')
         let email = req.body.emailAddress
-        let password = req.body.password
-        let ownerID = req.body.userID
-        let mdbUserID = new ObjectId(ownerID);
 
+        // create first criteria
         let criteria={emailAddress:email}
-        console.log(criteria)
+        // create second criteria
         let criteria2={_id:1,emailAddress:1,password:1}
 
         // using a specially crafted Find.
-        let result=await loginFind(db,'Pet-Website-Project','Users',criteria,criteria2,function(err, result){
-            console.log(result)
+        let userExists=await loginFind(db,'Pet-Website-Project','Users',criteria,criteria2,async function(err, result){
+            console.log(userExists)
             if (err) throw err
             // if the user does not exist, send back an error message.
-            if(result.length==0) res.status(406).json({message:'User is not registered'})
+            if(userExists.length==0){res.status(406).json({message:'User is not registered'})} 
             else{
                 // if password is wrong, send message.
                 if(result[0].password!=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')) return res.status(406).json({message:'Wrong password'})
                 // if password is correct, handle token creation.
                 else{
                     userId=result[0]._id.toString().replace('New ObjectId("','').replace('")','')
+  
+                    let mdbUserID = new ObjectId(userId);
+                    console.log(mdbUserID)
+
                     // creating a token
                     let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
+                    console.log(token)
 
-                    // actually does the update
-                    let loginResult = update(db,'Pet-Website-Project','Users',{_id:mdbUserID},{$set:{jwt:token}},function(err,result){
+                    // actually autheticates the user
+                    let loginResult=await update(db,'Pet-Website-Project','Users',{_id:mdbUserID},{$set:{jwt:token}},function(err,result){
                         if (err) throw err
                         // if update is complete, sends this back.
                         res.status(200).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated'})
@@ -134,7 +135,7 @@ app.route('/')
                 }
             } 
         })
-        res.send()
+        // res.send()
 	})
 	.patch((req, res) => {
 	  res.send('Got a PATCH request')
@@ -157,7 +158,6 @@ app.route('/signUp')
 
         // check if user exists.
         let result=await find(db,'Pet-Website-Project','Users',{emailAddress:email})
-            console.log(result)
             // user already exists, display message.
             if(result.length>0)
             {
@@ -172,30 +172,12 @@ app.route('/signUp')
                 let newResult=insert(db,'Pet-Website-Project','Users',req.body,function(err,result){
                     if (err) throw err
                     console.log(err)
+                    res.status(201).json({message:'User created'})
                     return newResult
                 })
             }
+            res.send()
     
-        /*
-        // check if user exists.
-        database.collection('users').find({email:req.body.email},{email:1}).toArray(async function(err, result){
-            console.log('in /signUp/ post')
-            console.log(res.body)
-            if (err) throw err
-            // if user exists, display message.
-            if(result.length>0) res.status(406).json({message:'User already exists'})
-            // else, insert user info.
-            else{
-                req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')
-                let result=await insert(db,'Pet-Website-Project','Users',req.body)
-                console.log(result)
-                database.collection('users').insertOne(req.body,function(err,result){
-                    if (err) throw err
-                    res.status(201).json({message:'User created'})
-                })
-            }
-        })
-        */
 	})
 	.put((req, res) => {
 	  res.send('Got a PUT request')
@@ -345,7 +327,7 @@ app.route('/user/edit/:userID')
         }
         else
         {
-            res.send(alert('TODO: Error Code here'))
+            console.log("TODO: error code for failure here")
         }
 
          // TODO: Send user somewhere, tell user it succeeded, something.

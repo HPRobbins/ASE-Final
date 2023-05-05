@@ -68,16 +68,16 @@
                 data: {
                     emailAddress:emailAddress.value,
                     password:password.value
-                },
+                    },
                     validateStatus:()=>true
                 })
-                .then(function (response) {
-                    // once validated, move to a different page.
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                    .then(function (response) {
+                        // once validated, move to a different page.
+                        console.log('User is validated');
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             })
         </script>
     </body>
