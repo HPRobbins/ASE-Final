@@ -62,7 +62,7 @@ async function insert(db,database,collection,document){
     let result=await dbo.collection(collection).updateOne({_id:documentID},{$set:document})
     
     return result;
-  }
+  }-
 
   // checks the currently logged in user.
 async function checkUser(token){
@@ -286,8 +286,23 @@ app.route('/user/edit/:userID')
         var newValues=req.body
         console.log(newValues)
         
-        let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues)
+        
+        let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues,function(err,result){
+            if (err) throw err
+            console.log(err)
+            return result
+        })
         console.log(result)
+        // update success!
+        if(result.modifiedCount == 1)
+        {
+            // alert('The user has been updated. Please return to the user detail page.')
+            console.log('The user has been updated. Please return to the user detail page.')
+        }
+        else
+        {
+            res.send(alert('TODO: Error Code here'))
+        }
 
          // TODO: Send user somewhere, tell user it succeeded, something.
         // res.render()
