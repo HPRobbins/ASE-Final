@@ -18,14 +18,14 @@
                             <!--Sign in-->
                             <h3 class="mb-5">Sign in</h3>
                 
-                            <form id="signup">
+                            <form id="signin">
                                 <div class="form-outline mb-4">
-                                    <input type="email" id="typeEmailX-2" class="form-control form-control-lg" />
+                                    <input type="email" id="typeEmailX-2" name="email" class="form-control form-control-lg" />
                                     <label class="form-label" for="typeEmailX-2">Email</label>
                                 </div>
                     
                                 <div class="form-outline mb-4">
-                                    <input type="password" id="typePasswordX-2" class="form-control form-control-lg" />
+                                    <input type="password" id="typePasswordX-2" name="password" class="form-control form-control-lg" />
                                     <label class="form-label" for="typePasswordX-2">Password</label>
                                 </div>
                     
@@ -50,5 +50,34 @@
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	    <script src="/assets/getAllURLParams.js"></script>
+	    <script src="/assets/cookies.js"></script>
+
+        <script> 
+            // taken from code_12, 04, signup.html	
+            const signin=document.getElementById('signin')
+    
+            signin.addEventListener('submit',(e)=>{
+                e.preventDefault();
+                let emailAddress=document.querySelectorAll('[name="email"]')[0]
+                let password=document.querySelectorAll('[name="password"]')[0]
+        
+                axios({
+                method: 'put',
+                url: '/',
+                data: {
+                    emailAddress:emailAddress.value,
+                    password:password.value
+                },
+                    validateStatus:()=>true
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            })
+        </script>
     </body>
 </html>

@@ -41,22 +41,23 @@ async function connect(){
 // TODO: equivalents to PUT and DELETE, alter and remove
 
 // PUSHes data to mongoDB
+// returns result of attempt.
 async function insert(db,database,collection,document){
     let dbo=db.db(database)
-    console.log(document)
     let result=await dbo.collection(collection).insertOne(document)
-    console.log(result)
     return result;
   }
   
   // GETS data from mongoDB
+  // returns results as an array.
   async function find(db,database,collection,criteria){
     let dbo=db.db(database)
     let result=await dbo.collection(collection).find(criteria).toArray()
     return result;
   }
 
-  // PUT data
+  // PUT data in database via an Update.
+  // Returns result of attempt to update.
   async function update(db, database, collection, documentID, document){
     let dbo=db.db(database)
     let result=await dbo.collection(collection).updateOne({_id:documentID},{$set:document})
@@ -88,8 +89,53 @@ app.route('/')
 	  res.send('Got a POST request')
 	})
     // maybe for authentication?
-	.put((req, res) => {
-	  res.send('Got a PUT request')
+	.put(async(req, res) => {
+	  res.send('Got a PUT request for /')
+        let email = req.body.emailAddress
+        let password = req.body.password
+        let ownerID = req.body.userID
+        let mdbUserID = new ObjectId(ownerID);
+
+
+        let result=await find(db,'Pet-Website-Project','Users','{email:req.body.email},{_id:1,emailAddress:1,password:1}',function(err, result){
+            console.log(result)
+            if (err) throw err
+            if(result.length==0) res.status(406).json({message:'User is not registered'})
+            else{
+                if(result[0].password!=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')) return res.status(406).json({message:'Wrong password'})
+                else{
+                    userId=result[0]._id.toString().replace('New ObjectId("','').replace('")','')
+                    console.log(userId)
+                    // creating a token
+                    let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
+
+                    let loginResult = update(db,'Pet-Website-Project','Users',{_id:mdbUserID},{$set:{jwt:token}},function(err,result){
+                        if (err) throw err
+                        res.status(200).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated'})
+                    })
+                }
+            }
+        })
+        /*
+            database.collection('users').find({email:req.body.email},{_id:1,email:1,password:1}).toArray(function(err, result){
+		console.log(result)
+		if (err) throw err
+		if(result.length==0) res.status(406).json({message:'User is not registered'})
+		else{
+			if(result[0].password!=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')) return res.status(406).json({message:'Wrong password'})
+			else{
+				userId=result[0]._id.toString().replace('New ObjectId("','').replace('")','')
+				console.log(userId)
+				// creating a token
+				let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
+				database.collection('users').updateOne({_id:ObjectId(userId)},{$set:{jwt:token}},function(err,result){
+					if (err) throw err
+					res.status(200).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated'})
+				})
+			}
+		}
+	})
+        */
 	})
 	.patch((req, res) => {
 	  res.send('Got a PATCH request')
@@ -110,6 +156,7 @@ app.route('/signUp')
 	.post(async(req, res) => {
         let email = req.body.emailAddress
 
+        // check if user exists.
         let result=await find(db,'Pet-Website-Project','Users',{emailAddress:email})
             console.log(result)
             // user already exists, display message.
