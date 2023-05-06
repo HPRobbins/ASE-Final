@@ -69,13 +69,6 @@ app.route('/')
 	.put((req, res) => {
 	  res.send('Got a PUT request')
 	})
-	.patch((req, res) => {
-	  res.send('Got a PATCH request')
-	})
-    // unneeded, can be removed/ignored
-	.delete((req, res) => {
-	  res.send('Got a DELETE request')
-	})
 
 app.route('/signUp')
     // return the signUp.html
@@ -84,21 +77,6 @@ app.route('/signUp')
       // console.log(req);
       res.render('pages/signUp')
 	})
-    // yes! Creating new user in database
-	.post((req, res) => {
-	  res.send('Got a POST request')
-	})
-	.put((req, res) => {
-	  res.send('Got a PUT request')
-	})
-	.patch((req, res) => {
-	  res.send('Got a PATCH request')
-	})
-    // unneeded, can be removed/ignored
-	.delete((req, res) => {
-	  res.send('Got a DELETE request')
-	})
-
 
 //------------------------USERS----------------------------------------
 //list of users
@@ -131,8 +109,6 @@ app.route('/signUp')
 
 // calls the userDetail page
     app.route('/userDetail/:userID')
-    // get details of user & the userDetail page
-    // also returns all pets owned by user.
     .get(async function(req, res){
         // res.send('Got a GET request')
         let ownerID = req.params.userID
@@ -207,7 +183,7 @@ app.route('/signUp')
             user:user
         });
     })
-    .post(async (req, res) => {
+    .post(async function(req, res){
         // using post becaue PUT doesn't work for the form.
         res.send('Got a POST request in user/edit/:userID')
         //console.log(req.body.emailAddress)
@@ -223,7 +199,7 @@ app.route('/signUp')
             console.log(err)
         })
 
-        res.render()
+        res.render('pages/users')
     })
     .put(async function(req, res){
         let ownerID = req.params.userID
@@ -293,7 +269,7 @@ app.route('/signUp')
             if (err) throw err
             console.log(err)
         })
-        res.render()
+        res.render('/petDetail/petID')
     })
     .put(async function(req, res){
         let petID = req.params.petID
@@ -319,7 +295,7 @@ app.route('/userDetail/addPet/:userID')
             user:user
         });
     })
-    .post(async (req, res) => {
+    .post(async function(req, res){
         res.send('Got a POST request in add pet')
         console.log(req.body)
         let ownerID = req.params.userID
@@ -375,7 +351,7 @@ app.route('/userDetail/addPet/:userID')
             });
 
         })
-        .post(async (req, res) => {
+        .post(async function(req, res){
             console.log(req.body)
             let ownerID = req.params.petID
 
@@ -406,11 +382,9 @@ app.route('/userDetail/addPet/:userID')
         });
     })
     .post(async function(req, res){
-        res.send('Got a POST request')
+    
         let medicineID = req.params.medID
         let mdbMedID = new ObjectId(medicineID);
-
-        console.log(req.body)
 
         var newValues=req.body
         
@@ -418,12 +392,11 @@ app.route('/userDetail/addPet/:userID')
             if (err) throw err
             console.log(err)
         })
-
         res.render()
     })
-    .put((req, res) => {
+    .put(async function(req, res){
         let medID = req.params.medID
-        let mddmedID = new ObjectId(medID);
+        let mdbmedID = new ObjectId(medID);
         
         console.log("in med/edit put")
         console.log(res.body);
