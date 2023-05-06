@@ -23,11 +23,11 @@
         </div>
         <div class="form-group">
             <label for="medicationName" style="color: #FFCD95;">Medication Name</label>
-            <input type="text" class="form-control" id="medicationNameInput" name="medicationName" aria-describedby="medicationName" placeholder="Name" value="<%= med.name %>">
+            <input type="text" class="form-control" id="medicationNameInput" name="medicationName" aria-describedby="medicationName" placeholder="Name" value="<%= med.medicationName %>">
         </div>
         <div class="form-group">
             <label for="medType" style="color: #FFCD95;">Medication Type</label>
-            <input type="text" class="form-control" id="medTypeInput" name="medType" aria-describedby="medType" placeholder="Type" value="<%= med.type %>">
+            <input type="text" class="form-control" id="medTypeInput" name="medType" aria-describedby="medType" placeholder="Type" value="<%= med.medType %>">
         </div>
         <div class="form-group">
             <label for="dosage" style="color: #FFCD95;">Dosage</label>
@@ -58,6 +58,7 @@
 			let medicationName=document.querySelectorAll('[name="medicationName"]')[0]
 			let medType=document.querySelectorAll('[name="medType"]')[0]
 			let dosage=document.querySelectorAll('[name="dosage"]')[0]
+            let numberOfDailyDoses=document.querySelectorAll('[name="numberOfDailyDoses"]')[0]
             let medNotes=document.querySelectorAll('[name="medNotes"]')[0]
             let medImage=document.querySelectorAll('[name="medImage"]')[0]
 			let urlportion=medID.value
@@ -71,6 +72,7 @@
 				medicationName:medicationName.value,
 				medType:medType.value,
                 dosage:dosage.value,
+                numberOfDailyDoses:numberOfDailyDoses.value,
                 medNotes:medNotes.value,
                 medImage:medImage.value
 			}/*,
