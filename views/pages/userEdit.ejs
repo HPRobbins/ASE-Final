@@ -115,15 +115,16 @@
 				if(passwordConfirmValue === passwordValue){
 					
 					axios({
-					method: 'put',
-					url: '/user/edit/'+ urlportion,
-					data: {
-						userID:userID.value,
-						firstName:firstName.value,
-						lastName:lastName.value,
-						emailAddress:emailAddress.value,
-						password:password.value
-					}
+						method: 'put',
+						url: '/user/edit/'+ urlportion,
+						data: {
+							userID:userID.value,
+							firstName:firstName.value,
+							lastName:lastName.value,
+							emailAddress:emailAddress.value,
+							password:password.value
+						},
+						validateStatus:()=>true
 					})
 					.then(function (response) {
 						alert("Edit successful! Your password has been updated. Please return to User Detail.")

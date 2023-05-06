@@ -21,7 +21,9 @@ var database='Pet-Website-Project'
 
 const bcrypt=require('bcrypt')
 
-const jwt=require('jsonwebtoken')
+const jwt=require('jsonwebtoken');
+const { errorMonitor } = require('events');
+const { strict } = require('assert');
 const jwt_expiration=86400000
 const jwtsalt='privatekey'
 
@@ -48,7 +50,6 @@ async function insert(db,database,collection,document){
     return result;
 }
   
-
 // GETS data from mongoDB
 // returns results as an array.
 async function find(db,database,collection,criteria){
@@ -114,7 +115,6 @@ app.route('/')
         if(result.length>0){
             // if password is wrong, send message.
             if(result[0].password!=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')){
-                console.log("Bad Password.")
                 res.status(406).json({message:'Wrong password'})
             }
             // if password is correct, handle token creation.
@@ -127,20 +127,23 @@ app.route('/')
                 let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
 
                 // puts jwt token in user's databse file.
-                let loginResult=await update(db,'Pet-Website-Project','Users',{_id:mdbUserID},{$set:{jwt:token}})
-                if(loginResult.length>0)
-                {
-                    // if update is complete, send this back.
-                    res.status(200).setHeader('Authorization', `Bearer ${token}`).json({message:'User authenticated'})
-                } 
+                let loginResult=await update(db,'Pet-Website-Project','Users',mdbUserID,{jwt:token},function(err,result){
+                    if (err) throw err
+                    return result
+                })
+                if(loginResult.length=1){
+                    //res.status(200).setHeader('Authorization',token).json({message:'User authenticated'})
+                    res.setHeader('Set-Cookie', [`Bearer=${token}`, 'language=javascript','httpOnly=true']).status(200).json({'message':"Logged in successfully!"})
+                }
+                else{
+                    res.status(406).json({message:'Login Failed'})
+                }
             }
         } 
         else{
             res.status(406).json({message:'User is not registered'})
-            console.log("User not found.")
         } 
         // TODO: Something with this? may not be needed. send response back.
-        console.log(res.statusCode)
 	})
 	.patch((req, res) => {
 	  res.send('Got a PATCH request')
@@ -166,8 +169,8 @@ app.route('/signUp')
             // user already exists, display message.
             if(result.length>0)
             {
-                res.status(406).json({message:'User already exists'})
-                res.redirect(406,'/')
+                res.status(406).json({message:'User already exists. Go to sign in page.'})
+                // res.redirect(406,'/')
                 // console.log('User exists.')
             }
             // user does not exist.
@@ -180,9 +183,8 @@ app.route('/signUp')
                     return newResult
                 })
                 // handle successful creation here.
-                res.status(201).json({message:'User created'})
-                res.redirect(201,'/')
-                // res.redirect('/')
+                res.status(201).json({message:'Success: User created!'})
+                //res.redirect(201,'/')
             }
 	})
 	.put((req, res) => {
@@ -284,8 +286,7 @@ app.route('/userDetail/:userID')
             });
         }
     })
-    // maybe for adding new animals?
-    // calls addPet.html if so.
+    // can be removed/ignored
     .post((req, res) => {
         res.send('Got a POST request')
     })
@@ -294,9 +295,11 @@ app.route('/userDetail/:userID')
     .put((req, res) => {
         res.send('Got a PUT request')
     })
+    // can be removed/ignored
     .patch((req, res) => {
         res.send('Got a PATCH request')
     })
+    // yes,will be used with error handling.
     .delete((req, res) => {
         res.send('Got a DELETE request from /users/:userID')
         // check that the user has no pets associated with them, if they do, deny the request or delete the pets too.
@@ -332,6 +335,7 @@ app.route('/user/edit/:userID')
         console.log("Insider user/edit/:userID .put")
         
         var newValues=req.body
+
         // Password does not need to be changed, update the rest.
         if(req.body.password == null)
         {
