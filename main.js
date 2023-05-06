@@ -335,7 +335,7 @@ app.route('/user/edit/:userID')
         
         var newValues=req.body
         console.log(req.body.password)
-        // no password to be changed, don't do anything.
+        // Password does not need to be changed, update the rest.
         if(req.body.password == null)
         {
             let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues,function(err,result){
