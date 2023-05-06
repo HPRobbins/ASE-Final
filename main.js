@@ -41,37 +41,36 @@ async function connect(){
 // TODO: equivalents to PUT and DELETE, alter and remove
 
 // PUSHes data to mongoDB
-// returns result of attempt.
+ // returns result of attempt.
 async function insert(db,database,collection,document){
     let dbo=db.db(database)
     let result=await dbo.collection(collection).insertOne(document)
     return result;
-  }
+}
   
-  // GETS data from mongoDB
-  // returns results as an array.
-  async function find(db,database,collection,criteria){
+// GETS data from mongoDB
+// returns results as an array.
+async function find(db,database,collection,criteria){
     let dbo=db.db(database)
     let result=await dbo.collection(collection).find(criteria).toArray()
     return result;
-  }
+}
 
   // GETS data from mongoDB
   // returns results as an array.
-  async function loginFind(db,database,collection,criteria,criteria2){
+async function loginFind(db,database,collection,criteria,criteria2){
     let dbo=db.db(database)
     let result=await dbo.collection(collection).find(criteria,criteria2).toArray()
     return result
-  }
+}
 
   // PUT data in database via an Update.
   // Returns result of attempt to update.
-  async function update(db, database, collection, documentID, document){
+async function update(db, database, collection, documentID, document){
     let dbo=db.db(database)
     let result=await dbo.collection(collection).updateOne({_id:documentID},{$set:document})
-    
     return result;
-  }-
+}-
 
   // checks the currently logged in user.
 async function checkUserAuth(token){
@@ -91,11 +90,11 @@ app.route('/')
 	.get(async function(req, res){
         res.render('pages/welcomePage')
 	})
-    // maybe for authentication?
+    // unneeded, can be removed/ignored
 	.post((req, res) => {
 	  res.send('Got a POST request')
 	})
-    // maybe for authentication?
+    // Yes for a uthentication
 	.put(async(req, res) => {
 	  // res.send('Got a PUT request for /')
         let email = req.body.emailAddress
@@ -200,34 +199,25 @@ app.route('/users/')
     // would return index.html and the list of users
 	.get(async function(req, res){
         let cookieCheck=req.cookies['jwt']
-        console.log('looking at cookiecheck')
-        console.log(cookieCheck)
-        let userID=await checkUserAuth(cookieCheck);
-
-	    if(userID!=null){
-            // everything in the Users collection is put into an array called result
-            let result=await find(db,'Pet-Website-Project','Users',{})
-          
-            if(result.length>0){
-                // rewrites result array to create userID field and add _id as a string.
-                result.forEach(user => {
-                    user['userID'] = user._id.toString();
-                })
-     
-                // passes the array to the index page to replace instances of 'users'
-                res.render('pages/index',{
-                    users:result
-                });
-            }
-            else{
-                res.status(404).json({message:"No users found in database."})
-            }
-	    }
-	    else{
-            res.status(406).json({message:"Incorrect authentication detected. Sign in and try again."})
-
-	    	res.render('/')
-	    }
+        // console.log('looking at cookiecheck')
+       // console.log(cookieCheck)
+        // everything in the Users collection is put into an array called result
+        let result=await find(db,'Pet-Website-Project','Users',{})
+      
+        if(result.length==0){
+              res.send("404: No users found in database.")
+        }
+        else{
+            // rewrites result array to create userID field and add _id as a string.
+            result.forEach(user => {
+               user['userID'] = user._id.toString();
+           })
+           
+            // passes the array to the index page to replace instances of 'users'
+            res.render('pages/index',{
+                users:result
+            });
+        }
 	})
     // possibly unneeded, can be ignored/removed.
 	.post((req, res) => {
@@ -372,16 +362,17 @@ app.route('/petDetail/:petID')
         pet=pet[0];
         // readd the string version ofthe _id
         pet.petID = animalID
+        console.log(pet.petDoB)
 
-        let date = pet.petDoB
-        pet.petDoB = date.toDateString()
-
-        let meds=await find(db,'Pet-Website-Project','MedLog',{petID:mdbPetID})
+        let meds=await find(db,'Pet-Website-Project','MedLog',{petID:animalID})
+        console.log('Looking at meds from database')
+        console.log(meds)
 
         // convert _ID to a string & add to animal array
-        meds.forEach(med => {
+       /* meds.forEach(med => {
             meds['medID'] = meds._id.toString();
         })
+        */
 
         // should petDetail be turned into a template? How do we integrate databse pull with that?
         res.render('pages/petDetail',{
