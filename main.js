@@ -318,6 +318,39 @@ app.route('/:petID/edit')
         res.send('Got a DELETE request')
     })
 
+    //add a pet
+    app.route('/userDetail/addPet/:userID')
+    .get(async function(req, res){
+        let ownerID = req.params.userID
+        let mdbUserID = new ObjectId(ownerID)
+        let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        // pull the user out of the array.
+        user=user[0];
+        user.userID = ownerID
+        console.log('in add pet get')
+
+        // send variables to the page to be used.
+        res.render('pages/addPet',{
+            user:user
+        });
+
+    })
+    .post(async (req, res) => {
+        res.send('Got a POST request in add pet')
+        console.log(req.body)
+        let ownerID = req.params.userID
+
+        var information=req.body
+        
+         let result=await insert(db,'Pet-Website-Project','Pets',information,function(err,result){
+            if (err) throw err
+            console.log(err)
+         })
+
+         console.log()
+    })
+
+
     // detail page of a medicine
 app.route('/users/:userID/pets/:petID/medlog/:medID')
     // call the medDetail page and fills in the information.
