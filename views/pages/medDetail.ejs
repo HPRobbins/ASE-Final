@@ -31,7 +31,8 @@
 	<h1><%= med.medName %></h1>
 
     <div id="buttons" class="col-12">
-        <a href="../petDetail/<%= med.petID %>">Back to Pet</a> | <a id="btn-edit" href="../med/edit/<%= med.medID %>">Edit Info</a> | <button type="button" id="btn-delete">Delete Info</button>
+        <button><a href="../petDetail/<%= med.petID %>">Back to Pet</a></button> | <button><a id="btn-edit" href="../med/edit/<%= med.medID %>">Edit Medication</a></button> |
+          <button type="button" id="btn-delete">Delete Info</button>
     </div>
     <div class="container" id="medInfo">
         <!--medication identity-->
@@ -39,7 +40,7 @@
             <div class="row" id="med-ident">
             <div class="col-md-6">
                 <!--med image uses a web address, have to copy from google to insert: "Copy image address"-->
-                <img src="<%= med.medImage %>" alt="Pet Image" class="img-fluid">
+                <img src="<%= med.medImage %>" alt="Medication Image" class="img-fluid">
             </div>
             <div class="col-md-6">
                 <h2><%= med.medicationName %></h2>

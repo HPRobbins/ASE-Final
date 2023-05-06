@@ -17,7 +17,7 @@ const uri = "mongodb+srv://appclient:LbSgYnUaMQ8jTACg@pet-website-project.ksy84i
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 ObjectID = require('mongodb').ObjectID
 var db=null
-
+var database='Pet-Website-Project'
 
 /* Middleware */
 app.use(express.static('views'))
@@ -33,7 +33,7 @@ async function connect(){
 // TODO: equivalents to PUT and DELETE, alter and remove
 
 // PUSHes data to mongoDB
-async function insert(db,database,collection,document){
+  async function insert(db,database,collection,document){
     let dbo=db.db(database)
     let result=await dbo.collection(collection).insertOne(document)
     // console.log(result)
@@ -263,7 +263,7 @@ async function insert(db,database,collection,document){
         })
 
 // edit page for pet
-    app.route('/:petID/edit/:petID')
+    app.route('/pet/edit/:petID')
         // calls the petEdit page for the specific pet.
         .get(async function(req, res){
             let petID = req.params.petID
@@ -371,7 +371,7 @@ async function insert(db,database,collection,document){
 
         // send variables to the page to be used.
         res.render('pages/addMedication',{
-            user:user
+            pet:pet
         });
 
     })
@@ -394,7 +394,18 @@ async function insert(db,database,collection,document){
     app.route('/med/edit/:medID')
         // call the medDetail page and fills in the information.
         .get(async function(req, res){
-            res.send('Got a GET request')
+            let medID = req.params.medID
+            // convert userID as string into ObjectID for search in MongoDB
+            let mdbMedID = new ObjectId(medID);
+            // returns the single user as part of an array
+            let med=await find(db,'Pet-Website-Project','MedLog',{_id:mdbMedID})
+            // pull the user out of the array.
+            med=med[0];
+            med.medID = medID
+            // send variables to the page to be used.
+            res.render('pages/medicationEdit',{
+                med:med
+            });
         })
         .post(async function(req, res){
             res.send('Got a POST request')
@@ -413,7 +424,11 @@ async function insert(db,database,collection,document){
             res.render()
         })
         .put((req, res) => {
-            res.send('Got a PUT request')
+            let medID = req.params.medID
+            let mddmedID = new ObjectId(medID);
+            
+            console.log("in med/edit put")
+            console.log(res.body);
         })
 
 

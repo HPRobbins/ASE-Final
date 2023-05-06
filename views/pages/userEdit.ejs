@@ -8,66 +8,66 @@
    <%- include('../partials/header') %>
 </header>
 <body style="background-color: #FFF0DF;">
-<h1>User Edit</h1>
-<a href="/users/">Back to users index</a>
-<form id="editUser" enctype="multipart/formdata">
-	<div class="form-group">
-		<label for="userID" ></label>
-		<input type="text" class="form-control" id="userID" name="userID" value="<%= user.userID %>" disabled>
-	</div>
-	<div class="form-group">
-	  <label for="firstName">User's First Name:</label>
-	  <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="userFirstNameInput" value="<%= user.firstName %>">
-	</div>
-	<div class="form-group">
-		<label for="lastName">User's Last Name:</label>
-		<input type="text" class="form-control" id="lastName" name="lastName" value="<%= user.lastName %>">
-	  </div>
-	  <div class="form-group">
-		  <label for="emailAddress">Email:</label>
-		  <input type="text" class="form-control" id="emailAddress" name="email" value="<%= user.emailAddress %>">
-	</div>
+	<div class="container"><p><h1>User Edit</h1> <button><a href="/users/">Back to users index</a></button> <button><a href="/u">Back to users index</a></button></p>
 
-	<button type="submit" class="btn btn-primary" >Submit</button>
-  </form>
+	<form id="editUser" enctype="multipart/formdata">
+		<div class="form-group">
+			<label for="userID" >User ID:</label>
+			<input type="text" class="form-control" id="userID" name="userID" value="<%= user.userID %>" disabled>
+		</div>
+		<div class="form-group">
+		<label for="firstName">User's First Name:</label>
+		<input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="userFirstNameInput" value="<%= user.firstName %>">
+		</div>
+		<div class="form-group">
+			<label for="lastName">User's Last Name:</label>
+			<input type="text" class="form-control" id="lastName" name="lastName" value="<%= user.lastName %>">
+		</div>
+		<div class="form-group">
+			<label for="emailAddress">Email:</label>
+			<input type="text" class="form-control" id="emailAddress" name="email" value="<%= user.emailAddress %>">
+		</div>
 
-	<script src="/assets/getAllURLParams.js"></script>
-	<script src="/assets/cookies.js"></script>
+		<button type="submit" class="btn btn-primary" >Submit</button>
+	</form>
 
-	<script> 
-		// taken from code_12, 04, signup.html	
-		const editUser=document.getElementById('editUser')
+		<script src="/assets/getAllURLParams.js"></script>
+		<script src="/assets/cookies.js"></script>
 
-		editUser.addEventListener('submit',(e)=>{
-			e.preventDefault();
-			let userID=document.querySelectorAll('[name="userID"]')[0]
-			let emailAddress=document.querySelectorAll('[name="email"]')[0]
-			let firstName=document.querySelectorAll('[name="firstName"]')[0]
-			let lastName=document.querySelectorAll('[name="lastName"]')[0]
+		<script> 
+			// taken from code_12, 04, signup.html	
+			const editUser=document.getElementById('editUser')
 
-			let urlportion=userID.value
+			editUser.addEventListener('submit',(e)=>{
+				e.preventDefault();
+				let userID=document.querySelectorAll('[name="userID"]')[0]
+				let emailAddress=document.querySelectorAll('[name="email"]')[0]
+				let firstName=document.querySelectorAll('[name="firstName"]')[0]
+				let lastName=document.querySelectorAll('[name="lastName"]')[0]
 
-			//let password=document.querySelectorAll('[name="password"]')[0]
-			axios({
-			method: 'post',
-			url: '/user/edit/'+ urlportion,
-			data: {
-				userID:userID.value,
-				firstName:firstName.value,
-				lastName:lastName.value,
-				emailAddress:emailAddress.value
-			}/*,
-				validateStatus:()=>true*/
+				let urlportion=userID.value
+
+				//let password=document.querySelectorAll('[name="password"]')[0]
+				axios({
+				method: 'post',
+				url: '/user/edit/'+ urlportion,
+				data: {
+					userID:userID.value,
+					firstName:firstName.value,
+					lastName:lastName.value,
+					emailAddress:emailAddress.value
+				}/*,
+					validateStatus:()=>true*/
+				})
+				.then(function (response) {
+					console.log(response);
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
 			})
-			.then(function (response) {
-				console.log(response);
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
-		})
-	</script> 
-
+		</script> 
+	</div>
 </body>
 
 <footer>
