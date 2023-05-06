@@ -74,18 +74,9 @@ async function update(db, database, collection, documentID, document){
     return result;
 }
 
-// checks the currently logged in user.
-async function checkUser(token){
-    let dbo=db.db(database)
-	let result=await dbo.collection('users').find({jwt:token},{_id:1}).toArray();
-	console.log('in checkUser')
-	if(result.length>0){
-		let authcheck = result[0]._id.toString().replace('New ObjectId("','').replace('")','')
-		console.log('in checkUser if statement')
-		console.log(authcheck)
-		return authcheck
-	}
-	return null
+async function matchJWT(jwt1,jwt2){
+    let result = (jwt1 === jwt2)
+    return result
 }
 
 // for default page, should take user to welcomePage
@@ -133,7 +124,8 @@ app.route('/')
                 })
                 if(loginResult.length=1){
                     //res.status(200).setHeader('Authorization',token).json({message:'User authenticated'})
-                    res.setHeader('Set-Cookie', ['type=auth',`jwt=${token}`, `role=${result[0].role}`, 'httpOnly=true','path=/','Expires=Thu, 11 May 2023 07:28:00 GMT']).status(200).json({'message':"Logged in successfully!"})
+                    console.log(result[0].role)
+                    res.setHeader('Set-Cookie', ['type=auth','Authorization= ','Bearer= ',`jwt=${token}`, `role=${result[0].role}`, 'httpOnly=true','Expires=Thu, 11 May 2023 07:28:00 GMT']).status(200).json({'message':"Logged in successfully!"})
                 }
                 else{
                     res.status(406).json({message:'Login Failed'})
@@ -220,8 +212,12 @@ app.route('/signOut')
 app.route('/users/')
     // would return index.html and the list of users
 	.get(async function(req, res){
-        console.log("inside /users/")
-       console.log(req.cookies['Bearer'])
+        /* console.log("inside /users/")
+        console.log(req.cookies['Bearer'])
+        */
+       console.log("Cookies in /users/")
+       console.log(req.cookies)
+
         // everything in the Users collection is put into an array called result
         let result=await find(db,'Pet-Website-Project','Users',{})
       
@@ -261,31 +257,23 @@ app.route('/userDetail/:userID')
     // also returns all pets owned by user.
     .get(async function(req, res){
         let ownerID = req.params.userID
+        // convert userID as string into ObjectID for search in MongoDB
+        let mdbUserID = new ObjectId(ownerID)
+
         // get info from current user
-        let currentJWT=await checkUser(req.cookies['Bearer'])
-        let currentRole=await checkUser(req.cookies['role'])
+        let currentJWT=req.cookies.jwt
+        let currentRole=req.cookies.role
 
         // for enabling/disabling parts of page.
-        let ahrefPath = ""
+        let pathStatus = ""
         let buttonStatus = ""
 
         console.log('In user detail')
-        console.log(currentRole)
-        console.log(currentJWT)
-
-        if(currentJWT!=null)
-        {
-            console.log("user is authenticated.")
-        }
-        else{
-            console.log("user not authenticated")
-        }
-
-        // convert userID as string into ObjectID for search in MongoDB
-        let mdbUserID = new ObjectId(ownerID);
+        console.log('/////////////////')
 
         // Look for the user in the database.
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        console.log(user)
         
         // check that the user exists
         if(user.length==0)
@@ -296,17 +284,22 @@ app.route('/userDetail/:userID')
             // pull the user out of the array.
             user=user[0]
 
+            let jwtMatch = matchJWT(user.jwt,currentJWT)
+            console.log(jwtMatch)
             // Is current user this user or an admin?
-            if(currentJWT == user.jwt || currentRole == 'admin')
+            if(jwtMatch == true|| currentRole == 'admin')
             {
                 // set variables
                 buttonStatus = 'enabled'
-                
-
+                pathStatus = 'enabled'
             }
             else{
-
+                buttonStatus='disabled'
+                pathStatus='disabled'
             }
+            
+            console.log(buttonStatus)
+            console.log(pathStatus)
 
             // readd the string version ofthe _id
             user.userID = ownerID
