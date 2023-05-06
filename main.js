@@ -268,40 +268,40 @@ app.route('/signUp')
 
 // edit page for pet
     app.route('/pet/edit/:petID')
-    .get(async function(req, res){
-        let petID = req.params.petID
-        // convert userID as string into ObjectID for search in MongoDB
-        let mdbPetID = new ObjectId(petID);
-        // returns the single user as part of an array
-        let pet=await find(db,'Pet-Website-Project','Pets',{_id:mdbPetID})
-        // pull the user out of the array.
-        pet=pet[0];
-        pet.petID = petID
-        // send variables to the page to be used.
-        res.render('pages/petEdit',{
-            pet:pet
-        });
-    })
-    .post(async function(req, res){
-        // using post becaue PUT doesn't work for the form.
-        res.send('Got a POST request in pet/edit/:petID')
-        let petID = req.params.petID
-        let mdbPetID = new ObjectId(petID);
-        //console.log(req.body)
-        var newValues=req.body 
-        let result=await update(db,'Pet-Website-Project','Pets',mdbPetID,newValues,function(err,result){
-            if (err) throw err
-            console.log(err)
+        .get(async function(req, res){
+            let petID = req.params.petID
+            // convert userID as string into ObjectID for search in MongoDB
+            let mdbPetID = new ObjectId(petID);
+            // returns the single user as part of an array
+            let pet=await find(db,'Pet-Website-Project','Pets',{_id:mdbPetID})
+            // pull the user out of the array.
+            pet=pet[0];
+            pet.petID = petID
+            // send variables to the page to be used.
+            res.render('pages/petEdit',{
+                pet:pet
+            });
         })
-        res.render()
-    })
-    .put(async function(req, res){
-        let petID = req.params.petID
-        let mdbPetID = new ObjectId(petID);
-        
-        console.log("in pet/edit put")
-        console.log(res.body);
-    })
+        .post(async function(req, res){
+            // using post becaue PUT doesn't work for the form.
+            res.send('Got a POST request in pet/edit/:petID')
+            let petID = req.params.petID
+            let mdbPetID = new ObjectId(petID);
+            //console.log(req.body)
+            var newValues=req.body 
+            let result=await update(db,'Pet-Website-Project','Pets',mdbPetID,newValues,function(err,result){
+                if (err) throw err
+                console.log(err)
+            })
+            res.render('/petDetail/' +petID)
+        })
+        .put(async function(req, res){
+            let petID = req.params.petID
+            let mdbPetID = new ObjectId(petID);
+            
+            console.log("in pet/edit put")
+            console.log(res.body);
+        })
 
 //add a pet
 app.route('/userDetail/addPet/:userID')
