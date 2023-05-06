@@ -320,23 +320,26 @@ app.route('/:petID/edit')
 
 
     //add a pet
-    app.route('userDetail/addPet/:userID')
+    app.route('/userDetail/addPet/:userID')
     .get(async function(req, res){
         let ownerID = req.params.userID
         let mdbUserID = new ObjectId(ownerID)
-        //let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
         // pull the user out of the array.
-        //user=user[0];
-        //user.userID = ownerID
-console.log('in add pet get')
+        user=user[0];
+        user.userID = ownerID
+        console.log('in add pet get')
 
         // send variables to the page to be used.
-        res.render('pages/addPet');
+        res.render('pages/addPet',{
+            user:user
+        });
 
     })
     .post(async (req, res) => {
         // using post becaue PUT doesn't work for the form.
         res.send('Got a POST request in add pet')
+        console.log(req.body)
         //console.log(req.body.emailAddress)
         let ownerID = req.params.userID
         await insert(db,'Pet-Website-Project','Pets',ownerID)
@@ -349,8 +352,9 @@ console.log('in add pet get')
             console.log(err)
          })
 
-         res.render()
+         //res.render()
 
+         console.log()
     })
     .put(async function(req, res){
 
