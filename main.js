@@ -74,7 +74,7 @@ async function insert(db,database,collection,document){
   }-
 
   // checks the currently logged in user.
-async function checkUser(token){
+async function checkUserAuth(token){
 	let result=await database.collection('users').find({jwt:token},{_id:1}).toArray();
 	console.log('in checkUser')
 	if(result.length>0){
@@ -199,25 +199,35 @@ app.route('/signUp')
 app.route('/users/')
     // would return index.html and the list of users
 	.get(async function(req, res){
-        // everything in the Users collection is put into an array called result
-      let result=await find(db,'Pet-Website-Project','Users',{})
-      
-      if(result.length==0)
-      {
-        res.send("404: No users found in database.")
-      }
-      else{
-        // rewrites result array to create userID field and add _id as a string.
-         result.forEach(user => {
-             user['userID'] = user._id.toString();
-         })
- 
-         // passes the array to the index page to replace instances of 'users'
-       res.render('pages/index',{
-         users:result
-       });
+        let cookieCheck=req.cookies['jwt']
+        console.log('looking at cookiecheck')
+        console.log(cookieCheck)
+        let userID=await checkUserAuth(cookieCheck);
 
-      }
+	    if(userID!=null){
+            // everything in the Users collection is put into an array called result
+            let result=await find(db,'Pet-Website-Project','Users',{})
+          
+            if(result.length>0){
+                // rewrites result array to create userID field and add _id as a string.
+                result.forEach(user => {
+                    user['userID'] = user._id.toString();
+                })
+     
+                // passes the array to the index page to replace instances of 'users'
+                res.render('pages/index',{
+                    users:result
+                });
+            }
+            else{
+                res.status(404).json({message:"No users found in database."})
+            }
+	    }
+	    else{
+            res.status(406).json({message:"Incorrect authentication detected. Sign in and try again."})
+
+	    	res.render('/')
+	    }
 	})
     // possibly unneeded, can be ignored/removed.
 	.post((req, res) => {
