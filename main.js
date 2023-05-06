@@ -215,32 +215,35 @@ app.route('/user/edit/:userID')
        });
     })
     .post(async (req, res) => {
-        // using post becaue PUT doesn't work for the form.
         res.send('Got a POST request in user/edit/:userID')
-        console.log(req.body.emailAddress)
+    })
+    .put(async function(req, res){
+        // using post becaue PUT doesn't work for the form.
         let ownerID = req.params.userID
         let mdbUserID = new ObjectId(ownerID);
-
-        console.log(req.body)
 
         var newValues=req.body
         
-         let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues,function(err,result){
+        let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues,function(err,result){
             if (err) throw err
             console.log(err)
-         })
+            return result
+        })
 
-         res.render()
+        // update success!
+        if(result.modifiedCount == 1)
+        {
+            res.status(200).json({message:'User updated successfully.'})
 
+        }
+        // Update failed.
+        else
+        {
+            res.status(406).json({message:'User update unsuccessful.'})
+        }
 
-
-    })
-    .put(async function(req, res){
-        let ownerID = req.params.userID
-        let mdbUserID = new ObjectId(ownerID);
-        
-        console.log("in user/edit put")
-        console.log(res.body);
+         // TODO: Send user somewhere, tell user it succeeded, something.
+        // res.render()
     })
     .patch((req, res) => {
         res.send('Got a PATCH request')
@@ -265,16 +268,13 @@ app.route('/petDetail/:petID')
         // readd the string version ofthe _id
         pet.petID = animalID
 
-        let date = pet.petDoB
-        pet.petDoB = date.toDateString()
-
-        let meds=await find(db,'Pet-Website-Project','MedLog',{petID:mdbPetID})
+        let meds=await find(db,'Pet-Website-Project','MedLog',{petID:animalID})
 
         // convert _ID to a string & add to animal array
         meds.forEach(med => {
-            meds['medID'] = meds._id.toString();
+            med['medID'] = med._id.toString();
         })
-
+        
         // should petDetail be turned into a template? How do we integrate databse pull with that?
         res.render('pages/petDetail',{
             pet:pet,

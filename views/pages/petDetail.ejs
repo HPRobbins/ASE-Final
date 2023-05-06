@@ -56,23 +56,25 @@
         </div>
     </div>
         <!-- This will hold the pagination for the medication-->
-        <div id="medication-pages" class="row">
-            <% meds.forEach(function(med) { %>
-                `<div "col-sm-6">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                        <h5 class="card-title"><%= med.medicationName %></h5>
-                        <h6 class="card-subtitle mb-2 text-muted"><%= med.MedType %></h6>
-                        <p class="card-text">Dose Amount: <%=med.dosage %></p><p class="card-text">Timing: <% med.numberOfDailyDoses %></p>
-                        <p class="card-text">Notes: <%= med.medNotes %></p>
-                    
-                    </div>
+        <div style="padding: 20px;">
+            <div id="medDetail"class="container">
+                <div class="row">
+                    <% meds.forEach(function(med) { %>
+                        <div class="col-sm-4">
+                            <div class="card" style="width: 22rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= med.medicationName %></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted"><%= med.MedType %></h6>
+                                    <p class="card-text">Dose Amount: <%=med.dosage %></p>
+                                    <p class="card-text">Notes: <%= med.medNotes %></p>
+                                    <a href="../medDetail/<%= med.medID %>" class="btn btn-outline-dark">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
                 </div>
-            <% }); %>
+            </div>
         </div>
-    </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 <footer>
     <%- include('../partials/footer') %>
