@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<header>
+   <%- include('../partials/header') %>
+</header>
+<body style="background-color: #FFF0DF;">
+<h1>Add Pet</h1>
+<a href="/users/">Back to users index</a>
+<form id="addPet" enctype="multipart/formdata">
+	<div class="form-group">
+		<label for="petID" >Pet ID:</label>
+		<input type="text" class="form-control" id="petID" name="petID" value="<%= pet.petID %>" disabled>
+	</div>
+    <div class="form-group">
+		<label for="userID" >User ID:</label>
+		<input type="text" class="form-control" id="userID" name="userID" value="<%= user.userID %>" disabled>
+	</div>
+	<div class="form-group">
+		<label for="petName">Pet's Name:</label>
+		<input type="text" class="form-control" id="petName" name="petName" value="<%= pet.petName %>">
+	</div>
+	<div class="form-group">
+		  <label for="petType">Pet type:</label>
+		  <input type="text" class="form-control" id="petType" name="petType" value="<%= pet.petType %>">
+	</div>
+    <div class="form-group">
+		<label for="petSex">Pet's sex:</label>
+		<input type="text" class="form-control" id="petSex" name="petSex" value="<%= pet.petSex %>">
+	</div>
+    <div class="form-group">
+		<label for="petBreed">Pet's breed:</label>
+		<input type="text" class="form-control" id="petBreed" name="petBreed" value="<%= pet.petBreed %>">
+	</div>
+    <div class="form-group">
+		<label for="petWeight">Pet's weight:</label>
+		<input type="text" class="form-control" id="petWeight" name="petWeight" value="<%= pet.petWeight %>">
+	</div>
+    <div class="form-group">
+		<label for="petDoB">Pet's date of birth:</label>
+		<input type="text" class="form-control" id="petDoB" name="petDoB" value="<%= pet.petDoB %>">
+	</div>
+
+	<button type="submit" class="btn btn-primary" >Submit</button>
+  </form>
+
+	<script src="/assets/getAllURLParams.js"></script>
+	<script src="/assets/cookies.js"></script>
+
+	<script> 
+		// taken from code_12, 04, signup.html	
+		const addPet=document.getElementById('addPet')
+
+		addPet.addEventListener('submit',(e)=>{
+			e.preventDefault();
+			let petID=document.querySelectorAll('[name="petID"]')[0]
+            let userID=document.querySelectorAll('[name="userID"]')[0]
+			let petName=document.querySelectorAll('[name="petName"]')[0]
+			let petType=document.querySelectorAll('[name="petType"]')[0]
+            let petSex=document.querySelectorAll('[name="petSex"]')[0]
+            let petBreed=document.querySelectorAll('[name="petBreed"]')[0]
+            let petWeight=document.querySelectorAll('[name="petWeight"]')[0]
+            let petDoB=document.querySelectorAll('[name="petDob"]')[0]
+
+            let urlportion=userID.value
+			
+			axios({
+			method: 'post',
+			url: 'userDetail/addPet/' + urlportion,
+			data: {
+                petID:petID.value,
+				userID:userID.value,
+				petName:petName.value,
+				petType:petType.value,
+				petSex:petSex.value,
+                petBreed:petBreed.value,
+                petWeight:petWeight.value,
+                petDoB:petDoB.value
+			}
+			})
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		})
+	</script> 
+
+</body>
+
+<footer>
+    <%- include('../partials/footer') %>
+</footer>
+</html>

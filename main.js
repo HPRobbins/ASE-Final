@@ -318,6 +318,51 @@ app.route('/:petID/edit')
         res.send('Got a DELETE request')
     })
 
+
+    //add a pet
+    app.route('userDetail/addPet/:userID')
+    .get(async function(req, res){
+        let ownerID = req.params.userID
+        let mdbUserID = new ObjectId(ownerID)
+        //let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        // pull the user out of the array.
+        //user=user[0];
+        //user.userID = ownerID
+console.log('in add pet get')
+
+        // send variables to the page to be used.
+        res.render('pages/addPet');
+
+    })
+    .post(async (req, res) => {
+        // using post becaue PUT doesn't work for the form.
+        res.send('Got a POST request in add pet')
+        //console.log(req.body.emailAddress)
+        let ownerID = req.params.userID
+        await insert(db,'Pet-Website-Project','Pets',ownerID)
+        //console.log(req.body)
+
+        var information=req.body
+        
+         let result=await insert(db,'Pet-Website-Project','Pets',information,function(err,result){
+            if (err) throw err
+            console.log(err)
+         })
+
+         res.render()
+
+    })
+    .put(async function(req, res){
+
+    })
+    .patch(async function(req, res){
+
+    })
+    .delete(async function(req, res){
+
+    })
+
+
     // detail page of a medicine
 app.route('/users/:userID/pets/:petID/medlog/:medID')
     // call the medDetail page and fills in the information.
@@ -330,7 +375,7 @@ app.route('/users/:userID/pets/:petID/medlog/:medID')
         med=med[0];
         med.medID = medicineID;
 
-        let meds=await find(db,'Pet-Website-Project','Pets',{medID:medicineID})
+        let meds=await find(db,'Pet-Website-Project','Pets',{petID:mdbMedID})
 
         meds.forEach(individualMed => {
             individualMed['medID'] = med._id.toString();
