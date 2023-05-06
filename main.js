@@ -265,16 +265,13 @@ app.route('/petDetail/:petID')
         // readd the string version ofthe _id
         pet.petID = animalID
 
-        let date = pet.petDoB
-        pet.petDoB = date.toDateString()
-
-        let meds=await find(db,'Pet-Website-Project','MedLog',{petID:mdbPetID})
+        let meds=await find(db,'Pet-Website-Project','MedLog',{petID:animalID})
 
         // convert _ID to a string & add to animal array
         meds.forEach(med => {
-            meds['medID'] = meds._id.toString();
+            med['medID'] = med._id.toString();
         })
-
+        
         // should petDetail be turned into a template? How do we integrate databse pull with that?
         res.render('pages/petDetail',{
             pet:pet,
