@@ -92,14 +92,15 @@
                         if(response.status==200){
                             let responseData = response.data
                             alert('Success!'+' '+ responseData.message)
+                            console.log("Page receives cookies:")
                             console.log(document.cookie)
+                            window.location = "/users"
                         }
                         else if(response.status==404)
                         {
                             let responseData = response.data
-
                             alert(response.status+' '+ responseData.message)
-                            return
+                            window.location = "/signUp"
                         }
                         else if(response.status==406){
                             let responseData = response.data

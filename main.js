@@ -105,7 +105,7 @@ app.route('/')
         // if the user exists do stuff.
         if(result.length>0){
             // if password is wrong, send message.
-            if(result[0].password!=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'') || result[0].password == undefined){
+            if(result[0].password!=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')){
                 res.status(406).json({message:'Wrong username or password'})
             }
             // if password is correct, handle token creation.
@@ -162,6 +162,7 @@ app.route('/')
 	  res.send('Got a DELETE request')
 	})
 
+    /*
 app.route('/signUp')
     // return the signUp.html
 	.get(async function(req, res) {
@@ -206,13 +207,17 @@ app.route('/signUp')
 	.delete((req, res) => {
 	  res.send('Got a DELETE request')
 	})
+    */
     
 app.route('/signOut')
     .get(async (req, res) => {
-        let result=await update(db,'Pet-Website-Project','Users',mdbUserID,{jwt:token},function(err,result){
-            if (err) throw err
-        })
-        res.clearCookie('AuthCookie',['type=AuthCookie',`jwt=${token}`, `role=${result[0].role}`, 'path=/', 'httpOnly=true'])
+        res.clearCookie('AuthCookie')
+        .clearCookie('RoleCookie')
+        .clearCookie('mdbIDCookie')
+        .status(200)
+        .json({'message':"Log out complete, cookies cleard!"})
+        console.log("Cookies cleared?")
+        console.log(req.cookies)
     })
     .post((req, res) => {
         res.send('Got a POST request')
@@ -283,6 +288,8 @@ app.route('/userDetail/:userID')
 
        cookiePlate = req.cookies
 
+       console.log(cookiePlate)
+
         // get info from current user
         let currentJWT=cookiePlate.AuthCookie
         let currentRole=cookiePlate.RoleCookie
@@ -306,7 +313,7 @@ app.route('/userDetail/:userID')
             let jwtMatch = matchJWT(user.jwt,currentJWT)
             // console.log(jwtMatch)
             // Is current user this user or an admin?
-            if(jwtMatch == true|| currentRole == 'admin')
+            if(jwtMatch == true || currentRole == 'admin')
             {
                 // set variables
                 buttonStatus = ' '
