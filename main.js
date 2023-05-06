@@ -48,6 +48,7 @@ async function insert(db,database,collection,document){
     return result;
 }
   
+
 // GETS data from mongoDB
 // returns results as an array.
 async function find(db,database,collection,criteria){
@@ -70,15 +71,17 @@ async function update(db, database, collection, documentID, document){
     let dbo=db.db(database)
     let result=await dbo.collection(collection).updateOne({_id:documentID},{$set:document})
     return result;
-}-
+}
 
-  // checks the currently logged in user.
-async function checkUserAuth(token){
-	let result=await database.collection('users').find({jwt:token},{_id:1}).toArray();
+// checks the currently logged in user.
+async function checkUser(token){
+    let dbo=db.db(database)
+	let result=await dbo.collection('users').find({jwt:token},{_id:1}).toArray();
 	console.log('in checkUser')
 	if(result.length>0){
 		let authcheck = result[0]._id.toString().replace('New ObjectId("','').replace('")','')
 		console.log('in checkUser if statement')
+		console.log(authcheck)
 		return authcheck
 	}
 	return null
@@ -164,22 +167,23 @@ app.route('/signUp')
             if(result.length>0)
             {
                 res.status(406).json({message:'User already exists'})
+                res.redirect(406,'/')
                 // console.log('User exists.')
             }
             // user does not exist.
             else
             {
-                console.log("inserting into database")
                 req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')
                 let newResult=insert(db,'Pet-Website-Project','Users',req.body,function(err,result){
                     if (err) throw err
                     console.log(err)
-                    res.status(201).json({message:'User created'})
+                    //res.status(201).json({message:'User created'})
+                    res.redirect(201,'/')
                     return newResult
                 })
             }
             // TODO: send user to userDetail/:userID
-            // res.send()
+            res.redirect('/')
     
 	})
 	.put((req, res) => {
@@ -200,7 +204,7 @@ app.route('/users/')
         console.log("inside /users/")
         let cookieCheck=req.cookies['jwt']
         // console.log('looking at cookiecheck')
-       console.log(cookieCheck)
+       console.log(req.cookies['jwt'])
         // everything in the Users collection is put into an array called result
         let result=await find(db,'Pet-Website-Project','Users',{})
       
@@ -241,6 +245,16 @@ app.route('/userDetail/:userID')
     .get(async function(req, res){
         // res.send('Got a GET request')
         let ownerID = req.params.userID
+        
+        let userID=await checkUser(req.cookies['jwt'])
+        console.log(req.cookies['jwt'])
+        if(userID!=null)
+        {
+            console.log("user is authenticated.")
+        }
+        else{
+            console.log("user not authenticated")
+        }
 
         // convert userID as string into ObjectID for search in MongoDB
         let mdbUserID = new ObjectId(ownerID);
@@ -316,29 +330,48 @@ app.route('/user/edit/:userID')
         // using post becaue PUT doesn't work for the form.
         let ownerID = req.params.userID
         let mdbUserID = new ObjectId(ownerID);
-
-        var newValues=req.body
+        console.log("Insider user/edit/:userID .put")
+        console.log(req.body)
         
-        let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues,function(err,result){
-            if (err) throw err
-            console.log(err)
-            return result
-        })
-
-        // update success!
-        if(result.modifiedCount == 1)
+        var newValues=req.body
+        console.log(req.body.password)
+        // no password to be changed, don't do anything.
+        if(req.body.password == null)
         {
-            res.status(200).json({message:'User updated successfully.'})
-
+            let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues,function(err,result){
+                if (err) throw err
+                return result
+            })
+            
+            if(result.modifiedCount == 1)
+            {
+                res.status(200).json({message:'Success: User updated successfully.'})
+            }
+            // Update failed.
+            else
+            {
+                res.status(406).json({message:'Failed: User was not updated.'})
+            }
         }
-        // Update failed.
-        else
-        {
-            res.status(406).json({message:'User update unsuccessful.'})
+        // password needs to be changed.
+        else{
+             // password salting.
+            req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')
+            let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues,function(err,result){
+                if (err) throw err
+                return result
+            })
+            // update success!
+            if(result.modifiedCount == 1)
+            {
+                res.status(200).json({message:'Success: User updated successfully.'})
+            }
+            // Update failed.
+            else
+            {
+                res.status(406).json({message:'Failed: User was not updated.'})
+            }
         }
-
-         // TODO: Send user somewhere, tell user it succeeded, something.
-        // res.render()
     })
     .patch((req, res) => {
         res.send('Got a PATCH request')
