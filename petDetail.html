@@ -16,16 +16,21 @@
         #card{
             border-radius: 25px;
             border: 2px solid #a6763f;
-            padding: 20px; 
+            padding: 20px;
             width: 200px;
             height: 150px;
         }
     </style>
 </head>
-<body style="background-color:#FFF0DF">
-    <h1>Pet Detail</h1>
-    <!-- TODO: fix back to user link-->
-    <a href="index.html">Back to index</a> | <a href="userDetail.html">Back to User</a> |  <a id="btn-edit" href="">Edit pet</a> | <button type="button" id="btn-delete">Delete pet</button>
+<body style="background-color: #FFB488;">
+
+
+    <h1 style="padding: 20px; color: white;">User Detail</h1>
+    <div class="container"></div>
+           <a href="index.html" class="btn btn-light btn-outline-dark">Home</a> | <a id="btn-edit" href="userEdit.html" class="btn btn-light btn-outline-dark">Edit User</a> | <button onclick="window.location.href='addPet.html';" type="button" id="btn-add" class="btn btn-light btn-outline-dark">Add Pet</button> | <button type="button" id="btn-delete" class="btn btn-light btn-outline-dark">Delete User</button>
+
+         </div>
+
     <div id="loading">Loading Pet...</div>
 
     <!--This will hold the photo-->

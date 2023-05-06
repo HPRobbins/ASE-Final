@@ -2,60 +2,53 @@
 <html>
 <head>
 	<style>
-        body{
-	        background-color:#FFF0DF;
-	        margin:20px;
-        }
         div .row{
             border-radius: 25px;
-            border: 2px solid #a6763f;
-            padding: 20px; 
+            border: 2px solid white;
+            padding: 20px;
             width: 200px;
 			margin: 10px;
         }
     </style>
 </head>
-<body>
-<h1>Pet Edit</h1>
-<ul class="nav">
-	<li class="nav-item"><a href="index.html">Back to index</a></li>
-</ul>
-<div id="loading">Loading pet...</div>
+<body style="background-color: #FFB488">
+<h1 style="color: white">Pet Edit</h1>
+
 <form>
 	<div class="container">
 		<div class="row">
 			<div class="form-group">
-			<div class="col col-lg-2"><label for="petName">Pet's Name:</label></div>
+			<div class="col col-lg-2"><label for="petName" style="color: white; font-size: 20px">Pet's Name:</label></div>
 			<div class="col col-lg-2"><input type="text" class="form-control" id="petNameInput" name="petName" aria-describedby="petName" placeholder="Enter Name"></div>
 			</div>
 			<div class="form-group">
-				<div class="col col-lg-2"><label for="userID">Owner ID:</label></div>
+				<div class="col col-lg-2"><label for="userID" style="color: white; font-size: 20px">Owner ID:</label></div>
 				<div class="col col-lg-2"><input type="text" class="form-control" id="userIDInput" name="userID" placeholder="Enter Owner Id"></div>
 			</div>
 			<div class="form-group">
-				<div class="col col-lg-2"><label for="petType">Pet Type:</label></div>
+				<div class="col col-lg-2"><label for="petType" style="color: white; font-size: 20px">Pet Type:</label></div>
 				<div class="col col-lg-2"><input type="text" class="form-control" id="petTypeInput" name="petTye" placeholder="Enter Pet Species"></div>
 			</div>
 			<div class="form-group">
-				<div class="col col-lg-2"><label for="petBreed">Pet Breed:</label></div>
+				<div class="col col-lg-2"><label for="petBreed" style="color: white; font-size: 20px">Pet Breed:</label></div>
 				<div class="col col-lg-2"><input type="text" class="form-control" id="petBreedInput" name="petBreed" placeholder="Enter Pet Breed"></div>
 			</div>
 			<div class="form-group">
-				<div class="col col-lg-2"><label for="petSex">Pet Gender:</label></div>
+				<div class="col col-lg-2"><label for="petSex" style="color: white; font-size: 20px">Pet Gender:</label></div>
 				<div class="col col-lg-2"><input type="text" class="form-control" id="petSexInput" name="petSex" placeholder="Enter Pet Gender"></div>
 			</div>
 			<div class="form-group">
-				<div class="col col-lg-2"><label for="petDoB">Pet Age:</label></div>
+				<div class="col col-lg-2"><label for="petDoB" style="color: white; font-size: 20px">Pet Age:</label></div>
 				<div class="col col-lg-2"><input type="text" class="form-control" id="petDoBInput" name="petDoB" placeholder="Enter Pet DoB in mm/dd/yyyy format"></div>
 			</div>
 			<div class="form-group">
-				<div class="col col-lg-2"><label for="petWeight">Pet Weight:</label></div>
+				<div class="col col-lg-2"><label for="petWeight" style="color: white; font-size: 20px">Pet Weight:</label></div>
 				<div class="col col-lg-2"><input type="text" class="form-control" id="petWeightInput" name="petWeight" placeholder="Enter Pet Weight"></div>
 			</div>
-		</div>	
+		</div>
 	</div>
 
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="submit" class="btn btn-light btn-outline-dark">Submit</button>
   </form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
