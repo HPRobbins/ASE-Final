@@ -177,14 +177,13 @@ app.route('/signUp')
                 let newResult=insert(db,'Pet-Website-Project','Users',req.body,function(err,result){
                     if (err) throw err
                     console.log(err)
-                    //res.status(201).json({message:'User created'})
-                    res.redirect(201,'/')
                     return newResult
                 })
+                // handle successful creation here.
+                res.status(201).json({message:'User created'})
+                res.redirect(201,'/')
+                // res.redirect('/')
             }
-            // TODO: send user to userDetail/:userID
-            res.redirect('/')
-    
 	})
 	.put((req, res) => {
 	  res.send('Got a PUT request')
@@ -331,10 +330,8 @@ app.route('/user/edit/:userID')
         let ownerID = req.params.userID
         let mdbUserID = new ObjectId(ownerID);
         console.log("Insider user/edit/:userID .put")
-        console.log(req.body)
         
         var newValues=req.body
-        console.log(req.body.password)
         // Password does not need to be changed, update the rest.
         if(req.body.password == null)
         {
