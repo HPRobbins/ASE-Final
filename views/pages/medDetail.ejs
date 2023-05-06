@@ -31,7 +31,7 @@
 	<h1><%= med.medName %></h1>
 
     <div id="buttons" class="col-12">
-        <a href="petDetail.html?petID=${pet.petID}">Back to Pet</a> | <a id="btn-edit" href="MedicationEdit.html?${med.medicationID}">Edit Info</a> | <button type="button" id="btn-delete">Delete Info</button>
+        <a href="../petDetail/<%= med.petID %>">Back to Pet</a> | <a id="btn-edit" href="../med/edit/<%= med.medID %>">Edit Info</a> | <button type="button" id="btn-delete">Delete Info</button>
     </div>
     <div class="container" id="medInfo">
         <!--medication identity-->
