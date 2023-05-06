@@ -8,38 +8,38 @@
    <%- include('../partials/header') %>
 </header>
 <body style="background-color: #FFF0DF;">
-<h1>Add Pet</h1>
-<a href="/users/">Back to users index</a>
-<form id="addMedication" enctype="multipart/formdata">
-    <div class="form-group">
-		<label for="petID" >Pet ID:</label>
-		<input type="text" class="form-control" id="petID" name="petID" value="<%= med.petID %>" disabled>
-	</div>
-	<div class="form-group">
-		<label for="medicationName">Medication Name:</label>
-		<input type="text" class="form-control" id="medicationName" name="medicationName">
-	</div>
-	<div class="form-group">
-		  <label for="medType">Med type:</label>
-		  <input type="text" class="form-control" id="medType" name="medType">
-	</div>
-    <div class="form-group">
-		<label for="dosage">Dosage:</label>
-		<input type="text" class="form-control" id="dosage" name="dosage">
-	</div>
-    <div class="form-group">
-		<label for="numberOfDailyDoses">Number of daily doses:</label>
-		<input type="text" class="form-control" id="numberOfDailyDoses" name="numberOfDailyDoses">
-	</div>
-    <div class="form-group">
-		<label for="medNotes">Notes:</label>
-		<input type="text" class="form-control" id="medNotes" name="medNotes">
-	</div>
+	<div class ="container">
+		<p><h1>Add Medication</h1> <button><a href="/users/">Back to users index</a></button></p>
+	<form id="addMedication" enctype="multipart/formdata">
+		<div class="form-group">
+			<label for="petID" >Pet ID:</label>
+			<input type="text" class="form-control" id="petID" name="petID" value="<%= med.petID %>" disabled>
+		</div>
+		<div class="form-group">
+			<label for="medicationName">Medication Name:</label>
+			<input type="text" class="form-control" id="medicationName" name="medicationName">
+		</div>
+		<div class="form-group">
+			<label for="medType">Med type:</label>
+			<input type="text" class="form-control" id="medType" name="medType">
+		</div>
+		<div class="form-group">
+			<label for="dosage">Dosage:</label>
+			<input type="text" class="form-control" id="dosage" name="dosage">
+		</div>
+		<div class="form-group">
+			<label for="numberOfDailyDoses">Number of daily doses:</label>
+			<input type="text" class="form-control" id="numberOfDailyDoses" name="numberOfDailyDoses">
+		</div>
+		<div class="form-group">
+			<label for="medNotes">Notes:</label>
+			<input type="text" class="form-control" id="medNotes" name="medNotes">
+		</div>
 
-	<button type="submit" class="btn btn-primary" >Submit</button>
-  </form>
+		<button type="submit" class="btn btn-primary" >Submit</button>
+	</form>
 
-  <script src="/assets/getAllURLParams.js"></script>
+	<script src="/assets/getAllURLParams.js"></script>
 
     <script src="/assets/cookies.js"></script>
 

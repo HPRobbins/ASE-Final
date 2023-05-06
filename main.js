@@ -347,8 +347,7 @@ app.route('/:petID/edit')
             if (err) throw err
             console.log(err)
          })
-
-         console.log()
+         res.render('pages/success')
     })
 
 
