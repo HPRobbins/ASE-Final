@@ -39,13 +39,14 @@
         </div>
         <div class="form-group">
             <label for="medNotes" style="color: #FFCD95;">Medication Notes</label>
-            <input type="text" class="form-control" id="medNotesInput" name="medNotes" aria-describedby="medNotes" placeholder="Notes" value="<%= med.notes %>">
+            <input type="text" class="form-control" id="medNotesInput" name="medNotes" aria-describedby="medNotes" placeholder="Notes" value="<%= med.medNotes %>">
         </div>
         <div class="form-group">
             <label for="medImage" style="color: #FFCD95;">Medication Image</label>
             <input type="text" class="form-control" id="medImageInput" name="medImage" aria-describedby="medImage" placeholder="medImage" value="<%= med.medImage %>">
         </div>
-        <button class="btn btn-dark" type="submit">Submit</button>
+       
+		<button type="submit" class="btn btn-primary" >Submit</button>
     </form>
 
     <script> 
@@ -53,7 +54,7 @@
 		const editMed=document.getElementById('editMed')
 		editMed.addEventListener('submit',(e)=>{
 			e.preventDefault();
-			let medID=document.querySelectorAll('[name="medID"]')[0]
+			let medID=document.querySelectorAll('[name="medicationID"]')[0]
             let petID=document.querySelectorAll('[name="petID"]')[0]
 			let medicationName=document.querySelectorAll('[name="medicationName"]')[0]
 			let medType=document.querySelectorAll('[name="medType"]')[0]

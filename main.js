@@ -406,11 +406,9 @@ app.route('/userDetail/addPet/:userID')
         });
     })
     .post(async function(req, res){
-        res.send('Got a POST request')
+
         let medicineID = req.params.medID
         let mdbMedID = new ObjectId(medicineID);
-
-        console.log(req.body)
 
         var newValues=req.body
         
@@ -418,16 +416,16 @@ app.route('/userDetail/addPet/:userID')
             if (err) throw err
             console.log(err)
         })
-
-        res.render()
+        //res.render()
     })
-    .put((req, res) => {
+    .put(async function(req, res){
         let medID = req.params.medID
-        let mddmedID = new ObjectId(medID);
+        let mdbmedID = new ObjectId(medID);
         
         console.log("in med/edit put")
         console.log(res.body);
     })
+
 
 
 // actually starts the connection and waits for connection.
