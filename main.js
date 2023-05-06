@@ -106,7 +106,7 @@ app.route('/')
         // create first criteria
         let criteria={emailAddress:email}
         // create second criteria
-        let criteria2={_id:1,emailAddress:1,password:1}
+        let criteria2={_id:1,emailAddress:1,password:1,role:1}
 
         // using a specially crafted Find.
         let result=await loginFind(db,'Pet-Website-Project','Users',criteria,criteria2)
@@ -133,7 +133,7 @@ app.route('/')
                 })
                 if(loginResult.length=1){
                     //res.status(200).setHeader('Authorization',token).json({message:'User authenticated'})
-                    res.setHeader('Set-Cookie', [`Bearer=${token}`, 'language=javascript','httpOnly=true']).status(200).json({'message':"Logged in successfully!"})
+                    res.setHeader('Set-Cookie', ['type=auth',`jwt=${token}`, `role=${result[0].role}`, 'httpOnly=true','path=/','Expires=Thu, 11 May 2023 07:28:00 GMT']).status(200).json({'message':"Logged in successfully!"})
                 }
                 else{
                     res.status(406).json({message:'Login Failed'})
@@ -197,15 +197,31 @@ app.route('/signUp')
 	.delete((req, res) => {
 	  res.send('Got a DELETE request')
 	})
+    
+app.route('/signOut')
+    .get((req, res) => {
+        res.send('Got a GET request')
+    })
+    .post((req, res) => {
+        res.send('Got a POST request')
+    })
+    .put((req, res) => {
+        res.send('Got a PUT request')
+    })
+    .patch((req, res) => {
+        res.send('Got a PATCH request')
+    })
+    .delete((req, res) => {
+        res.send('Got a DELETE request')
+    })
+
 
     // If we are keeping index.html, keep this.
 app.route('/users/')
     // would return index.html and the list of users
 	.get(async function(req, res){
         console.log("inside /users/")
-        let cookieCheck=req.cookies['jwt']
-        // console.log('looking at cookiecheck')
-       console.log(req.cookies['jwt'])
+       console.log(req.cookies['Bearer'])
         // everything in the Users collection is put into an array called result
         let result=await find(db,'Pet-Website-Project','Users',{})
       
@@ -244,12 +260,20 @@ app.route('/userDetail/:userID')
     // get details of user & the userDetail page
     // also returns all pets owned by user.
     .get(async function(req, res){
-        // res.send('Got a GET request')
         let ownerID = req.params.userID
-        
-        let userID=await checkUser(req.cookies['jwt'])
-        console.log(req.cookies['jwt'])
-        if(userID!=null)
+        // get info from current user
+        let currentJWT=await checkUser(req.cookies['Bearer'])
+        let currentRole=await checkUser(req.cookies['role'])
+
+        // for enabling/disabling parts of page.
+        let ahrefPath = ""
+        let buttonStatus = ""
+
+        console.log('In user detail')
+        console.log(currentRole)
+        console.log(currentJWT)
+
+        if(currentJWT!=null)
         {
             console.log("user is authenticated.")
         }
@@ -259,16 +283,31 @@ app.route('/userDetail/:userID')
 
         // convert userID as string into ObjectID for search in MongoDB
         let mdbUserID = new ObjectId(ownerID);
-        // returns the single user as part of an array
+
+        // Look for the user in the database.
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        
         // check that the user exists
         if(user.length==0)
         {
-            res.send("404: Target not found.")
+            res.status(404).json({message:'User not found. Return to user index and try again.'})
         }
         else{
             // pull the user out of the array.
-            user=user[0];
+            user=user[0]
+
+            // Is current user this user or an admin?
+            if(currentJWT == user.jwt || currentRole == 'admin')
+            {
+                // set variables
+                buttonStatus = 'enabled'
+                
+
+            }
+            else{
+
+            }
+
             // readd the string version ofthe _id
             user.userID = ownerID
 

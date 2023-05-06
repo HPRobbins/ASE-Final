@@ -11,7 +11,7 @@
 <body>
     <h1 style="padding: 20px; background-color: #FFCD95;"><%= user.firstName %> <%= user.lastName %></h1>
     <div class="container"></div>
-            <a href="/users/">Back to users index</a> | <a id="btn-edit" href="../user/edit/<%= user.userID %>">Edit User</a> | <a id="btn-add" href="../userDetail/<%= user.userID %>/addPet">Add Pet</a> | <form method=".delete" action="../userDetail/<%= user.userID %>?_method=DELETE"><button type="submit">Delete</button></form>
+            <a href="/users/">Back to users index</a> | <a id="btn-edit" href="../user/edit/<%= user.userID %>">Edit User</a> | <a id="btn-add" href="../userDetail/addPet/<%= user.userID %>">Add Pet</a> | <form id="deleteUser"><button type="submit">Delete</button></form>
             
     </div>
     <div id="userDetail">
