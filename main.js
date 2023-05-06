@@ -200,12 +200,12 @@ async function insert(db,database,collection,document){
             // send variables to the page to be used.
             res.render('pages/userEdit',{
                 user:user
-        });
+            });
         })
         .post(async (req, res) => {
             // using post becaue PUT doesn't work for the form.
             res.send('Got a POST request in user/edit/:userID')
-            console.log(req.body.emailAddress)
+            //console.log(req.body.emailAddress)
             let ownerID = req.params.userID
             let mdbUserID = new ObjectId(ownerID);
 
@@ -262,16 +262,42 @@ async function insert(db,database,collection,document){
             res.send('Got a DELETE request')
         })
 
-// edit page for specific pet
-    // TODO: create ejs, run the strings.
-    app.route('/:petID/edit')
+// edit page for pet
+    app.route('/:petID/edit/:petID')
         // calls the petEdit page for the specific pet.
-        .get((req, res) =>{
-            res.send('Got a GET request')
+        .get(async function(req, res){
+            let petID = req.params.petID
+            // convert userID as string into ObjectID for search in MongoDB
+            let mdbPetID = new ObjectId(petID);
+            // returns the single user as part of an array
+            let pet=await find(db,'Pet-Website-Project','Pets',{_id:mdbPetID})
+            // pull the user out of the array.
+            pet=pet[0];
+            pet.petID = petID
+            // send variables to the page to be used.
+            res.render('pages/petEdit',{
+                pet:pet
+            });
         })
-        // unneeded, remove/ignore
-        .delete((req, res) => {
-            res.send('Got a DELETE request')
+        .post(async function(req, res){
+            // using post becaue PUT doesn't work for the form.
+            res.send('Got a POST request in pet/edit/:petID')
+            let petID = req.params.petID
+            let mdbPetID = new ObjectId(petID);
+            //console.log(req.body)
+            var newValues=req.body 
+            let result=await update(db,'Pet-Website-Project','Pets',mdbPetID,newValues,function(err,result){
+                if (err) throw err
+                console.log(err)
+            })
+            res.render()
+        })
+        .put(async function(req, res){
+            let petID = req.params.petID
+            let mdbPetID = new ObjectId(petID);
+            
+            console.log("in pet/edit put")
+            console.log(res.body);
         })
 
 //add a pet
@@ -365,26 +391,34 @@ async function insert(db,database,collection,document){
     })
 
 //edit medication
-    app.route('/:medID/edit')
+    app.route('/med/edit/:medID')
         // call the medDetail page and fills in the information.
-        .get((req, res) =>{
+        .get(async function(req, res){
             res.send('Got a GET request')
         })
-        .post((req, res) => {
+        .post(async function(req, res){
             res.send('Got a POST request')
+            let medicineID = req.params.medID
+            let mdbMedID = new ObjectId(medicineID);
+
+            console.log(req.body)
+
+            var newValues=req.body
+            
+            let result=await update(db,'Pet-Website-Project','MedLog',mdbMedID,newValues,function(err,result){
+                if (err) throw err
+                console.log(err)
+            })
+
+            res.render()
         })
         .put((req, res) => {
             res.send('Got a PUT request')
         })
-        .patch((req, res) => {
-            res.send('Got a PATCH request')
-        })
-        .delete((req, res) => {
-            res.send('Got a DELETE request')
-        })
+
 
 // actually starts the connection and waits for connection.
- async function start(){
+async function start(){
     db=await connect()
     console.log('mongoDB connected')
     app.listen(port,()=>{
@@ -392,5 +426,4 @@ async function insert(db,database,collection,document){
     })
 }
 
-start()
-    
+start() 
