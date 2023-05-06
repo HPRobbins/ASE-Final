@@ -101,7 +101,6 @@ app.route('/')
 
         // using a specially crafted Find.
         let result=await loginFind(db,'Pet-Website-Project','Users',criteria,criteria2)
-
         // if the user exists do stuff.
         if(result.length>0){
             // if password is wrong, send message.
@@ -116,6 +115,7 @@ app.route('/')
 
                 // creating a token
                 let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
+                console.log(token)
 
                 // puts jwt token in user's databse file.
                 let loginResult=await update(db,'Pet-Website-Project','Users',mdbUserID,{jwt:token},function(err,result){
@@ -124,8 +124,8 @@ app.route('/')
                 })
                 if(loginResult.length=1){
                     //res.status(200).setHeader('Authorization',token).json({message:'User authenticated'})
-                    console.log(result[0].role)
-                    res.setHeader('Set-Cookie', ['type=auth','Authorization= ','Bearer= ',`jwt=${token}`, `role=${result[0].role}`, 'httpOnly=true','Expires=Thu, 11 May 2023 07:28:00 GMT']).status(200).json({'message':"Logged in successfully!"})
+                    console.log(loginResult)
+                    res.setHeader('Set-Cookie',[`jwt=${token}`, `role=${result[0].role}`, `_id=${result[0]._id}`, 'path=/', 'httpOnly=true']).status(200).json({'message':"Logged in successfully!"})
                 }
                 else{
                     res.status(406).json({message:'Login Failed'})
@@ -191,8 +191,11 @@ app.route('/signUp')
 	})
     
 app.route('/signOut')
-    .get((req, res) => {
-        res.send('Got a GET request')
+    .get(async (req, res) => {
+        let result=await update(db,'Pet-Website-Project','Users',mdbUserID,{jwt:token},function(err,result){
+            if (err) throw err
+        })
+        res.clearCookie('AuthCookie',['type=AuthCookie',`jwt=${token}`, `role=${result[0].role}`, 'path=/', 'httpOnly=true'])
     })
     .post((req, res) => {
         res.send('Got a POST request')
@@ -270,6 +273,7 @@ app.route('/userDetail/:userID')
 
         console.log('In user detail')
         console.log('/////////////////')
+        console.log(req.cookies)
 
         // Look for the user in the database.
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
@@ -297,7 +301,7 @@ app.route('/userDetail/:userID')
                 buttonStatus='disabled'
                 pathStatus='disabled'
             }
-            
+
             console.log(buttonStatus)
             console.log(pathStatus)
 

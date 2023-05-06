@@ -76,10 +76,13 @@
                     if(response.status=200){
                         alert('Log in successful!')
                     }
+                    else if(response.status=404)
+                    {
+                        alert('User not found! Please go to the signUp page and create an account.')
+                    }
                     // checking for cookie
+                    console.log('Response given to page')
                     console.log(document.cookie)
-                    console.log('Response given to page');
-                    console.log(response)
                  })
                 .catch(function (error) {
                     console.log(error);
