@@ -43,8 +43,12 @@
 	<button type="submit" class="btn btn-primary" >Submit</button>
   </form>
 
-	<script src="/assets/getAllURLParams.js"></script>
-	<script src="/assets/cookies.js"></script>
+  <script src="/assets/getAllURLParams.js"></script>
+
+    <script src="/assets/cookies.js"></script>
+
+    <script src="/assets/axios.min.js"></script>
+
 
 	<script> 
 		// taken from code_12, 04, signup.html	
@@ -64,7 +68,7 @@
 			
 			axios({
 			method: 'post',
-			url: 'userDetail/addPet/' + urlportion,
+			url: urlportion,
 			data: {
                 
 				userID:userID.value,

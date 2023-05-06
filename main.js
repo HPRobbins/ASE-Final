@@ -337,13 +337,9 @@ app.route('/:petID/edit')
 
     })
     .post(async (req, res) => {
-        // using post becaue PUT doesn't work for the form.
         res.send('Got a POST request in add pet')
         console.log(req.body)
-        //console.log(req.body.emailAddress)
         let ownerID = req.params.userID
-        await insert(db,'Pet-Website-Project','Pets',ownerID)
-        //console.log(req.body)
 
         var information=req.body
         
@@ -352,18 +348,7 @@ app.route('/:petID/edit')
             console.log(err)
          })
 
-         //res.render()
-
          console.log()
-    })
-    .put(async function(req, res){
-
-    })
-    .patch(async function(req, res){
-
-    })
-    .delete(async function(req, res){
-
     })
 
 
