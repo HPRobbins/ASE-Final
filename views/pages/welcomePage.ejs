@@ -71,15 +71,15 @@
                     },
 			        validateStatus:()=>true
                 })
-                    .then(function (response) {
-                        // TODO: fix this.
-                        console.log('Response given to page');
-                        console.log()
-                        console.log(response)
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                .then(function (response) {
+                    // TODO: fix this.
+                    cookies.set('jwt',response.headers.authorization.replace('Bearer ',''))
+                    console.log('Response given to page');
+                    console.log(response)
+                 })
+                .catch(function (error) {
+                    console.log(error);
+                });
             })
         </script>
 

@@ -106,7 +106,6 @@ app.route('/')
 
         // using a specially crafted Find.
         let result=await loginFind(db,'Pet-Website-Project','Users',criteria,criteria2)
-        console.log(result)
 
         // if the user exists do stuff.
         if(result.length>0){
@@ -198,9 +197,10 @@ app.route('/signUp')
 app.route('/users/')
     // would return index.html and the list of users
 	.get(async function(req, res){
+        console.log("inside /users/")
         let cookieCheck=req.cookies['jwt']
         // console.log('looking at cookiecheck')
-       // console.log(cookieCheck)
+       console.log(cookieCheck)
         // everything in the Users collection is put into an array called result
         let result=await find(db,'Pet-Website-Project','Users',{})
       
