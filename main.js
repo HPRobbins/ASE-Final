@@ -99,47 +99,38 @@ app.route('/signUp')
 	  res.send('Got a DELETE request')
 	})
 
-    // If we are keeping index.html, keep this.
-app.route('/users/')
-    // would return index.html and the list of users
-	.get(async function(req, res){
-        // everything in the Users collection is put into an array called result
-      let result=await find(db,'Pet-Website-Project','Users',{})
-      
-      if(result.length==0)
-      {
-        res.send("404: No users found in database.")
-      }
-      else{
-        // rewrites result array to create userID field and add _id as a string.
-         result.forEach(user => {
-             user['userID'] = user._id.toString();
-         })
- 
-         // passes the array to the index page to replace instances of 'users'
-       res.render('pages/index',{
-         users:result
-       });
 
-      }
-	})
-    // possibly unneeded, can be ignored/removed.
-	.post((req, res) => {
-	  res.send('Got a POST request')
-	})
-	.put((req, res) => {
-	  res.send('Got a PUT request')
-	})
-	.patch((req, res) => {
-	  res.send('Got a PATCH request')
-	})
+//------------------------USERS----------------------------------------
+//list of users
+    app.route('/users/')
+    // would return index.html and the list of users
+    .get(async function(req, res){
+        // everything in the Users collection is put into an array called result
+        let result=await find(db,'Pet-Website-Project','Users',{})
+
+        if(result.length==0)
+        {
+            res.send("404: No users found in database.")
+        }
+        else{
+            // rewrites result array to create userID field and add _id as a string.
+            result.forEach(user => {
+                user['userID'] = user._id.toString();
+            })
+
+            // passes the array to the index page to replace instances of 'users'
+            res.render('pages/index',{
+                users:result
+            });
+        }
+    })
     // maybe an admin only feature?
-	.delete((req, res) => {
-	  res.send('Got a DELETE request')
-	})
-    
-    // calls the userDetail page
-app.route('/userDetail/:userID')
+    .delete((req, res) => {
+    res.send('Got a DELETE request')
+    })
+
+// calls the userDetail page
+    app.route('/userDetail/:userID')
     // get details of user & the userDetail page
     // also returns all pets owned by user.
     .get(async function(req, res){
@@ -175,28 +166,30 @@ app.route('/userDetail/:userID')
             });
         }
     })
-    // maybe for adding new animals?
-    // calls addPet.html if so.
-    .post((req, res) => {
-        res.send('Got a POST request')
-    })
-    // no updates on this page as currently designed.
-    // can be removed/ignored
-    .put((req, res) => {
-        res.send('Got a PUT request')
-    })
-    .patch((req, res) => {
-        res.send('Got a PATCH request')
-    })
-    .delete((req, res) => {
-        res.send('Got a DELETE request from /users/:userID')
-        // check that the user has no pets associated with them, if they do, deny the request or delete the pets too.
-        // run a find for any pets with the user's ID set o a variable.
-        // if els statement: if pets of user exist, send "cannot delete user that has pets", else delete user.
+    .delete(async function(req, res){
+        res.send('Got a DELETE request from /userDetail/:userID')
+        //pull userID from url
+        let ownerID = req.params.userID
+        //convert for mango
+        let mdbUserID = new ObjectId(ownerID);
+        //find user in db
+        let user = await find(db, 'Pet-Website-Project', 'Users', { _id: mdbUserID })
+        //find pet in db
+        let pets = await find(db, 'Pet-Website-Project', 'Pets', { userID: ownerID })
+
+        //check if any pets, if so send Can not delete 
+        if (pets.length > 0) {
+        res.send("Can not delete user. User has pets")
+        } else {
+            //remove user from database
+            let result = await remove(db, 'Pet-Website-Project', 'Users', mdbUserID)
+            res.redirect('/users')
+        }
+
     })
 
-     // calls the userEdit page for a specific user
-app.route('/user/edit/:userID')
+// User edit
+    app.route('/user/edit/:userID')
     // get details of user & the userEdit page
     .get(async function(req, res){
         let ownerID = req.params.userID
@@ -212,50 +205,38 @@ app.route('/user/edit/:userID')
         // send variables to the page to be used.
         res.render('pages/userEdit',{
             user:user
-       });
+        });
     })
     .post(async (req, res) => {
-        res.send('Got a POST request in user/edit/:userID')
-    })
-    .put(async function(req, res){
         // using post becaue PUT doesn't work for the form.
+        res.send('Got a POST request in user/edit/:userID')
+        //console.log(req.body.emailAddress)
         let ownerID = req.params.userID
         let mdbUserID = new ObjectId(ownerID);
+
+        console.log(req.body)
 
         var newValues=req.body
         
         let result=await update(db,'Pet-Website-Project','Users',mdbUserID,newValues,function(err,result){
             if (err) throw err
             console.log(err)
-            return result
         })
 
-        // update success!
-        if(result.modifiedCount == 1)
-        {
-            res.status(200).json({message:'User updated successfully.'})
-
-        }
-        // Update failed.
-        else
-        {
-            res.status(406).json({message:'User update unsuccessful.'})
-        }
-
-         // TODO: Send user somewhere, tell user it succeeded, something.
-        // res.render()
+        res.render()
     })
-    .patch((req, res) => {
-        res.send('Got a PATCH request')
-    })
-    // unneeded, remove/ignore
-    .delete((req, res) => {
-        res.send('Got a DELETE request')
+    .put(async function(req, res){
+        let ownerID = req.params.userID
+        let mdbUserID = new ObjectId(ownerID);
+        
+        console.log("in user/edit put")
+        console.log(res.body);
     })
 
+//-------------------------------------PETS-----------------------------------------
 
-    // detail page for a specific pet
-app.route('/petDetail/:petID')
+// detail page for a specific pet
+    app.route('/petDetail/:petID')
     // returns petDetail with information of the specific pet and any medicines its on.
     .get(async function(req, res){
         // res.send('Got a GET request')
@@ -279,47 +260,51 @@ app.route('/petDetail/:petID')
         res.render('pages/petDetail',{
             pet:pet,
             meds:meds
-       });
+        });
     })
-    // unneeded, remove/ignore
-    .post((req, res) => {
-        res.send('Got a POST request')
-    })
-    // we use petEdit for updates to pet, but might need for adding a new medication
-    .put((req, res) => {
-        res.send('Got a PUT request')
-    })
-    .patch((req, res) => {
-        res.send('Got a PATCH request')
-    })
-    .delete((req, res) => {
+    .delete(async function(req, res){
         res.send('Got a DELETE request')
     })
 
-    // edit page for specific pet
-    // TODO: create ejs, run the strings.
-app.route('/:petID/edit')
-    // calls the petEdit page for the specific pet.
-    .get((req, res) =>{
-        res.send('Got a GET request')
+// edit page for pet
+    app.route('/pet/edit/:petID')
+    .get(async function(req, res){
+        let petID = req.params.petID
+        // convert userID as string into ObjectID for search in MongoDB
+        let mdbPetID = new ObjectId(petID);
+        // returns the single user as part of an array
+        let pet=await find(db,'Pet-Website-Project','Pets',{_id:mdbPetID})
+        // pull the user out of the array.
+        pet=pet[0];
+        pet.petID = petID
+        // send variables to the page to be used.
+        res.render('pages/petEdit',{
+            pet:pet
+        });
     })
-    // unneeded, remove/ignore
-    .post((req, res) => {
-        res.send('Got a POST request')
+    .post(async function(req, res){
+        // using post becaue PUT doesn't work for the form.
+        res.send('Got a POST request in pet/edit/:petID')
+        let petID = req.params.petID
+        let mdbPetID = new ObjectId(petID);
+        //console.log(req.body)
+        var newValues=req.body 
+        let result=await update(db,'Pet-Website-Project','Pets',mdbPetID,newValues,function(err,result){
+            if (err) throw err
+            console.log(err)
+        })
+        res.render()
     })
-    .put((req, res) => {
-        res.send('Got a PUT request')
-    })
-    .patch((req, res) => {
-        res.send('Got a PATCH request')
-    })
-    // unneeded, remove/ignore
-    .delete((req, res) => {
-        res.send('Got a DELETE request')
+    .put(async function(req, res){
+        let petID = req.params.petID
+        let mdbPetID = new ObjectId(petID);
+        
+        console.log("in pet/edit put")
+        console.log(res.body);
     })
 
-    //add a pet
-    app.route('/userDetail/addPet/:userID')
+//add a pet
+app.route('/userDetail/addPet/:userID')
     .get(async function(req, res){
         let ownerID = req.params.userID
         let mdbUserID = new ObjectId(ownerID)
@@ -333,7 +318,6 @@ app.route('/:petID/edit')
         res.render('pages/addPet',{
             user:user
         });
-
     })
     .post(async (req, res) => {
         res.send('Got a POST request in add pet')
@@ -341,34 +325,110 @@ app.route('/:petID/edit')
         let ownerID = req.params.userID
 
         var information=req.body
-        
-         let result=await insert(db,'Pet-Website-Project','Pets',information,function(err,result){
+
+        let result=await insert(db,'Pet-Website-Project','Pets',information,function(err,result){
             if (err) throw err
             console.log(err)
-         })
-
-         console.log()
+        })
+        res.render('pages/success')
     })
 
 
-    // detail page of a medicine
-app.route('/users/:userID/pets/:petID/medlog/:medID')
+//-------------------------------------MEDICINE------------------------------------------
+
+// detail page of a medicine
+    app.route('/medDetail/:medID')
     // call the medDetail page and fills in the information.
-    .get((req, res) =>{
-        res.send('Got a GET request')
+    .get(async function(req, res){
+        let medicineID = req.params.medID
+        let mdbMedID = new ObjectId(medicineID)
+        let med=await find(db,'Pet-Website-Project','MedLog',{_id:mdbMedID})
+        med=med[0];
+        med.medID = medicineID;
+        let meds=await find(db,'Pet-Website-Project','MedLog',{petID:medicineID})
+        meds.forEach(med => {
+            med['medID'] = med._id.toString();
+        })
+        
+        res.render('pages/medDetail',{
+            med:med,
+            meds:meds
+        });
     })
-    .post((req, res) => {
+
+
+
+//add medication
+    app.route('/petDetail/addMedication/:petID')
+        .get(async function(req, res){
+            let ownerID = req.params.petID
+            let mdbPetID = new ObjectId(ownerID)
+            let pet=await find(db,'Pet-Website-Project','Pets',{_id:mdbPetID})
+            // pull the user out of the array.
+            pet=pet[0];
+            pet.petID = ownerID
+            console.log('in get add med')
+
+            // send variables to the page to be used.
+            res.render('pages/addMedication',{
+                pet:pet
+            });
+
+        })
+        .post(async (req, res) => {
+            console.log(req.body)
+            let ownerID = req.params.petID
+
+            var information=req.body
+
+            let result=await insert(db,'Pet-Website-Project','MedLog',information,function(err,result){
+                if (err) throw err
+                console.log(err)
+            })
+
+        })
+
+//edit medication
+    app.route('/med/edit/:medID')
+    // call the medDetail page and fills in the information.
+    .get(async function(req, res){
+        let medID = req.params.medID
+        // convert userID as string into ObjectID for search in MongoDB
+        let mdbMedID = new ObjectId(medID);
+        // returns the single user as part of an array
+        let med=await find(db,'Pet-Website-Project','MedLog',{_id:mdbMedID})
+        // pull the user out of the array.
+        med=med[0];
+        med.medID = medID
+        // send variables to the page to be used.
+        res.render('pages/medicationEdit',{
+            med:med
+        });
+    })
+    .post(async function(req, res){
         res.send('Got a POST request')
+        let medicineID = req.params.medID
+        let mdbMedID = new ObjectId(medicineID);
+
+        console.log(req.body)
+
+        var newValues=req.body
+        
+        let result=await update(db,'Pet-Website-Project','MedLog',mdbMedID,newValues,function(err,result){
+            if (err) throw err
+            console.log(err)
+        })
+
+        res.render()
     })
     .put((req, res) => {
-        res.send('Got a PUT request')
+        let medID = req.params.medID
+        let mddmedID = new ObjectId(medID);
+        
+        console.log("in med/edit put")
+        console.log(res.body);
     })
-    .patch((req, res) => {
-        res.send('Got a PATCH request')
-    })
-    .delete((req, res) => {
-        res.send('Got a DELETE request')
-    })
+
 
 // actually starts the connection and waits for connection.
  async function start(){

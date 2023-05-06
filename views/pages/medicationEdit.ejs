@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <%- include('../partials/head') %>
+</head>
+
+<header>
+   <%- include('../partials/header') %>
+</header>
+<body style="background-color: #FFF0DF;">
+<div class="container">
+
+<div class="container"><p><h1>Medication Edit</h1> <button><a href="/users/">Back to users index</a></button> <button><a href="../../petDetail/<%= med.petID %>">Back to pet details</a></button> <button><a href="../../medDetail/<%= med.medID %>">Back to med details</a></button></p>
+
+    <form id="editMed" enctype="multipart/formdata">
+        <div class="form-group">
+            <label for="medicationID" style="color: #FFCD95;">Medication ID:</label>
+            <input type="text" class="form-control" id="medicationIDInput" name="medicationID" aria-describedby="medicationID" placeholder="medicationID" value="<%= med.medID %>" disabled>
+        </div>
+        <div class="form-group">
+            <label for="petID" style="color: #FFCD95;">Pet ID:</label>
+            <input type="text" class="form-control" id="petIDInput" name="petID" aria-describedby="petID" placeholder="petID" value="<%= med.petID %>" disabled>
+        </div>
+        <div class="form-group">
+            <label for="medicationName" style="color: #FFCD95;">Medication Name</label>
+            <input type="text" class="form-control" id="medicationNameInput" name="medicationName" aria-describedby="medicationName" placeholder="Name" value="<%= med.name %>">
+        </div>
+        <div class="form-group">
+            <label for="medType" style="color: #FFCD95;">Medication Type</label>
+            <input type="text" class="form-control" id="medTypeInput" name="medType" aria-describedby="medType" placeholder="Type" value="<%= med.type %>">
+        </div>
+        <div class="form-group">
+            <label for="dosage" style="color: #FFCD95;">Dosage</label>
+            <input type="text" class="form-control" id="dosageInput" name="dosage" aria-describedby="dosage" placeholder="Dosage" value="<%= med.dosage %>">
+        </div>
+        <div class="form-group">
+            <label for="numberOfDailyDoses" style="color: #FFCD95;">Doses Per Day</label>
+            <input type="text" class="form-control" id="numberOfDailyDosesInput" name="numberOfDailyDoses" aria-describedby="numberOfDailyDoses" placeholder="Doses Per Day" value="<%= med.numberOfDailyDoses %>">
+        </div>
+        <div class="form-group">
+            <label for="medNotes" style="color: #FFCD95;">Medication Notes</label>
+            <input type="text" class="form-control" id="medNotesInput" name="medNotes" aria-describedby="medNotes" placeholder="Notes" value="<%= med.notes %>">
+        </div>
+        <div class="form-group">
+            <label for="medImage" style="color: #FFCD95;">Medication Image</label>
+            <input type="text" class="form-control" id="medImageInput" name="medImage" aria-describedby="medImage" placeholder="medImage" value="<%= med.medImage %>">
+        </div>
+        <button class="btn btn-dark" type="submit">Submit</button>
+    </form>
+
+    <script> 
+		// taken from code_12, 04, signup.html	
+		const editMed=document.getElementById('editMed')
+		editMed.addEventListener('submit',(e)=>{
+			e.preventDefault();
+			let medID=document.querySelectorAll('[name="medID"]')[0]
+            let petID=document.querySelectorAll('[name="petID"]')[0]
+			let medicationName=document.querySelectorAll('[name="medicationName"]')[0]
+			let medType=document.querySelectorAll('[name="medType"]')[0]
+			let dosage=document.querySelectorAll('[name="dosage"]')[0]
+            let medNotes=document.querySelectorAll('[name="medNotes"]')[0]
+            let medImage=document.querySelectorAll('[name="medImage"]')[0]
+			let urlportion=medID.value
+			//let password=document.querySelectorAll('[name="password"]')[0]
+			axios({
+			method: 'post',
+			url: '/med/edit/'+ urlportion,
+			data: {
+				medID:medID.value,
+				petID:petID.value,
+				medicationName:medicationName.value,
+				medType:medType.value,
+                dosage:dosage.value,
+                medNotes:medNotes.value,
+                medImage:medImage.value
+			}/*,
+				validateStatus:()=>true*/
+			})
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		})
+	</script> 
+
+    <footer>
+        <%- include('../partials/footer') %>
+    </footer>
+</div>
+</body>
+</html>
