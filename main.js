@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs')
 const axios = require('axios');
 
-const port = 5500
+const port = 3000
 const bodyParser = require('body-parser')
 const cookieParser=require('cookie-parser');
 
