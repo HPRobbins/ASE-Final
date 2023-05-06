@@ -99,13 +99,14 @@ app.route('/')
         // create second criteria
         let criteria2={_id:1,emailAddress:1,password:1,role:1}
 
-        // using a specially crafted Find.
+        // using a specially crafted Find. check if the user exists.
         let result=await loginFind(db,'Pet-Website-Project','Users',criteria,criteria2)
+
         // if the user exists do stuff.
         if(result.length>0){
             // if password is wrong, send message.
-            if(result[0].password!=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')){
-                res.status(406).json({message:'Wrong password'})
+            if(result[0].password!=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'') || result[0].password == undefined){
+                res.status(406).json({message:'Wrong username or password'})
             }
             // if password is correct, handle token creation.
             else{
@@ -115,25 +116,41 @@ app.route('/')
 
                 // creating a token
                 let token=jwt.sign({id:userId},jwtsalt,{expiresIn:jwt_expiration})
-                console.log(token)
 
                 // puts jwt token in user's databse file.
                 let loginResult=await update(db,'Pet-Website-Project','Users',mdbUserID,{jwt:token},function(err,result){
                     if (err) throw err
                     return result
                 })
-                if(loginResult.length=1){
+
+                if(loginResult.modifiedCount>0){
                     //res.status(200).setHeader('Authorization',token).json({message:'User authenticated'})
-                    console.log(loginResult)
-                    res.setHeader('Set-Cookie',[`jwt=${token}`, `role=${result[0].role}`, `_id=${result[0]._id}`, 'path=/', 'httpOnly=true']).status(200).json({'message':"Logged in successfully!"})
+                    // res.cookie('AuthCookie',[`jwt=${token}`, `role=${result[0].role}`, `_id=${result[0]._id}`, 'path=/', 'httpOnly=true']).status(200).json({'message':"Logged in successfully! & Cookie created!"}).redirect('/users')
+                    res.status(200)
+                    .cookie('AuthCookie', `${token}`,('SameSite:Lax'))
+                    .cookie('RoleCookie', result[0].role,('SameSite:Lax'))
+                    .cookie('mdbIDCookie', result[0]._id,('SameSite:Lax'))
+                    .json({'message':"Logged in successfully! & Cookie created!"})
+                    /*
+                    res.status(200)
+                    .cookie('AuthCookie', 'jwt ' + token, { 
+                        role:result[0].role,
+                        _id:result[0]._id,
+                        expires: new Date(Date.now() + 8 * 3600000), // cookie will be removed after 8 hours
+                        path:'/', httpOnly:true, SameSite:'Lax'
+                      })
+                      .json({'message':"Logged in successfully! & Cookie created!"})
+                      */
                 }
                 else{
                     res.status(406).json({message:'Login Failed'})
+                    res.send()
                 }
+                return
             }
         } 
         else{
-            res.status(406).json({message:'User is not registered'})
+            res.status(404).json({message:'User is not registered'})
         } 
         // TODO: Something with this? may not be needed. send response back.
 	})
@@ -220,6 +237,7 @@ app.route('/users/')
         */
        console.log("Cookies in /users/")
        console.log(req.cookies)
+       
 
         // everything in the Users collection is put into an array called result
         let result=await find(db,'Pet-Website-Project','Users',{})
@@ -263,21 +281,18 @@ app.route('/userDetail/:userID')
         // convert userID as string into ObjectID for search in MongoDB
         let mdbUserID = new ObjectId(ownerID)
 
+       cookiePlate = req.cookies
+
         // get info from current user
-        let currentJWT=req.cookies.jwt
-        let currentRole=req.cookies.role
+        let currentJWT=cookiePlate.AuthCookie
+        let currentRole=cookiePlate.RoleCookie
 
         // for enabling/disabling parts of page.
         let pathStatus = ""
         let buttonStatus = ""
 
-        console.log('In user detail')
-        console.log('/////////////////')
-        console.log(req.cookies)
-
         // Look for the user in the database.
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
-        console.log(user)
         
         // check that the user exists
         if(user.length==0)
@@ -289,21 +304,18 @@ app.route('/userDetail/:userID')
             user=user[0]
 
             let jwtMatch = matchJWT(user.jwt,currentJWT)
-            console.log(jwtMatch)
+            // console.log(jwtMatch)
             // Is current user this user or an admin?
             if(jwtMatch == true|| currentRole == 'admin')
             {
                 // set variables
-                buttonStatus = 'enabled'
-                pathStatus = 'enabled'
+                buttonStatus = ' '
+                pathStatus = ' '
             }
             else{
                 buttonStatus='disabled'
                 pathStatus='disabled'
             }
-
-            console.log(buttonStatus)
-            console.log(pathStatus)
 
             // readd the string version ofthe _id
             user.userID = ownerID
@@ -317,6 +329,7 @@ app.route('/userDetail/:userID')
 
             // send variables to the page to be used.
             res.render('pages/userDetail',{
+                buttonStatus:buttonStatus,
                 user:user,
                 pets:pets
             });

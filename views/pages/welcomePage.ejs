@@ -61,32 +61,61 @@
                 e.preventDefault();
                 let emailAddress=document.querySelectorAll('[name="email"]')[0]
                 let password=document.querySelectorAll('[name="password"]')[0]
-        
-                axios({
-                method: 'put',
-                url: '/',
-                data: {
-                    emailAddress:emailAddress.value,
-                    password:password.value
-                    },
-			        validateStatus:()=>true
-                })
-                .then(function (response) {
-                    // TODO: fix this.
-                    if(response.status=200){
-                        alert('Log in successful!')
+                let passwordValue = password.value
+                passwordValue = passwordValue.toString()
+
+                // checking if password had actual characters or just spaces.
+                if(!passwordValue.length == false){
+                    passwordValue = passwordValue.trim()
+                    if(!passwordValue.length==false){
+                        // do nothing
                     }
-                    else if(response.status=404)
-                    {
-                        alert('User not found! Please go to the signUp page and create an account.')
+                    else{
+                        // there were no actual characters in the input
+                        passwordValue = ""
                     }
-                    // checking for cookie
-                    console.log('Response given to page')
-                    console.log(document.cookie)
-                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                }  
+
+                // yes there is a password in the box.
+                if(!passwordValue.length == false){
+                    axios({
+                        method: 'put',
+                        url: '/',
+                        data: {
+                            emailAddress:emailAddress.value,
+                            password:password.value
+                            },
+                            validateStatus:()=>true
+                    })
+                    .then(function (response) {
+                        // TODO: fix this.
+                        if(response.status==200){
+                            let responseData = response.data
+                            alert('Success!'+' '+ responseData.message)
+                            console.log(document.cookie)
+                        }
+                        else if(response.status==404)
+                        {
+                            let responseData = response.data
+
+                            alert(response.status+' '+ responseData.message)
+                            return
+                        }
+                        else if(response.status==406){
+                            let responseData = response.data
+                            alert(response.status +' '+ responseData.message)
+                            return
+                        }
+                        return
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+			    }
+                // no password.
+                else{
+                    alert("No password entered! Enter a password and try again.")
+                }
             })
         </script>
 
