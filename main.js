@@ -260,7 +260,7 @@ app.route('/signUp')
     })
     .post(async function(req, res){
         // using post becaue PUT doesn't work for the form.
-        res.send('Got a POST request in pet/edit/:petID')
+        //res.send('Got a POST request in pet/edit/:petID')
         let petID = req.params.petID
         let mdbPetID = new ObjectId(petID);
         //console.log(req.body)
@@ -383,8 +383,8 @@ app.route('/userDetail/addPet/:userID')
     })
     .post(async function(req, res){
     
-        let medicineID = req.params.medID
-        let mdbMedID = new ObjectId(medicineID);
+        let medID = req.params.medID
+        let mdbMedID = new ObjectId(medID);
 
         var newValues=req.body
         
@@ -392,7 +392,7 @@ app.route('/userDetail/addPet/:userID')
             if (err) throw err
             console.log(err)
         })
-        res.render()
+        //res.render()
     })
     .put(async function(req, res){
         let medID = req.params.medID
