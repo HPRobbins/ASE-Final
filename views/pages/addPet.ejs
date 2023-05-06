@@ -35,10 +35,10 @@
 		<label for="petWeight">Pet's weight:</label>
 		<input type="text" class="form-control" id="petWeight" name="petWeight">
 	</div>
-    <!--<div class="form-group">
+    <div class="form-group">
 		<label for="petDoB">Pet's date of birth:</label>
 		<input type="text" class="form-control" id="petDoB" name="petDoB">
-	</div>-->
+	</div>
 
 	<button type="submit" class="btn btn-primary" >Submit</button>
   </form>
@@ -62,6 +62,8 @@
             let petSex=document.querySelectorAll('[name="petSex"]')[0]
             let petBreed=document.querySelectorAll('[name="petBreed"]')[0]
             let petWeight=document.querySelectorAll('[name="petWeight"]')[0]
+            let petDoB=document.querySelectorAll('[name="petDoB"]')[0]
+
             //let petDoB=document.querySelectorAll('[name="petDob"]')[0]
 
             let urlportion=userID.value
@@ -76,7 +78,8 @@
 				petType:petType.value,
 				petSex:petSex.value,
                 petBreed:petBreed.value,
-                petWeight:petWeight.value
+                petWeight:petWeight.value,
+                petDoB:petDoB.value
 			}
 			})
 			.then(function (response) {
