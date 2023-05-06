@@ -9,11 +9,11 @@
 </header>
 <body style="background-color: #FFF0DF;">
 	<div class ="container">
-		<p><h1>Add Medication</h1> <button><a href="/users/">Back to users index</a></button></p>
+		<p><h1>Add Medication</h1> <button><a href="/users/">Back to users index</a></button> <button><a href="../<%= pet.petID %>">Back to pet details</a></button></p>
 	<form id="addMedication" enctype="multipart/formdata">
 		<div class="form-group">
 			<label for="petID" >Pet ID:</label>
-			<input type="text" class="form-control" id="petID" name="petID" value="<%= med.petID %>" disabled>
+			<input type="text" class="form-control" id="petID" name="petID" value="<%= pet.petID %>" disabled>
 		</div>
 		<div class="form-group">
 			<label for="medicationName">Medication Name:</label>
