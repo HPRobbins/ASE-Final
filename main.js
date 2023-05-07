@@ -425,7 +425,7 @@ app.route('/petDetail/:petID')
 
     // edit page for specific pet
     // TODO: create ejs, run the strings.
-app.route('/:petID/edit')
+app.route('/edit/:petID')
     // calls the petEdit page for the specific pet.
     .get((req, res) =>{
         res.send('Got a GET request')
