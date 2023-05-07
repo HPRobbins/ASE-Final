@@ -14,10 +14,11 @@
         }
         #card{
             border-radius: 25px;
-            border: 2px solid #a6763f;
-            padding: 20px; 
+            border: 2px solid black;
+            padding: 20px;
             width: 200px;
             height: 150px;
+            color: white;
         }
     </style>
 </head>
@@ -27,11 +28,11 @@
     <%- include('../partials/header') %>
  </header>
 
-<body style="background-color:#FFF0DF">
+<body style="background-color:#FF9566">
     <h1 style="padding: 20px; background-color: #FFCD95;"><%= pet.petName %></h1>
     <div class="container">
         <div class="navbar">
-        <button><a href="/users/">Back to users index</a></button> | <button><a href="../userDetail/<%= pet.userID %>">Back to User</a></button> | <button><a id="btn-edit" href="../pet/edit/<%= pet.petID %>">Edit pet</a></button> | <button><a id="btn-add" href="../petDetail/addMedication/<%=pet.petID %>">Add Medication</a></button> | <button type="button" id="btn-delete">Delete pet</button>
+        <button class="btn btn-light btn-outline-dark"><a href="/users/">Back to users index</a></button> | <button class="btn btn-light btn-outline-dark"><a href="../userDetail/<%= pet.userID %>">Back to User</a></button> | <button class="btn btn-light btn-outline-dark"><a id="btn-edit" href="../pet/edit/<%= pet.petID %>">Edit pet</a></button> | <button class="btn btn-light btn-outline-dark"><a id="btn-add" href="../petDetail/addMedication/<%=pet.petID %>">Add Medication</a></button> | <button type="button" id="btn-delete" class="btn btn-light btn-outline-dark">Delete pet</button>
         </div>
         <div id="petDetail">
             <div padding="20px" class="card-body card text-center">
@@ -69,11 +70,11 @@
                             <div class="col-sm-4">
                                 <div class="card" style="width: 22rem;">
                                     <div class="card-body">
-                                        <h5 class="card-title"><%= med.medicationName %></h5>
-                                        <h6 class="card-subtitle mb-2 text-muted"><%= med.MedType %></h6>
-                                        <p class="card-text">Dose Amount: <%=med.dosage %></p>
-                                        <p class="card-text">Notes: <%= med.medNotes %></p>
-                                        <a href="../medDetail/<%= med.medID %>" class="btn btn-outline-dark">Details</a>
+                                        <h5 class="card-title" style="color: #FF9566;"><%= med.medicationName %></h5>
+                                        <h6 class="card-subtitle mb-2 text-muted" style="color: #FF9566;"><%= med.MedType %></h6>
+                                        <p class="card-text" style="color: #faa24f;">Dose Amount: <%=med.dosage %></p>
+                                        <p class="card-text" style="color: #faa24f;">Notes: <%= med.medNotes %></p>
+                                        <a href="../medDetail/<%= med.medID %>" class="btn btn-light btn-outline-dark">Details</a>
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +84,7 @@
             </div>
         </div>
     </div>
-    
+
 </body>
 <footer>
     <%- include('../partials/footer') %>
