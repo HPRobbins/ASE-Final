@@ -31,7 +31,7 @@
     <h1 style="padding: 20px; background-color: #FFCD95;"><%= pet.petName %></h1>
     <div class="container">
         <div class="navbar">
-        <button><a href="/users/">Back to users index</a></button> | <button><a href="../userDetail/<%= pet.userID %>">Back to User</a></button> | <button><a id="btn-edit" href="../pet/edit/<%= pet.petID %>">Edit pet</a></button> | <button><a id="btn-add" href="../petDetail/addMedication/<%=pet.petID %>">Add Medication</a></button> | <button type="button" id="btn-delete">Delete pet</button>
+        <button><a href="/users/">Back to users index</a></button> | <button><a href="../userDetail/<%= pet.userID %>">Back to User</a></button> | <button><a id="btn-edit" href="../pet/edit/<%= pet.petID %>">Edit pet</a></button> | <button><a id="btn-add" href="../petDetail/addMedication/<%=pet.petID %>">Add Medication</a></button> | <button><a id="btn-delete" href="../petDetail/delete/<%= pet.petID %>">Delete</a></button>
         </div>
         <div id="petDetail">
             <div padding="20px" class="card-body card text-center">
