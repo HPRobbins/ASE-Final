@@ -7,50 +7,100 @@
 <header>
    <%- include('../partials/header') %>
 </header>
-<body style="background-color: #FF9566;">
+<body style="background-color: #FFF0DF;">
 <div class="container">
 
-<div class="container"><p><h1 style="color: white">Medication Edit</h1> <button class="btn btn-light btn-outline-dark"><a href="/users/">Back to users index</a></button> <button class="btn btn-light btn-outline-dark"><a href="../../petDetail/<%= med.petID %>">Back to pet details</a></button> <button class="btn btn-light btn-outline-dark"><a href="../../medDetail/<%= med.medID %>">Back to med details</a></button></p>
+<div class="container"><p><h1>Medication Edit</h1> <button><a href="/users/">Back to users index</a></button> <button><a href="../../petDetail/<%= med.petID %>">Back to pet details</a></button> <button><a href="../../medDetail/<%= med.medID %>">Back to med details</a></button></p>
 
     <form id="editMed" enctype="multipart/formdata">
         <div class="form-group">
-            <label for="medicationID" style="color: white; font-size: 20px">Medication ID:</label>
+            <label for="medicationID" style="color: #FFCD95;">Medication ID:</label>
             <input type="text" class="form-control" id="medicationIDInput" name="medicationID" aria-describedby="medicationID" placeholder="medicationID" value="<%= med.medID %>" disabled>
         </div>
         <div class="form-group">
-            <label for="petID" style="color: white; font-size: 20px">Pet ID:</label>
+            <label for="petID" style="color: #FFCD95;">Pet ID:</label>
             <input type="text" class="form-control" id="petIDInput" name="petID" aria-describedby="petID" placeholder="petID" value="<%= med.petID %>" disabled>
         </div>
         <div class="form-group">
-            <label for="medicationName" style="color: white; font-size: 20px">Medication Name</label>
+            <label for="medicationName" style="color: #FFCD95;">Medication Name</label>
             <input type="text" class="form-control" id="medicationNameInput" name="medicationName" aria-describedby="medicationName" placeholder="Name" value="<%= med.medicationName %>">
         </div>
         <div class="form-group">
-            <label for="medType" style="color: white; font-size: 20px">Medication Type</label>
+            <label for="medType" style="color: #FFCD95;">Medication Type</label>
             <input type="text" class="form-control" id="medTypeInput" name="medType" aria-describedby="medType" placeholder="Type" value="<%= med.medType %>">
         </div>
         <div class="form-group">
-            <label for="dosage" style="color: white; font-size: 20px">Dosage</label>
+            <label for="dosage" style="color: #FFCD95;">Dosage</label>
             <input type="text" class="form-control" id="dosageInput" name="dosage" aria-describedby="dosage" placeholder="Dosage" value="<%= med.dosage %>">
         </div>
         <div class="form-group">
-            <label for="numberOfDailyDoses" style="color: white; font-size: 20px">Doses Per Day</label>
+            <label for="numberOfDailyDoses" style="color: #FFCD95;">Doses Per Day</label>
             <input type="text" class="form-control" id="numberOfDailyDosesInput" name="numberOfDailyDoses" aria-describedby="numberOfDailyDoses" placeholder="Doses Per Day" value="<%= med.numberOfDailyDoses %>">
         </div>
         <div class="form-group">
-            <label for="medNotes" style="color: white; font-size: 20px">Medication Notes</label>
+            <label for="medNotes" style="color: #FFCD95;">Medication Notes</label>
             <input type="text" class="form-control" id="medNotesInput" name="medNotes" aria-describedby="medNotes" placeholder="Notes" value="<%= med.medNotes %>">
         </div>
         <div class="form-group">
-            <label for="medImage" style="color: white; font-size: 20px">Medication Image</label>
+            <label for="medImage" style="color: #FFCD95;">Medication Image</label>
             <input type="text" class="form-control" id="medImageInput" name="medImage" aria-describedby="medImage" placeholder="medImage" value="<%= med.medImage %>">
         </div>
-
-		<button type="submit" class=class="btn btn-light btn-outline-dark" >Submit</button>
+       
+		<button type="submit" name="medEditSubmit" class="btn btn-primary" >Submit</button>
     </form>
 
-    <script>
-		// taken from code_12, 04, signup.html
+    	<!--Script for checking if current user is allowed to make changes.-->
+	<script>
+        window.addEventListener("load", (e) => {
+           e.preventDefault();
+           /*
+               On window load, check if the current user is allowed to make edits to the information displayed.
+               If user is not allowed to make changes, disable the buttons/links to the pages that would allow that.
+               On the edit/add/delete pages, remove the ability to submit the data.
+           */
+
+           // apparenlty this does not get autoformatted as a javascript object on client side. sadface.jpg
+           let cookieJar = document.cookie
+           // first split, temporary array.
+           const myArray = cookieJar.split(";")
+           // creating a js Object to use as a dictionary.
+           let cookiePlate = {}
+           // split fragment on = sign to get the CookieName and CookieValue
+           myArray.forEach(fragment => {
+               // getting rid of some excess spaces.
+               fragment = fragment.trim()
+               // do the splits splits splits
+               let fragmentParts = fragment.split("=")
+               
+               // if the fragmentPart has stuff in it, write to object//dictionary.
+               if(fragmentParts.length > 1)
+               {
+                   let key = fragmentParts[0]
+                   let value = fragmentParts[1]
+                   
+                   cookiePlate[key] = value
+               }
+           });
+           
+           // Checks if current user is allowed to make changes to the data (as determined serverside).
+           // If there is no "AllowedToChange" cookie, defaults to false.
+           let allowedToChange = cookiePlate["MedEditCookie"] === "true"
+           
+           // Grabs the element to be changed by name.
+           let medEditSubmit=document.querySelectorAll('[name="medEditSubmit"]')[0]
+           // changes the elements to not do anything.
+           if(allowedToChange == false)
+           {
+               medEditSubmit.disabled=true
+           }
+           else{
+               // allowed to make changes, do nothing.
+           }
+       });
+   </script>
+
+    <script> 
+		// taken from code_12, 04, signup.html	
 		const editMed=document.getElementById('editMed')
 		editMed.addEventListener('submit',(e)=>{
 			e.preventDefault();
@@ -87,7 +137,7 @@
 				console.log(error);
 			});
 		})
-	</script>
+	</script> 
 
     <footer>
         <%- include('../partials/footer') %>

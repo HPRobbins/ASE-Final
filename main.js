@@ -1,5 +1,5 @@
 const express = require('express')
-const { join } = require('path')
+const { join, resolve } = require('path')
 const app = express()
 const path = require('path');
 const fs = require('fs')
@@ -96,7 +96,7 @@ app.route('/')
 	.post((req, res) => {
 	  res.send('Got a POST request')
 	})
-    // Yes for a uthentication
+    // Yes for authentication
 	.put(async(req, res) => {
 	  // res.send('Got a PUT request for /')
         let email = req.body.emailAddress
@@ -162,10 +162,11 @@ app.route('/signOut')
         res.clearCookie('AuthCookie')
         .clearCookie('RoleCookie')
         .clearCookie('mdbIDCookie')
+        .clearCookie('EditCookie')
+        .clearCookie('PetEditCookie')
+        .clearCookie('MedEditCookie')
         .status(200)
-        .json({'message':"Log out complete, cookies cleard!"})
-        console.log("Cookies cleared?")
-        console.log(req.cookies)
+        .redirect("/")
     })
     .post((req, res) => {
         res.send('Got a POST request')
@@ -186,10 +187,10 @@ app.route('/signOut')
     app.route('/users/')
     // would return index.html and the list of users
 	.get(async function(req, res){
-        /*
+        
        console.log("Cookies in /users/")
        console.log(req.cookies)
-       */
+       
         // everything in the Users collection is put into an array called result
         let result=await find(db,'Pet-Website-Project','Users',{})
       
@@ -220,7 +221,7 @@ app.route('/signOut')
 	})
     // maybe an admin only feature?
     .delete((req, res) => {
-    res.send('Got a DELETE request')
+        res.send('Got a DELETE request')
     })
 
 // calls the userDetail page
@@ -232,48 +233,17 @@ app.route('/signOut')
         // convert userID as string into ObjectID for search in MongoDB
         let mdbUserID = new ObjectId(ownerID)
 
-       cookiePlate = req.cookies
-
-       console.log(cookiePlate)
-
-        // get info from current user
-        let currentJWT=cookiePlate.AuthCookie
-        let currentRole=cookiePlate.RoleCookie
-
-        // for enabling/disabling parts of page.
-        let pathStatus = ""
-        let buttonStatus = ""
-
         // Look for the user in the database.
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
-        
-        // check that the user exists
+        // check that the user exists, if no return error.
         if(user.length==0)
         {
             res.status(404).json({message:'User not found. Return to user index and try again.'})
         }
+        // if user exists, allow data edits.
         else{
             // pull the user out of the array.
             user=user[0]
-
-            let jwtMatch = matchJWT(user.jwt,currentJWT)
-            // console.log(jwtMatch)
-            
-            // Is current user this user or an admin?
-            if(jwtMatch == true || currentRole == 'admin')
-            {
-                // set variables
-                buttonStatus = ' '
-                pathStatus = ' '
-            }
-            else{
-                buttonStatus='disabled'
-                pathStatus='disabled'
-            }
-
-            // readd the string version ofthe _id
-            user.userID = ownerID
-
             let pets=await find(db,'Pet-Website-Project','Pets',{userID:ownerID})
 
             // convert _ID to a string & add to animal array
@@ -281,35 +251,49 @@ app.route('/signOut')
                 pet['petID'] = pet._id.toString();
             })
 
-            // send variables to the page to be used.
-            res.render('pages/userDetail',{
-                buttonStatus:buttonStatus,
-                user:user,
-                pets:pets
-            });
+            // authentication
+            let allowedToEdit = false
+            let cookiePlate = req.cookies
+    
+            // get info from current user
+            let currentJWT=cookiePlate.AuthCookie
+            let currentRole=cookiePlate.RoleCookie
+            let currentEdit=cookiePlate.EditCookie
+            let jwtMatch = await matchJWT(user.jwt,currentJWT)
+            // Is current user this user or an admin?
+            if(jwtMatch == true)
+            {
+                // set variables
+                allowedToEdit=true
+            }
+            else if(currentRole == 'admin'){
+                allowedToEdit=true
+            }
+            else{
+                allowedToEdit=false
+            }
+            // check if current cookie allows user to edit this page.
+            if((currentEdit===allowedToEdit)==true){
+                // send variables to the page to be used.
+                res
+                .cookie('EditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+                .render('pages/userDetail',{
+                    user:user,
+                    pets:pets
+                })
+            }
+            else{
+                 // send variables to the page to be used.
+                res
+                .cookie('EditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+                .render('pages/userDetail',{
+                    user:user,
+                    pets:pets
+                })
+            }
         }
     })
-    .delete(async function(req, res){
-        res.send('Got a DELETE request from /userDetail/:userID')
-        //pull userID from url
-        let ownerID = req.params.userID
-        //convert for mango
-        let mdbUserID = new ObjectId(ownerID);
-        //find user in db
-        let user = await find(db, 'Pet-Website-Project', 'Users', { _id: mdbUserID })
-        //find pet in db
-        let pets = await find(db, 'Pet-Website-Project', 'Pets', { userID: ownerID })
 
-        //check if any pets, if so send Can not delete 
-        if (pets.length > 0) {
-        res.send("Can not delete user. User has pets")
-        } else {
-            //remove user from database
-            let result = await remove(db, 'Pet-Website-Project', 'Users', mdbUserID)
-            res.redirect('/users')
-        }
-
-    })
 
 // User edit
     app.route('/user/edit/:userID')
@@ -323,6 +307,8 @@ app.route('/signOut')
         // pull the user out of the array.
         user=user[0];
         user.userID = ownerID
+
+
 
         // send variables to the page to be used.
         res.render('pages/userEdit',{
@@ -378,6 +364,42 @@ app.route('/signOut')
             }
         }
     })
+//user DELETE
+app.route('/userDetail/delete/:userID')
+.get(async function(req, res){
+    let ownerID = req.params.userID
+    // convert userID as string into ObjectID for search in MongoDB
+    let mdbUserID = new ObjectId(ownerID);
+    // returns the single user as part of an array
+    let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+    // pull the user out of the array.
+    user=user[0];
+    user.userID = ownerID
+
+    // send variables to the page to be used.
+    res.render('pages/deleteUser',{
+        user:user
+    });
+})
+.delete(async function(req, res){
+    let ownerID = req.params.userID
+    //convert for mango
+    let mdbUserID = new ObjectId(ownerID);
+    //find user in db
+    let user = await find(db, 'Pet-Website-Project', 'Users', { _id: mdbUserID })
+    //find pet in db
+    let pets = await find(db, 'Pet-Website-Project', 'Pets', { userID: ownerID })
+
+    //check if any pets, if so send Can not delete 
+    if (pets.length > 0) {
+    res.send("Can not delete user. User has pets")
+    } else {
+        //remove user from database
+        let result = await remove(db, 'Pet-Website-Project', 'Users', mdbUserID)
+        res.redirect('/users/')
+    }
+})
+
 
 //-------------------------------------PETS-----------------------------------------
 
@@ -390,13 +412,12 @@ app.route('/signOut')
         let mdbPetID = new ObjectId(animalID)
 
         let pet=await find(db,'Pet-Website-Project','Pets',{_id:mdbPetID})
-        // pull the user out of the array.
+        // pull the pet out of the array.
         pet=pet[0];
         // readd the string version ofthe _id
         pet.petID = animalID
-
+        // Getting the Medicine.
         let meds=await find(db,'Pet-Website-Project','MedLog',{petID:animalID})
-
         // convert _ID to a string & add to animal array
         meds.forEach(med => {
             med['medID'] = med._id.toString();
@@ -408,9 +429,8 @@ app.route('/signOut')
             meds:meds
         });
     })
-    .delete(async function(req, res){
-        res.send('Got a DELETE request')
-    })
+
+
 
 // edit page for pet
     app.route('/pet/edit/:petID')
@@ -423,6 +443,7 @@ app.route('/signOut')
             // pull the user out of the array.
             pet=pet[0];
             pet.petID = petID
+            
             // send variables to the page to be used.
             res.render('pages/petEdit',{
                 pet:pet
@@ -456,14 +477,47 @@ app.route('/userDetail/addPet/:userID')
         let mdbUserID = new ObjectId(ownerID)
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
         // pull the user out of the array.
-        user=user[0];
+        user=user[0]
         user.userID = ownerID
-        console.log('in add pet get')
 
-        // send variables to the page to be used.
-        res.render('pages/addPet',{
-            user:user
-        });
+        // authentication
+        let allowedToEdit = false
+         let cookiePlate = req.cookies
+
+        // get info from current user
+        let currentJWT=cookiePlate.AuthCookie
+        let currentRole=cookiePlate.RoleCookie
+        let currentEdit=cookiePlate.EditCookie
+        let jwtMatch = await matchJWT(user.jwt,currentJWT)
+        // Is current user this user or an admin?
+        if(jwtMatch == true)
+        {
+            // set variables
+            allowedToEdit=true
+        }
+        else if(currentRole == 'admin'){
+            allowedToEdit=true
+        }
+        else{
+            allowedToEdit=false
+        }
+        // check if current cookie allows user to edit this page.
+        if((currentEdit===allowedToEdit)==true){
+            // send variables to the page to be used.
+            res
+            .cookie('EditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+            .render('pages/addPet',{
+                user:user
+            })
+        }
+        else{
+             // send variables to the page to be used.
+            res
+            .cookie('EditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+            .render('pages/addPet',{
+                user:user
+            })
+        }
     })
     .post(async (req, res) => {
         res.send('Got a POST request in add pet')
@@ -479,6 +533,43 @@ app.route('/userDetail/addPet/:userID')
         res.render('pages/success')
     })
 
+//DELETE PET
+//delete pet
+app.route('/petDetail/delete/:petID')
+.get(async function(req, res){
+    let petID = req.params.petID
+    // convert userID as string into ObjectID for search in MongoDB
+    let mdbPetID = new ObjectId(petID);
+    // returns the single user as part of an array
+    let pet=await find(db,'Pet-Website-Project','Pets',{_id:mdbPetID})
+    // pull the user out of the array.
+    pet=pet[0];
+    pet.petID = petID
+
+    // send variables to the page to be used.
+    res.render('pages/deletePet',{
+        pet:pet
+    });
+})
+.delete(async function(req, res){
+    let ownerID = req.params.petID
+    //convert for mango
+    let mdbPetID = new ObjectId(ownerID);
+    //find pet in db
+    let pet = await find(db, 'Pet-Website-Project', 'Pets', { _id: mdbPetID })
+    //find meds in db
+    let meds = await find(db, 'Pet-Website-Project', 'MedLog', { petID: ownerID })
+
+    //check if any pets, if so send Can not delete 
+    if (meds.length > 0) {
+        res.send("Can not delete pet. Pet has medication")
+    } else {
+        //remove pet from database
+        let result = await remove(db, 'Pet-Website-Project', 'Pets', mdbPetID)
+        //res.redirect('/userDetail/:userID')
+    }
+})
+
 
 //-------------------------------------MEDICINE------------------------------------------
 
@@ -491,18 +582,67 @@ app.route('/userDetail/addPet/:userID')
         let med=await find(db,'Pet-Website-Project','MedLog',{_id:mdbMedID})
         med=med[0];
         med.medID = medicineID;
+        
         let meds=await find(db,'Pet-Website-Project','MedLog',{petID:medicineID})
         meds.forEach(med => {
             med['medID'] = med._id.toString();
         })
+
+        // authentication
+        let allowedToEdit = false
+        let cookiePlate = req.cookies
+
+        // Get pet info
+        let mdbPetID = new ObjectId(med.petID)
+        let pet=await find(db,'Pet-Website-Project','Pets',{_id:mdbPetID})
+        pet=pet[0]
+
+        // Get user info.
+        let mdbUserID = new ObjectId(pet.userID)
+        let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        user=user[0]
+
+        // get info from current user
+        let currentJWT=cookiePlate.AuthCookie
+        let currentRole=cookiePlate.RoleCookie
+        let currentEdit=cookiePlate.MedEditCookie
+        let jwtMatch = await matchJWT(user.jwt,currentJWT)
+        // Is current user this user or an admin?
+        if(jwtMatch == true)
+        {
+            // set variables
+            allowedToEdit=true
+        }
+        else if(currentRole == 'admin'){
+            allowedToEdit=true
+        }
+        else{
+            allowedToEdit=false
+        }
+        // check if current cookie allows user to edit this page.
+        if((currentEdit===allowedToEdit)==true){
+            // send variables to the page to be used.
+            res
+            .cookie('MedEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+            .render('pages/medDetail',{
+                pet:pet
+            })
+        }
+        else{
+            // send variables to the page to be used.
+            res
+            .cookie('MedEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+            .render('pages/medDetail',{
+                med:med,
+                meds:meds
+            })
+        }
         
         res.render('pages/medDetail',{
             med:med,
             meds:meds
         });
     })
-
-
 
 //add medication
     app.route('/petDetail/addMedication/:petID')
@@ -514,11 +654,49 @@ app.route('/userDetail/addPet/:userID')
             pet=pet[0];
             pet.petID = ownerID
             console.log('in get add med')
+            
+            // authentication
+            let allowedToEdit = false
+            let cookiePlate = req.cookies
+            // Get user info.
+            let mdbUserID = new ObjectId(pet.userID)
+            let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+            user=user[0]
 
-            // send variables to the page to be used.
-            res.render('pages/addMedication',{
-                pet:pet
-            });
+            // get info from current user
+            let currentJWT=cookiePlate.AuthCookie
+            let currentRole=cookiePlate.RoleCookie
+            let currentEdit=cookiePlate.PetEditCookie
+            let jwtMatch = await matchJWT(user.jwt,currentJWT)
+            // Is current user this user or an admin?
+            if(jwtMatch == true)
+            {
+                // set variables
+                allowedToEdit=true
+            }
+            else if(currentRole == 'admin'){
+                allowedToEdit=true
+            }
+            else{
+                allowedToEdit=false
+            }
+            // check if current cookie allows user to edit this page.
+            if((currentEdit===allowedToEdit)==true){
+                // send variables to the page to be used.
+                res
+                .cookie('PetEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+                .render('pages/addMedication',{
+                    pet:pet
+                })
+            }
+            else{
+                // send variables to the page to be used.
+                res
+                .cookie('PetEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+                .render('pages/addMedication',{
+                    pet:pet
+                })
+            }
 
         })
         .post(async (req, res) => {
@@ -571,6 +749,34 @@ app.route('/userDetail/addPet/:userID')
         console.log("in med/edit put")
         console.log(res.body);
     })
+
+//DELETE MED
+//delete med
+app.route('/med/delete/:medID')
+.get(async function(req, res){
+    let medID = req.params.medID
+    // convert userID as string into ObjectID for search in MongoDB
+    let mdbMedID = new ObjectId(medID);
+    // returns the single user as part of an array
+    let med=await find(db,'Pet-Website-Project','MedLog',{_id:mdbMedID})
+    // pull the user out of the array.
+    med=med[0];
+    med.medID = medID
+
+    // send variables to the page to be used.
+    res.render('pages/deleteMed',{
+        med:med
+    });
+})
+.delete(async function(req, res){
+    let medID = req.params.medID
+    //convert for mango
+    let mdbMedID = new ObjectId(medID);
+    //remove med from database
+    let result = await remove(db, 'Pet-Website-Project', 'MedLog', mdbMedID)
+    //res.redirect('/medDetail/'+ medID)
+    
+})
 
 
 
