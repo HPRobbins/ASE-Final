@@ -181,11 +181,10 @@ app.route('/signOut')
     app.route('/users/')
     // would return index.html and the list of users
 	.get(async function(req, res){
-        /* console.log("inside /users/")
-        console.log(req.cookies['Bearer'])
-        */
+        /*
        console.log("Cookies in /users/")
        console.log(req.cookies)
+       */
        
 
         // everything in the Users collection is put into an array called result
@@ -256,6 +255,7 @@ app.route('/signOut')
 
             let jwtMatch = matchJWT(user.jwt,currentJWT)
             // console.log(jwtMatch)
+            
             // Is current user this user or an admin?
             if(jwtMatch == true || currentRole == 'admin')
             {
@@ -392,7 +392,6 @@ app.route('/signOut')
         // readd the string version ofthe _id
         pet.petID = animalID
 
-        let meds=await find(db,'Pet-Website-Project','MedLog',{petID:animalID})
         let meds=await find(db,'Pet-Website-Project','MedLog',{petID:animalID})
 
         // convert _ID to a string & add to animal array
