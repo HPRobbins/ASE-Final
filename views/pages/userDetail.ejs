@@ -45,7 +45,8 @@
         </div>
     </div>
     <script>
-        window.addEventListener("load", (event) => {
+        window.addEventListener("load", (e) => {
+			e.preventDefault();
             /*
                 On windows load, check if the current user is allowed to make edits to the information displayed.
                 If user is not allowed to make changes, disable the buttons/links to the pages that would allow that.

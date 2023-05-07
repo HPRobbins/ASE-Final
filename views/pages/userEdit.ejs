@@ -36,7 +36,7 @@
 		<input type="password" id="typePasswordX-2" name="passwordConfirm" class="form-control" aria-describedby="passwordConfirmInput" />
   </div>
 
-		<button type="submit" class="btn btn-primary">Submit</button>
+		<button type="submit" name="userEditSubmit" class="btn btn-primary">Submit</button>
 	</form>
 
 	<script src="/assets/getAllURLParams.js"></script>
@@ -45,7 +45,8 @@
 
 
 	<script>
-		 window.addEventListener("load", (event) => {
+		 window.addEventListener("load", (e) => {
+			e.preventDefault();
 			/*
                 On windows load, check if the current user is allowed to make edits to the information displayed.
                 If user is not allowed to make changes, disable the buttons/links to the pages that would allow that.
@@ -79,23 +80,13 @@
             // Checks if current user is allowed to make changes to the data (as determined serverside).
             // If there is no "AllowedToChange" cookie, defaults to false.
             let allowedToChange = cookiePlate["EditCookie"] === "true"
-            console.log(allowedToChange)
             
             // Grabs the element to be changed by name.
-            let userEditBtn=document.querySelectorAll('[name="userEditBtn"]')[0]
-            let addPetBtn=document.querySelectorAll('[name="addPetBtn"]')[0]
-            let deleteBtn=document.querySelectorAll('[name="deleteBtn"]')[0]
+            let userEditSubmit=document.querySelectorAll('[name="userEditSubmit"]')[0]
             // changes the elements to not do anything.
             if(allowedToChange == false)
             {
-                userEditBtn.href="#"
-                userEditBtn.onclick="return false;"
-
-                addPetBtn.href="#"
-                addPetBtn.onclick="return false;"
-                
-                deleteBtn.href="#"
-                deleteBtn.onclick="return false;"
+                userEditSubmit.disabled=true
             }
             else{
                 // allowed to make changes, do nothing.
@@ -103,6 +94,7 @@
         });
 	</script>
 
+	// Script for handling an edit submission.
 	<script> 
 		// taken from code_12, 04, signup.html	
 		const editUser=document.getElementById('editUser')
