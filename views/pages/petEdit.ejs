@@ -7,49 +7,49 @@
 <header>
    <%- include('../partials/header') %>
 </header>
-<body style="background-color: #FFF0DF;">
+<body style="background-color: #FF9566;">
     <div class="container">
-        <p><h1>Pet Edit</h1> <button><a href="/users/">Back to users index</a></button> <button><a href="/petDetail/<%= pet.petID %>">Back to pet</a></button></p> 
+        <p><h1>Pet Edit</h1> <button><a href="/users/">Back to users index</a></button> <button><a href="/petDetail/<%= pet.petID %>">Back to pet</a></button></p>
 
         <form id="editPet" enctype="multipart/formdata">
             <div class="form-group">
-                <label for="petID" style="color: #FFCD95;">Pet ID:</label>
+                <label for="petID" style="color: white;">Pet ID:</label>
                 <input type="text" class="form-control" id="petIDInput" name="petID" aria-describedby="petID" placeholder="petID" value="<%= pet.petID %>" disabled>
             </div>
             <div class="form-group">
-                <label for="userID" style="color: #FFCD95;">User ID:</label>
+                <label for="userID" style="color: white;">User ID:</label>
                 <input type="text" class="form-control" id="userIDInput" name="userID" aria-describedby="userID" placeholder="userID" value="<%= pet.userID %>" disabled>
             </div>
             <div class="form-group">
-                <label for="petName" style="color: #FFCD95;">Pet Name:</label>
+                <label for="petName" style="color: white;">Pet Name:</label>
                 <input type="text" class="form-control" id="petNameInput" name="petName" aria-describedby="petName" placeholder="petName" value="<%= pet.petName %>">
             </div>
             <div class="form-group">
-                <label for="petType" style="color: #FFCD95;">Pet Type:</label>
+                <label for="petType" style="color: white;">Pet Type:</label>
                 <input type="text" class="form-control" id="petTypeInput" name="petType" aria-describedby="petType" placeholder="petType" value="<%= pet.petType %>">
             </div>
             <div class="form-group">
-                <label for="petSex" style="color: #FFCD95;">Pet Sex:</label>
+                <label for="petSex" style="color: white;">Pet Sex:</label>
                 <input type="text" class="form-control" id="petSexInput" name="petSex" aria-describedby="petSex" placeholder="petSex" value="<%= pet.petSex %>">
             </div>
             <div class="form-group">
-                <label for="petBreed" style="color: #FFCD95;">Pet Breed:</label>
+                <label for="petBreed" style="color: white;">Pet Breed:</label>
                 <input type="text" class="form-control" id="petBreedInput" name="petBreed" aria-describedby="petBreed" placeholder="petBreed" value="<%= pet.petBreed %>">
             </div>
             <div class="form-group">
-                <label for="petWeight" style="color: #FFCD95;">Pet Weight:</label>
+                <label for="petWeight" style="color: white;">Pet Weight:</label>
                 <input type="text" class="form-control" id="petWeightInput" name="petWeight" aria-describedby="petWeight" placeholder="NotepetWeights" value="<%= pet.petWeight %>">
             </div>
             <div class="form-group">
-                <label for="petDoB" style="color: #FFCD95;">Pet DOB:</label>
+                <label for="petDoB" style="color: white;">Pet DOB:</label>
                 <input type="text" class="form-control" id="petDoBInput" name="petDoB" aria-describedby="petDoB" placeholder="petDoB" value="<%= pet.petDoB %>">
             </div>
-            
+
 		<button type="submit" class="btn btn-primary" >Submit</button>
         </form>
 
-        <script> 
-            // taken from code_12, 04, signup.html	
+        <script>
+            // taken from code_12, 04, signup.html
             const editPet=document.getElementById('editPet')
             editPet.addEventListener('submit',(e)=>{
                 e.preventDefault();
@@ -62,7 +62,7 @@
                 let petWeight=document.querySelectorAll('[name="petWeight"]')[0]
                 let petDoB=document.querySelectorAll('[name="petDoB"]')[0]
                 let urlportion=petID.value
-                
+
                 axios({
                 method: 'post',
                 url: '/pet/edit/'+ urlportion,
@@ -86,7 +86,7 @@
                     console.log(error);
                 });
             })
-        </script> 
+        </script>
 
         <footer>
             <%- include('../partials/footer') %>

@@ -1,97 +1,92 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <%- include('../partials/head') %>
-</head>
+        <%- include('../partials/head') %>
+   </head>
 
-<header>
-   <%- include('../partials/header') %>
-</header>
-<body style="background-color: #FF9566;">
-<div class="container">
+   <header>
+    <%- include('../partials/header') %>
+    </header>
 
-<div class="container"><p><h1>Medication Edit</h1> <button><a href="/users/">Back to users index</a></button> <button><a href="../../petDetail/<%= med.petID %>">Back to pet details</a></button> <button><a href="../../medDetail/<%= med.medID %>">Back to med details</a></button></p>
+    <body style="background-color: #FF9566;">
+        <div>
+            <section class="vh-100">
+                <div class="container py-5 h-100">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                            <div class="card-body p-5 text-center">
+                                <!--Sign up-->
+                                <h3 class="mb-5">Sign Up</h3>
 
-    <form id="editMed" enctype="multipart/formdata">
-        <div class="form-group">
-            <label for="medicationID" style="color: #FFCD95;">Medication ID:</label>
-            <input type="text" class="form-control" id="medicationIDInput" name="medicationID" aria-describedby="medicationID" placeholder="medicationID" value="<%= med.medID %>" disabled>
-        </div>
-        <div class="form-group">
-            <label for="petID" style="color: #FFCD95;">Pet ID:</label>
-            <input type="text" class="form-control" id="petIDInput" name="petID" aria-describedby="petID" placeholder="petID" value="<%= med.petID %>" disabled>
-        </div>
-        <div class="form-group">
-            <label for="medicationName" style="color: #FFCD95;">Medication Name</label>
-            <input type="text" class="form-control" id="medicationNameInput" name="medicationName" aria-describedby="medicationName" placeholder="Name" value="<%= med.medicationName %>">
-        </div>
-        <div class="form-group">
-            <label for="medType" style="color: #FFCD95;">Medication Type</label>
-            <input type="text" class="form-control" id="medTypeInput" name="medType" aria-describedby="medType" placeholder="Type" value="<%= med.medType %>">
-        </div>
-        <div class="form-group">
-            <label for="dosage" style="color: #FFCD95;">Dosage</label>
-            <input type="text" class="form-control" id="dosageInput" name="dosage" aria-describedby="dosage" placeholder="Dosage" value="<%= med.dosage %>">
-        </div>
-        <div class="form-group">
-            <label for="numberOfDailyDoses" style="color: #FFCD95;">Doses Per Day</label>
-            <input type="text" class="form-control" id="numberOfDailyDosesInput" name="numberOfDailyDoses" aria-describedby="numberOfDailyDoses" placeholder="Doses Per Day" value="<%= med.numberOfDailyDoses %>">
-        </div>
-        <div class="form-group">
-            <label for="medNotes" style="color: #FFCD95;">Medication Notes</label>
-            <input type="text" class="form-control" id="medNotesInput" name="medNotes" aria-describedby="medNotes" placeholder="Notes" value="<%= med.medNotes %>">
-        </div>
-        <div class="form-group">
-            <label for="medImage" style="color: #FFCD95;">Medication Image</label>
-            <input type="text" class="form-control" id="medImageInput" name="medImage" aria-describedby="medImage" placeholder="medImage" value="<%= med.medImage %>">
+                                <form id="signup">
+                                    <div class="form-outline mb-4">
+                                        <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="firstName">First Name</label>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input type="text" id="lastName" name="lastName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="lastName">Last Name</label>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="email" id="typeEmailX-2" name="email" class="form-control form-control-lg" />
+                                        <label class="form-label" for="typeEmailX-2">Email</label>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="password" id="typePasswordX-2" name="password" class="form-control form-control-lg" />
+                                        <label class="form-label" for="typePasswordX-2">Password</label>
+                                    </div>
+
+                                    <button class="btn btn-primary btn-lg btn-block" type="submit">Sign Up</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
-		<button type="submit" class="btn btn-primary" >Submit</button>
-    </form>
+	    <script src="/assets/getAllURLParams.js"></script>
+	    <script src="/assets/cookies.js"></script>
 
-    <script>
-		// taken from code_12, 04, signup.html
-		const editMed=document.getElementById('editMed')
-		editMed.addEventListener('submit',(e)=>{
-			e.preventDefault();
-			let medID=document.querySelectorAll('[name="medicationID"]')[0]
-            let petID=document.querySelectorAll('[name="petID"]')[0]
-			let medicationName=document.querySelectorAll('[name="medicationName"]')[0]
-			let medType=document.querySelectorAll('[name="medType"]')[0]
-			let dosage=document.querySelectorAll('[name="dosage"]')[0]
-            let numberOfDailyDoses=document.querySelectorAll('[name="numberOfDailyDoses"]')[0]
-            let medNotes=document.querySelectorAll('[name="medNotes"]')[0]
-            let medImage=document.querySelectorAll('[name="medImage"]')[0]
-			let urlportion=medID.value
-			//let password=document.querySelectorAll('[name="password"]')[0]
-			axios({
-			method: 'post',
-			url: '/med/edit/'+ urlportion,
-			data: {
-				medID:medID.value,
-				petID:petID.value,
-				medicationName:medicationName.value,
-				medType:medType.value,
-                dosage:dosage.value,
-                numberOfDailyDoses:numberOfDailyDoses.value,
-                medNotes:medNotes.value,
-                medImage:medImage.value
-			}/*,
-				validateStatus:()=>true*/
-			})
-			.then(function (response) {
-                window.location="/medDetail/" + urlportion
-				console.log(response);
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
-		})
-	</script>
+        <script>
+            // taken from code_12, 04, signup.html
+            const signup=document.getElementById('signup')
+
+            signup.addEventListener('submit',(e)=>{
+                e.preventDefault();
+                let emailAddress=document.querySelectorAll('[name="email"]')[0]
+                let password=document.querySelectorAll('[name="password"]')[0]
+                let firstName=document.querySelectorAll('[name="firstName"]')[0]
+                let lastName=document.querySelectorAll('[name="lastName"]')[0]
+
+                axios({
+                method: 'post',
+                url: '/signUp',
+                data: {
+                    firstName:firstName.value,
+                    lastName:lastName.value,
+                    emailAddress:emailAddress.value,
+                    password:password.value,
+                    role:'user'
+                },
+                    validateStatus:()=>true
+                })
+                .then(function (response) {
+                    // TODO: move to '/users' once logged in.
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            })
+        </script>
+    </body>
 
     <footer>
         <%- include('../partials/footer') %>
     </footer>
-</div>
-</body>
 </html>
