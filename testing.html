@@ -1,32 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-     <%- include('../partials/head') %>
+    <%- include('../partials/head') %>
+
+    <style>
+        main{
+	        background-color:#FFF0DF;
+	        margin:20px;
+        }
+        div .form-group{
+            padding:10px;
+            margin:20px;
+        }
+        #card{
+            border-radius: 25px;
+            border: 2px solid white;
+            padding: 20px;
+            width: 200px;
+            height: 150px;
+        }
+    </style>
 </head>
+
 
 <header>
     <%- include('../partials/header') %>
-</header>
+ </header>
 
-<body style="background-color: #FF9566;">
-	<div style="padding: 20px;">
-		<div id="userdetails" class="container mt-3">
-			<div class="row justify-content-center">
-				<!-- the <% %> denotes javascript. <%= %> denotes a replacement/variable.-->
-				<% users.forEach(function(user) { %>
-					<div class="col-lg-4">
-						<div class="card mb-4" style="min-width: 18rem; max-width: 18rem;">
-							<div class="card-body">
-								<h5 class="card-title" style="color: #FF9566; font-size:40px;"><%= user.firstName %> <%=user.lastName %></h5>
-								<p class="card-text" style="color: #faa24f; font-size:20px">Email: <%= user.emailAddress %></p>
-								<a href="../userDetail/<%= user.userID %>"  class="btn btn-outline-dark">Details</a>
-							</div>
-						</div>
-					</div>
-				<% }); %>
-			</div>
-		</div>
-	</div>
+<body style="background-color:#FF9566">
+	<h1 style="color: white"><%= med.medName %></h1>
+
+    <div id="buttons" class="col-12">
+        <button class="btn btn-light btn-outline-dark"><a href="../petDetail/<%= med.petID %>">Back to Pet</a></button> | <button class="btn btn-light btn-outline-dark"><a id="btn-edit" href="../med/edit/<%= med.medID %>">Edit Medication</a></button> |
+          <button type="button" id="btn-delete" class="btn btn-light btn-outline-dark">Delete Info</button>
+    </div>
+    <div class="container" id="medInfo">
+        <!--medication identity-->
+        <div class="container" style="padding: 20px;">
+            <div class="row" id="med-ident">
+            <div class="col-md-6">
+                <!--med image uses a web address, have to copy from google to insert: "Copy image address"-->
+                <img src="<%= med.medImage %>" alt="Medication Image" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h2 style="color: white"><%= med.medicationName %></h2>
+                <p style="color: white">Medication Type: <%= med.medType %></p>
+                <ul>
+                <li style="color: white">Dosage: <span class="text-muted"><%= med.dosage %></span></li>
+                <li style="color: white">Number of Daily Doses: <span class="text-muted"><%= med.numberOfDailyDoses %></span></li>
+                <li style="color: white">Notes: <span class="text-muted"> <%= med.medNotes %></span></li>
+                </ul>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 <footer>
     <%- include('../partials/footer') %>

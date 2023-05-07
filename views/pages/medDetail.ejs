@@ -14,8 +14,8 @@
         }
         #card{
             border-radius: 25px;
-            border: 2px solid #a6763f;
-            padding: 20px; 
+            border: 2px solid white;
+            padding: 20px;
             width: 200px;
             height: 150px;
         }
@@ -27,12 +27,12 @@
     <%- include('../partials/header') %>
  </header>
 
-<body style="background-color:#FFF0DF">
-	<h1><%= med.medName %></h1>
+<body style="background-color:#FF9566">
+	<h1 style="color: white"><%= med.medName %></h1>
 
     <div id="buttons" class="col-12">
-        <button><a href="../petDetail/<%= med.petID %>">Back to Pet</a></button> | <button><a id="btn-edit" href="../med/edit/<%= med.medID %>">Edit Medication</a></button> |
-          <button type="button" id="btn-delete">Delete Info</button>
+        <button class="btn btn-light btn-outline-dark"><a href="../petDetail/<%= med.petID %>">Back to Pet</a></button> | <button class="btn btn-light btn-outline-dark"><a id="btn-edit" href="../med/edit/<%= med.medID %>">Edit Medication</a></button> |
+          <button type="button" id="btn-delete" class="btn btn-light btn-outline-dark">Delete Info</button>
     </div>
     <div class="container" id="medInfo">
         <!--medication identity-->
@@ -43,12 +43,12 @@
                 <img src="<%= med.medImage %>" alt="Medication Image" class="img-fluid">
             </div>
             <div class="col-md-6">
-                <h2><%= med.medicationName %></h2>
-                <p>Medication Type: <%= med.medType %></p>
+                <h2 style="color: white"><%= med.medicationName %></h2>
+                <p style="color: white">Medication Type: <%= med.medType %></p>
                 <ul>
-                <li>Dosage: <span class="text-muted"><%= med.dosage %></span></li>
-                <li>Number of Daily Doses: <span class="text-muted"><%= med.numberOfDailyDoses %></span></li>
-                <li>Notes: <span class="text-muted"> <%= med.medNotes %></span></li>
+                <li style="color: white">Dosage: <span class="text-muted"><%= med.dosage %></span></li>
+                <li style="color: white">Number of Daily Doses: <span class="text-muted"><%= med.numberOfDailyDoses %></span></li>
+                <li style="color: white">Notes: <span class="text-muted"> <%= med.medNotes %></span></li>
                 </ul>
             </div>
             </div>
