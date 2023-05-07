@@ -163,7 +163,7 @@ app.route('/signOut')
         .clearCookie('RoleCookie')
         .clearCookie('mdbIDCookie')
         .clearCookie('EditCookie')
-        .clearCookie('AllowedToChange')
+        .clearCookie('PetEditCookie')
         .status(200)
         .redirect("/")
     })
@@ -394,23 +394,63 @@ app.route('/signOut')
         let mdbPetID = new ObjectId(animalID)
 
         let pet=await find(db,'Pet-Website-Project','Pets',{_id:mdbPetID})
-        // pull the user out of the array.
+        // pull the pet out of the array.
         pet=pet[0];
         // readd the string version ofthe _id
         pet.petID = animalID
-
+        // Getting the Medicine.
         let meds=await find(db,'Pet-Website-Project','MedLog',{petID:animalID})
-
         // convert _ID to a string & add to animal array
         meds.forEach(med => {
             med['medID'] = med._id.toString();
         })
-        
-        // should petDetail be turned into a template? How do we integrate databse pull with that?
-        res.render('pages/petDetail',{
-            pet:pet,
-            meds:meds
-        });
+
+        // authentication
+        let cookiePlate = req.cookies
+        // Get user info.
+        let mdbUserID = new ObjectId(pet.userID)
+        let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        user=user[0]
+
+        console.log("Checking pet owner.")
+        console.log(user)
+
+        // get info from current user
+        let currentJWT=cookiePlate.AuthCookie
+        let currentRole=cookiePlate.RoleCookie
+        let currentEdit=cookiePlate.PetEditCookie
+        let jwtMatch = await matchJWT(user.jwt,currentJWT)
+        // Is current user this user or an admin?
+        if(jwtMatch == true)
+        {
+            // set variables
+            allowedToEdit=true
+        }
+        else if(currentRole == 'admin'){
+            allowedToEdit=true
+        }
+        else{
+            allowedToEdit=false
+        }
+        // check if current cookie allows user to edit this page.
+        if((currentEdit===allowedToEdit)==true){
+            // send variables to the page to be used.
+            res
+            .cookie('PetEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+            .render('pages/petDetail',{
+                pet:pet,
+                meds:meds
+            })
+        }
+        else{
+             // send variables to the page to be used.
+            res
+            .cookie('PetEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+            .render('pages/petDetail',{
+                pet:pet,
+                meds:meds
+            })
+        }
     })
     .delete(async function(req, res){
         res.send('Got a DELETE request')

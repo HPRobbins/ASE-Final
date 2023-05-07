@@ -78,9 +78,8 @@
             });
             
             // Checks if current user is allowed to make changes to the data (as determined serverside).
-            // If there is no "AllowedToChange" cookie, defaults to false.
+            // If there is no "EditCookie" cookie, defaults to false.
             let allowedToChange = cookiePlate["EditCookie"] === "true"
-            console.log(allowedToChange)
             
             // Grabs the element to be changed by name.
             let userEditBtn=document.querySelectorAll('[name="userEditBtn"]')[0]
