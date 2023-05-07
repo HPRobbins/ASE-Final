@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('../partials/head') %>
+   </head>
+
+   <header>
+    <%- include('../partials/header') %>
+    </header>
+
+    <body style="background-color: #FFF0DF;">
+        <div>
+            <section class="vh-100">
+                <div class="container py-5 h-100">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                            <div class="card-body p-5 text-center">
+                                <!--Sign up-->
+                                <h3 class="mb-5">Sign Up</h3>
+                            
+                                <form id="signup">
+                                    <div class="form-outline mb-4">
+                                        <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="firstName">First Name</label>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input type="text" id="lastName" name="lastName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="lastName">Last Name</label>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="email" id="typeEmailX-2" name="email" class="form-control form-control-lg" />
+                                        <label class="form-label" for="typeEmailX-2">Email</label>
+                                    </div>
+                        
+                                    <div class="form-outline mb-4">
+                                        <input type="password" id="typePasswordX-2" name="password" class="form-control form-control-lg" />
+                                        <label class="form-label" for="typePasswordX-2">Password</label>
+                                    </div>
+                        
+                                    <button class="btn btn-primary btn-lg btn-block" type="submit">Sign Up</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+	    <script src="/assets/getAllURLParams.js"></script>
+	    <script src="/assets/cookies.js"></script>
+
+        <script> 
+            // taken from code_12, 04, signup.html	
+            const signup=document.getElementById('signup')
+    
+            signup.addEventListener('submit',(e)=>{
+                e.preventDefault();
+                let emailAddress=document.querySelectorAll('[name="email"]')[0]
+                let password=document.querySelectorAll('[name="password"]')[0]
+                let firstName=document.querySelectorAll('[name="firstName"]')[0]
+                let lastName=document.querySelectorAll('[name="lastName"]')[0]
+        
+                axios({
+                method: 'post',
+                url: '/signUp',
+                data: {
+                    firstName:firstName.value,
+                    lastName:lastName.value,
+                    emailAddress:emailAddress.value,
+                    password:password.value,
+                    role:'user'
+                },
+                    validateStatus:()=>true
+                })
+                .then(function (response) {
+                    // TODO: move to '/users' once logged in.
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            })
+        </script> 
+    </body>
+    
+    <footer>
+        <%- include('../partials/footer') %>
+    </footer>
+</html>
