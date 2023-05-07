@@ -8,7 +8,7 @@
     <%- include('../partials/header') %>
     </header>
 
-    <body style="background-color: #FFF0DF;">
+    <body style="background-color: #FF9566;">
         <div>
             <section class="vh-100">
                 <div class="container py-5 h-100">
@@ -18,7 +18,7 @@
                             <div class="card-body p-5 text-center">
                                 <!--Sign up-->
                                 <h3 class="mb-5">Sign Up</h3>
-                            
+
                                 <form id="signup">
                                     <div class="form-outline mb-4">
                                         <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" />
@@ -33,12 +33,12 @@
                                         <input type="email" id="typeEmailX-2" name="email" class="form-control form-control-lg" />
                                         <label class="form-label" for="typeEmailX-2">Email</label>
                                     </div>
-                        
+
                                     <div class="form-outline mb-4">
                                         <input type="password" id="typePasswordX-2" name="password" class="form-control form-control-lg" />
                                         <label class="form-label" for="typePasswordX-2">Password</label>
                                     </div>
-                        
+
                                     <button class="btn btn-primary btn-lg btn-block" type="submit">Sign Up</button>
                                 </form>
                             </div>
@@ -48,21 +48,21 @@
                 </div>
             </section>
         </div>
-        
+
 	    <script src="/assets/getAllURLParams.js"></script>
 	    <script src="/assets/cookies.js"></script>
 
-        <script> 
-            // taken from code_12, 04, signup.html	
+        <script>
+            // taken from code_12, 04, signup.html
             const signup=document.getElementById('signup')
-    
+
             signup.addEventListener('submit',(e)=>{
                 e.preventDefault();
                 let emailAddress=document.querySelectorAll('[name="email"]')[0]
                 let password=document.querySelectorAll('[name="password"]')[0]
                 let firstName=document.querySelectorAll('[name="firstName"]')[0]
                 let lastName=document.querySelectorAll('[name="lastName"]')[0]
-        
+
                 axios({
                 method: 'post',
                 url: '/signUp',
@@ -83,9 +83,9 @@
                     console.log(error);
                 });
             })
-        </script> 
+        </script>
     </body>
-    
+
     <footer>
         <%- include('../partials/footer') %>
     </footer>
