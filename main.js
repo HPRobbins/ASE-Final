@@ -1,5 +1,5 @@
 const express = require('express')
-const { join } = require('path')
+const { join, resolve } = require('path')
 const app = express()
 const path = require('path');
 const fs = require('fs')
@@ -96,7 +96,7 @@ app.route('/')
 	.post((req, res) => {
 	  res.send('Got a POST request')
 	})
-    // Yes for a uthentication
+    // Yes for authentication
 	.put(async(req, res) => {
 	  // res.send('Got a PUT request for /')
         let email = req.body.emailAddress
@@ -162,10 +162,9 @@ app.route('/signOut')
         res.clearCookie('AuthCookie')
         .clearCookie('RoleCookie')
         .clearCookie('mdbIDCookie')
+        .clearCookie('EditCookie')
         .status(200)
-        .json({'message':"Log out complete, cookies cleard!"})
-        console.log("Cookies cleared?")
-        console.log(req.cookies)
+        .redirect("/")
     })
     .post((req, res) => {
         res.send('Got a POST request')
@@ -186,10 +185,10 @@ app.route('/signOut')
     app.route('/users/')
     // would return index.html and the list of users
 	.get(async function(req, res){
-        /*
+        
        console.log("Cookies in /users/")
        console.log(req.cookies)
-       */
+       
         // everything in the Users collection is put into an array called result
         let result=await find(db,'Pet-Website-Project','Users',{})
       
@@ -220,7 +219,7 @@ app.route('/signOut')
 	})
     // maybe an admin only feature?
     .delete((req, res) => {
-    res.send('Got a DELETE request')
+        res.send('Got a DELETE request')
     })
 
 // calls the userDetail page
@@ -231,62 +230,57 @@ app.route('/signOut')
         let ownerID = req.params.userID
         // convert userID as string into ObjectID for search in MongoDB
         let mdbUserID = new ObjectId(ownerID)
+        let allowedToEdit = false
 
        cookiePlate = req.cookies
-
-       console.log(cookiePlate)
 
         // get info from current user
         let currentJWT=cookiePlate.AuthCookie
         let currentRole=cookiePlate.RoleCookie
 
-        // for enabling/disabling parts of page.
-        let pathStatus = ""
-        let buttonStatus = ""
-
         // Look for the user in the database.
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
         
-        // check that the user exists
+        // check that the user exists, if no return error.
         if(user.length==0)
         {
             res.status(404).json({message:'User not found. Return to user index and try again.'})
         }
+        // if user exists, allow data edits.
         else{
             // pull the user out of the array.
             user=user[0]
 
             let jwtMatch = matchJWT(user.jwt,currentJWT)
-            // console.log(jwtMatch)
             
             // Is current user this user or an admin?
             if(jwtMatch == true || currentRole == 'admin')
             {
                 // set variables
-                buttonStatus = ' '
-                pathStatus = ' '
+                allowedToEdit=true
+
             }
             else{
-                buttonStatus='disabled'
-                pathStatus='disabled'
+                allowedToEdit=false
             }
-
-            // readd the string version ofthe _id
+            
+            console.log("==Allowed To Edit Value==")
+           console.log(allowedToEdit)
+            // readd the string version ofthe _id to find in Pets collection.
             user.userID = ownerID
-
             let pets=await find(db,'Pet-Website-Project','Pets',{userID:ownerID})
-
             // convert _ID to a string & add to animal array
             pets.forEach(pet => {
                 pet['petID'] = pet._id.toString();
             })
 
             // send variables to the page to be used.
-            res.render('pages/userDetail',{
-                buttonStatus:buttonStatus,
+            res
+            .cookie('EditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+            .render('pages/userDetail',{
                 user:user,
                 pets:pets
-            });
+            })
         }
     })
     .delete(async function(req, res){
@@ -302,7 +296,7 @@ app.route('/signOut')
 
         //check if any pets, if so send Can not delete 
         if (pets.length > 0) {
-        res.send("Can not delete user. User has pets")
+            res.send("Can not delete user. User has pets")
         } else {
             //remove user from database
             let result = await remove(db, 'Pet-Website-Project', 'Users', mdbUserID)
