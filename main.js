@@ -68,11 +68,11 @@ async function loginFind(db,database,collection,criteria,criteria2){
 
   // PUT data in database via an Update.
   // Returns result of attempt to update.
-async function update(db, database, collection, documentID, document){
-    let dbo=db.db(database)
-    let result=await dbo.collection(collection).updateOne({_id:documentID},{$set:document})
-    return result;
-}
+    async function update(db, database, collection, documentID, document){
+        let dbo=db.db(database)
+        let result=await dbo.collection(collection).updateOne({_id:documentID},{$set:document})
+        return result;
+    }
 
   //DELETE data to mongoDB
   async function remove(db,database, collection, documentID){
@@ -81,10 +81,10 @@ async function update(db, database, collection, documentID, document){
     return result
   }
 
-async function matchJWT(jwt1,jwt2){
-    let result = (jwt1 === jwt2)
-    return result
-}
+    async function matchJWT(jwt1,jwt2){
+        let result = (jwt1 === jwt2)
+        return result
+    }
 
 // for default page, should take user to welcomePage
 app.route('/')
@@ -149,13 +149,7 @@ app.route('/')
         } 
         // TODO: Something with this? may not be needed. send response back.
 	})
-	.patch((req, res) => {
-	  res.send('Got a PATCH request')
-	})
-    // unneeded, can be removed/ignored
-	.delete((req, res) => {
-	  res.send('Got a DELETE request')
-	})
+
 
 app.route('/signOut')
     .get(async (req, res) => {
@@ -166,18 +160,6 @@ app.route('/signOut')
         .json({'message':"Log out complete, cookies cleard!"})
         console.log("Cookies cleared?")
         console.log(req.cookies)
-    })
-    .post((req, res) => {
-        res.send('Got a POST request')
-    })
-    .put((req, res) => {
-        res.send('Got a PUT request')
-    })
-    .patch((req, res) => {
-        res.send('Got a PATCH request')
-    })
-    .delete((req, res) => {
-        res.send('Got a DELETE request')
     })
 
 
@@ -208,25 +190,9 @@ app.route('/signOut')
             });
         }
 	})
-    // possibly unneeded, can be ignored/removed.
-	.post((req, res) => {
-	  res.send('Got a POST request')
-	})
-	.put((req, res) => {
-	  res.send('Got a PUT request')
-	})
-	.patch((req, res) => {
-	  res.send('Got a PATCH request')
-	})
-    // maybe an admin only feature?
-    .delete((req, res) => {
-    res.send('Got a DELETE request')
-    })
 
 // calls the userDetail page
     app.route('/userDetail/:userID')
-    // get details of user & the userDetail page
-    // also returns all pets owned by user.
     .get(async function(req, res){
         let ownerID = req.params.userID
         // convert userID as string into ObjectID for search in MongoDB
@@ -522,7 +488,7 @@ app.route('/petDetail/delete/:petID')
     } else {
         //remove pet from database
         let result = await remove(db, 'Pet-Website-Project', 'Pets', mdbPetID)
-        res.redirect('/userDetail/:userID')
+        //res.redirect('/userDetail/:userID')
     }
 })
 
@@ -622,14 +588,14 @@ app.route('/petDetail/delete/:petID')
 //delete med
 app.route('/med/delete/:medID')
 .get(async function(req, res){
-    let ownerID = req.params.medID
+    let medID = req.params.medID
     // convert userID as string into ObjectID for search in MongoDB
-    let mdbMedID = new ObjectId(ownerID);
+    let mdbMedID = new ObjectId(medID);
     // returns the single user as part of an array
     let med=await find(db,'Pet-Website-Project','MedLog',{_id:mdbMedID})
     // pull the user out of the array.
     med=med[0];
-    med.medID = ownerID
+    med.medID = medID
 
     // send variables to the page to be used.
     res.render('pages/deleteMed',{
@@ -637,12 +603,12 @@ app.route('/med/delete/:medID')
     });
 })
 .delete(async function(req, res){
-    let ownerID = req.params.medID
+    let medID = req.params.medID
     //convert for mango
-    let mdbMedID = new ObjectId(ownerID);
+    let mdbMedID = new ObjectId(medID);
     //remove med from database
     let result = await remove(db, 'Pet-Website-Project', 'MedLog', mdbMedID)
-    res.redirect('/medDetail/'+ ownerID)
+    //res.redirect('/medDetail/'+ medID)
     
 })
 

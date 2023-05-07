@@ -47,9 +47,10 @@
 
 
 	<script> 
+		
 		// taken from code_12, 04, signup.html	
 		const addMedication=document.getElementById('addMedication')
-		addMedication.addEventListener('submit',(e)=>{
+		addMedication.addEventListener('submit',redirect,(e)=>{
 			e.preventDefault();
             let petID=document.querySelectorAll('[name="petID"]')[0]
 			let medicationName=document.querySelectorAll('[name="medicationName"]')[0]
@@ -79,6 +80,11 @@
 				console.log(error);
 			});
 		})
+
+		function redirect(){
+            let urlportionRedirect = document.getElementById('petID').value;
+            window.location.href = "/petDetail/" + urlportionRedirect
+        }
 	</script> 
 
 </body>

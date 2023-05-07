@@ -50,9 +50,13 @@
     </form>
 
     <script> 
-		// taken from code_12, 04, signup.html	
+		function redirect(){
+            let urlportionRedirect = document.getElementById('medicationID').value;
+            window.location.href = "/medDetail/" + urlportionRedirect
+        }
+
 		const editMed=document.getElementById('editMed')
-		editMed.addEventListener('submit',(e)=>{
+		editMed.addEventListener('submit',redirect,(e)=>{
 			e.preventDefault();
 			let medID=document.querySelectorAll('[name="medicationID"]')[0]
             let petID=document.querySelectorAll('[name="petID"]')[0]
@@ -80,7 +84,7 @@
 				validateStatus:()=>true*/
 			})
 			.then(function (response) {
-                window.location="/medDetail/" + urlportion
+                //window.location="/medDetail/" + urlportion
 				console.log(response);
 			})
 			.catch(function (error) {
