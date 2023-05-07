@@ -1,31 +1,36 @@
 <body style="background-color: #FF9566;">
 	<div class ="container">
-		<p><h1 style="color: white;">Add Medication</h1> <button class="btn btn-light btn-outline-dark" href="/users/">Back to users index</button> <button class="btn btn-light btn-outline-dark" href="../<%= pet.petID %>">Back to pet details</button></p>
-	<form id="addMedication" enctype="multipart/formdata">
-		<div class="form-group">
-			<label for="petID" style="color: white; font-size: 20px">Pet ID:</label>
-			<input type="text" class="form-control" id="petID" name="petID" value="<%= pet.petID %>" disabled>
-		</div>
-		<div class="form-group">
-			<label for="medicationName" style="color: white; font-size: 20px">Medication Name:</label>
-			<input type="text" class="form-control" id="medicationName" name="medicationName">
-		</div>
-		<div class="form-group">
-			<label for="medType" style="color: white; font-size: 20px">Med Type:</label>
-			<input type="text" class="form-control" id="medType" name="medType">
-		</div>
-		<div class="form-group">
-			<label for="dosage" style="color: white; font-size: 20px">Dosage:</label>
-			<input type="text" class="form-control" id="dosage" name="dosage">
-		</div>
-		<div class="form-group">
-			<label for="numberOfDailyDoses" style="color: white; font-size: 20px">Number of Daily Doses:</label>
-			<input type="text" class="form-control" id="numberOfDailyDoses" name="numberOfDailyDoses">
-		</div>
-		<div class="form-group">
-			<label for="medNotes" style="color: white; font-size: 20px">Notes:</label>
-			<input type="text" class="form-control" id="medNotes" name="medNotes">
-		</div>
+		<p><h1 style="color: white;">Add Pet</h1> <button class="btn btn-light btn-outline-dark" href="/users/">Back to users index</button>
 
-		<button type="submit" class="btn btn-primary" >Submit</button>
-	</form>
+		<form id="addPet" enctype="multipart/formdata">
+			<div class="form-group">
+				<label for="userID" style="color: white; font-size: 20px" >User ID:</label>
+				<input type="text" class="form-control" id="userID" name="userID" value="<%= user.userID %>" disabled>
+			</div>
+			<div class="form-group">
+				<label for="petName" style="color: white; font-size: 20px">Pet's Name:</label>
+				<input type="text" class="form-control" id="petName" name="petName">
+			</div>
+			<div class="form-group">
+				<label for="petType" style="color: white; font-size: 20px">Pet Type:</label>
+				<input type="text" class="form-control" id="petType" name="petType">
+			</div>
+			<div class="form-group">
+				<label for="petSex" style="color: white; font-size: 20px">Pet's Sex:</label>
+				<input type="text" class="form-control" id="petSex" name="petSex">
+			</div>
+			<div class="form-group">
+				<label for="petBreed" style="color: white; font-size: 20px">Pet's Breed:</label>
+				<input type="text" class="form-control" id="petBreed" name="petBreed">
+			</div>
+			<div class="form-group">
+				<label for="petWeight" style="color: white; font-size: 20px">Pet's Weight:</label>
+				<input type="text" class="form-control" id="petWeight" name="petWeight">
+			</div>
+			<div class="form-group">
+				<label for="petDoB" style="color: white; font-size: 20px">Pet's Date of Birth:</label>
+				<input type="text" class="form-control" id="petDoB" name="petDoB">
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	</div>
