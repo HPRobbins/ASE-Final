@@ -13,7 +13,7 @@ app.set('view engine', 'ejs')
 app.use(bodyParser.json())
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const uri = "mongodb+srv://appclient:LbSgYnUaMQ8jTACg@pet-website-project.ksy84iw.mongodb.net/?retryWrites=true&w=majority"
+const uri = "mongodb+srv://appclient:GlhvkwLhil4TnIez@pet-website-project.ksy84iw.mongodb.net/?retryWrites=true&w=majority"
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 ObjectID = require('mongodb').ObjectID
 var db=null
@@ -22,8 +22,8 @@ var database='Pet-Website-Project'
 const bcrypt=require('bcrypt')
 
 const jwt=require('jsonwebtoken');
-const { errorMonitor } = require('events');
-const { strict } = require('assert');
+/* const { errorMonitor } = require('events');
+const { strict } = require('assert'); */
 const jwt_expiration=86400000
 const jwtsalt='privatekey'
 
@@ -73,6 +73,13 @@ async function update(db, database, collection, documentID, document){
     let result=await dbo.collection(collection).updateOne({_id:documentID},{$set:document})
     return result;
 }
+
+// amaya's delete.
+async function remove(db,database, collection, documentID){
+    let dbo=db.db(database)
+    let result = await dbo.collection(collection).deleteOne({_id:documentID});
+    return result
+  }
 
 async function matchJWT(jwt1,jwt2){
     let result = (jwt1 === jwt2)
@@ -129,7 +136,6 @@ app.route('/')
                     .cookie('RoleCookie', result[0].role,('SameSite:Lax'))
                     .cookie('mdbIDCookie', result[0]._id,('SameSite:Lax'))
                     .json({'message':"Logged in successfully! & Cookie created!"})
-        
                 }
                 else{
                     res.status(406).json({message:'Login Failed'})
@@ -185,8 +191,6 @@ app.route('/signOut')
        console.log("Cookies in /users/")
        console.log(req.cookies)
        */
-       
-
         // everything in the Users collection is put into an array called result
         let result=await find(db,'Pet-Website-Project','Users',{})
       
