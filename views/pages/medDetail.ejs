@@ -31,8 +31,7 @@
 	<h1><%= med.medName %></h1>
 
     <div id="buttons" class="col-12">
-        <button><a href="../petDetail/<%= med.petID %>">Back to Pet</a></button> | <button><a id="btn-edit" name="medEditBtn" href="../med/edit/<%= med.medID %>">Edit Medication</a></button> |
-          <button type="button" name="medDltBtn" id="btn-delete">Delete Info</button>
+        <button><a href="../petDetail/<%= med.petID %>">Back to Pet</a></button> | <button><a id="btn-edit" href="../med/edit/<%= med.medID %>">Edit Medication</a></button> | <button><a id="btn-delete" href="../med/delete/<%= med.medID %>">Delete</a></button>
     </div>
     <div class="container" id="medInfo">
         <!--medication identity-->
