@@ -11,7 +11,7 @@
 <body>
     <h1 style="padding: 20px; background-color: #FFCD95;"><%= user.firstName %> <%= user.lastName %></h1>
     <div style="padding-left:20px;">
-            <button><a href="/users/">Back to users index</a></button> | <button><a id="btn-edit" href="../user/edit/<%= user.userID %>">Edit User</a></button> | <button><a id="btn-add" href="../userDetail/addPet/<%= user.userID %>">Add Pet</a> </button> | <button><a id="btn-delete" href="../userDetail/delete/<%= user.userID %>">Delete</a></button>    
+            <button><a href="/users/">Back to users index</a></button> | <button name="userEditBtn"><a id="btn-edit" name="userEditHref" href="../user/edit/<%= user.userID %>">Edit User</a></button> | <button name="addPetBtn"><a id="btn-add" name="addPetHref" href="../userDetail/addPet/<%= user.userID %>">Add Pet</a> </button> | <button name="deleteBtn"><a id="btn-delete" name="delHref" href="../userDetail/delete/<%= user.userID %>">Delete</a></button>    
     </div>
     <div id="userDetail">
         <div style="padding: 20px;">
@@ -83,20 +83,26 @@
             let allowedToChange = cookiePlate["EditCookie"] === "true"
             
             // Grabs the element to be changed by name.
+            let userEditHref=document.querySelectorAll('[name="userEditHref"]')[0]
             let userEditBtn=document.querySelectorAll('[name="userEditBtn"]')[0]
+            let addPetHref=document.querySelectorAll('[name="addPetHref"]')[0]
             let addPetBtn=document.querySelectorAll('[name="addPetBtn"]')[0]
+            let delHref=document.querySelectorAll('[name="delHref"]')[0]
             let deleteBtn=document.querySelectorAll('[name="deleteBtn"]')[0]
             // changes the elements to not do anything.
             if(allowedToChange == false)
             {
-                userEditBtn.href="#"
-                userEditBtn.onclick="return false;"
+                userEditHref.href="#"
+                userEditHref.onclick="return false;"
+                userEditBtn.disabled=true
 
-                addPetBtn.href="#"
-                addPetBtn.onclick="return false;"
-                
-                deleteBtn.href="#"
-                deleteBtn.onclick="return false;"
+                addPetHref.href="#"
+                addPetHref.onclick="return false;"
+                addPetBtn.disabled=true
+
+                delHref.href="#"
+                delHref.onclick="return false;"
+                deleteBtn.disabled=true
             }
             else{
                 // allowed to make changes, do nothing.
