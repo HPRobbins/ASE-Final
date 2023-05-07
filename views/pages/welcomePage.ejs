@@ -92,8 +92,6 @@
                         if(response.status==200){
                             let responseData = response.data
                             alert('Success!'+' '+ responseData.message)
-                            console.log("Page receives cookies:")
-                            console.log(document.cookie)
                             window.location = "/users"
                         }
                         else if(response.status==404)
