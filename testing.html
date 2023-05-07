@@ -1,36 +1,34 @@
-<body style="background-color: #FF9566;">
-	<div class ="container">
-		<p><h1 style="color: white;">Add Pet</h1> <button class="btn btn-light btn-outline-dark" href="/users/">Back to users index</button>
+<!DOCTYPE html>
+<html>
+<head>
+     <%- include('../partials/head') %>
+</head>
 
-		<form id="addPet" enctype="multipart/formdata">
-			<div class="form-group">
-				<label for="userID" style="color: white; font-size: 20px" >User ID:</label>
-				<input type="text" class="form-control" id="userID" name="userID" value="<%= user.userID %>" disabled>
+<header>
+    <%- include('../partials/header') %>
+</header>
+
+<body style="background-color: #fff8df;">
+	<div style="padding: 20px;">
+		<div id="userdetails" class="container mt-3">
+			<div class="row justify-content-center">
+				<!-- the <% %> denotes javascript. <%= %> denotes a replacement/variable.-->
+				<% users.forEach(function(user) { %>
+					<div class="col-lg-4">
+						<div class="card mb-4" style="min-width: 18rem; max-width: 18rem;">
+							<div class="card-body">
+								<h5 class="card-title" style="color: #faa24f; font-size:40px;"><%= user.firstName %> <%=user.lastName %></h5>
+								<p class="card-text" style="color: #fdbc70; font-size:20px">Email: <%= user.emailAddress %></p>
+								<a href="../userDetail/<%= user.userID %>"  class="btn btn-outline-dark">Details</a>
+							</div>
+						</div>
+					</div>
+				<% }); %>
 			</div>
-			<div class="form-group">
-				<label for="petName" style="color: white; font-size: 20px">Pet's Name:</label>
-				<input type="text" class="form-control" id="petName" name="petName">
-			</div>
-			<div class="form-group">
-				<label for="petType" style="color: white; font-size: 20px">Pet Type:</label>
-				<input type="text" class="form-control" id="petType" name="petType">
-			</div>
-			<div class="form-group">
-				<label for="petSex" style="color: white; font-size: 20px">Pet's Sex:</label>
-				<input type="text" class="form-control" id="petSex" name="petSex">
-			</div>
-			<div class="form-group">
-				<label for="petBreed" style="color: white; font-size: 20px">Pet's Breed:</label>
-				<input type="text" class="form-control" id="petBreed" name="petBreed">
-			</div>
-			<div class="form-group">
-				<label for="petWeight" style="color: white; font-size: 20px">Pet's Weight:</label>
-				<input type="text" class="form-control" id="petWeight" name="petWeight">
-			</div>
-			<div class="form-group">
-				<label for="petDoB" style="color: white; font-size: 20px">Pet's Date of Birth:</label>
-				<input type="text" class="form-control" id="petDoB" name="petDoB">
-			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
-		</form>
+		</div>
 	</div>
+</body>
+<footer>
+    <%- include('../partials/footer') %>
+</footer>
+</html>
