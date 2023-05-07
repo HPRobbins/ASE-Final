@@ -79,6 +79,7 @@
                     validateStatus:()=>true*/
                 })
                 .then(function (response) {
+                    window.location="/petDetail/" + urlportion
                     console.log(response);
                 })
                 .catch(function (error) {

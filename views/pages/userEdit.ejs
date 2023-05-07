@@ -28,7 +28,7 @@
 			<input type="text" class="form-control" id="emailAddress" name="email" value="<%= user.emailAddress %>">
 		</div>
 
-		<button type="submit" class="btn btn-primary" >Submit</button>
+		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
 
 		<script src="/assets/getAllURLParams.js"></script>
@@ -53,10 +53,12 @@
 					firstName:firstName.value,
 					lastName:lastName.value,
 					emailAddress:emailAddress.value
-				}/*,
+				}
+				/*,
 					validateStatus:()=>true*/
 				})
 				.then(function (response) {
+					window.location="/users"
 					console.log(response);
 				})
 				.catch(function (error) {

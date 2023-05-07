@@ -223,7 +223,7 @@ app.route('/signUp')
             console.log(err)
         })
 
-        res.render()
+        //res.render()
     })
     .put(async function(req, res){
         let ownerID = req.params.userID
