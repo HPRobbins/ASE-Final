@@ -1,91 +1,97 @@
 <!DOCTYPE html>
 <html>
-<head>
+    <head>
     <%- include('../partials/head') %>
-
-    <style>
-        main{
-	        background-color:#FFF0DF;
-	        margin:20px;
-        }
-        div .form-group{
-            padding:10px;
-            margin:20px;
-        }
-        #card{
-            border-radius: 25px;
-            border: 2px solid white;
-            padding: 20px;
-            width: 200px;
-            height: 150px;
-        }
-    </style>
 </head>
 
-
 <header>
-    <%- include('../partials/header') %>
- </header>
+   <%- include('../partials/header') %>
+</header>
+<body style="background-color: #FF9566;">
+<div class="container">
 
-<body style="background-color:#FF9566">
-    <h1 style="padding: 20px; color: white"><%= pet.petName %></h1>
-    <div class="container">
-        <div class="navbar">
-        <button><a href="/users/">Back to users index</a></button> | <button><a href="../userDetail/<%= pet.userID %>">Back to User</a></button> | <button><a id="btn-edit" href="../pet/edit/<%= pet.petID %>">Edit pet</a></button> | <button><a id="btn-add" href="../petDetail/addMedication/<%=pet.petID %>">Add Medication</a></button> | <button type="button" id="btn-delete">Delete pet</button>
-        </div>
-        <div id="petDetail">
-            <div padding="20px" class="card-body card text-center">
-             <!--This will hold the photo-->
-                <div id="pet-photo"></div>
-                <!--This will hold both pet ID and pet Name-->
-                <div id="pet-ident">
-                    <div class="row justify-content-start">
-                        <div id="petID" class="col-4">ID #: <%= pet.petID %></div>
-                        <div id="petName" class="col-4">Name: <%= pet.petName %></div>
-                    </div>
-                </div>
-                <!-- This will hold both pet type and breed-->
-                <div id="pet-kind">
-                    <div class="row justify-content-start">
-                        <div id="petSpecies" class="col-4">Species: <%= pet.petType %></div>
-                        <div id="petBreed" class="col-4">Breed: <%= pet.petBreed %></div>
-                    </div>
-                </div>
-                <!-- This will hold pet sex, age, and weight-->
-                <div id="pet-stats">
-                        <div class="row justify-content-start">
-                        <div id="petSex" class="col-4">Sex: <%= pet.petSex %></div>
-                        <div id="petDoB" class="col-4">Date of Birth: <%= pet.petDoB %></div>
-                        <div id="petWeight" class="col-4">Weight: <%= pet.petWeight %></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-            <!-- This will hold the pagination for the medication-->
-            <div style="padding: 20px;">
-                <div id="medDetail"class="container">
-                    <div class="row">
-                        <% meds.forEach(function(med) { %>
-                            <div class="col-sm-4">
-                                <div class="card" style="width: 22rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><%= med.medicationName %></h5>
-                                        <h6 class="card-subtitle mb-2 text-muted"><%= med.MedType %></h6>
-                                        <p class="card-text">Dose Amount: <%=med.dosage %></p>
-                                        <p class="card-text">Notes: <%= med.medNotes %></p>
-                                        <a href="../medDetail/<%= med.medID %>" class="btn btn-outline-dark">Details</a>
-                                    </div>
-                                </div>
-                            </div>
-                        <% }); %>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container"><p><h1>Medication Edit</h1> <button><a href="/users/">Back to users index</a></button> <button><a href="../../petDetail/<%= med.petID %>">Back to pet details</a></button> <button><a href="../../medDetail/<%= med.medID %>">Back to med details</a></button></p>
 
+    <form id="editMed" enctype="multipart/formdata">
+        <div class="form-group">
+            <label for="medicationID" style="color: #FFCD95;">Medication ID:</label>
+            <input type="text" class="form-control" id="medicationIDInput" name="medicationID" aria-describedby="medicationID" placeholder="medicationID" value="<%= med.medID %>" disabled>
+        </div>
+        <div class="form-group">
+            <label for="petID" style="color: #FFCD95;">Pet ID:</label>
+            <input type="text" class="form-control" id="petIDInput" name="petID" aria-describedby="petID" placeholder="petID" value="<%= med.petID %>" disabled>
+        </div>
+        <div class="form-group">
+            <label for="medicationName" style="color: #FFCD95;">Medication Name</label>
+            <input type="text" class="form-control" id="medicationNameInput" name="medicationName" aria-describedby="medicationName" placeholder="Name" value="<%= med.medicationName %>">
+        </div>
+        <div class="form-group">
+            <label for="medType" style="color: #FFCD95;">Medication Type</label>
+            <input type="text" class="form-control" id="medTypeInput" name="medType" aria-describedby="medType" placeholder="Type" value="<%= med.medType %>">
+        </div>
+        <div class="form-group">
+            <label for="dosage" style="color: #FFCD95;">Dosage</label>
+            <input type="text" class="form-control" id="dosageInput" name="dosage" aria-describedby="dosage" placeholder="Dosage" value="<%= med.dosage %>">
+        </div>
+        <div class="form-group">
+            <label for="numberOfDailyDoses" style="color: #FFCD95;">Doses Per Day</label>
+            <input type="text" class="form-control" id="numberOfDailyDosesInput" name="numberOfDailyDoses" aria-describedby="numberOfDailyDoses" placeholder="Doses Per Day" value="<%= med.numberOfDailyDoses %>">
+        </div>
+        <div class="form-group">
+            <label for="medNotes" style="color: #FFCD95;">Medication Notes</label>
+            <input type="text" class="form-control" id="medNotesInput" name="medNotes" aria-describedby="medNotes" placeholder="Notes" value="<%= med.medNotes %>">
+        </div>
+        <div class="form-group">
+            <label for="medImage" style="color: #FFCD95;">Medication Image</label>
+            <input type="text" class="form-control" id="medImageInput" name="medImage" aria-describedby="medImage" placeholder="medImage" value="<%= med.medImage %>">
+        </div>
+
+		<button type="submit" class="btn btn-primary" >Submit</button>
+    </form>
+
+    <script>
+		// taken from code_12, 04, signup.html
+		const editMed=document.getElementById('editMed')
+		editMed.addEventListener('submit',(e)=>{
+			e.preventDefault();
+			let medID=document.querySelectorAll('[name="medicationID"]')[0]
+            let petID=document.querySelectorAll('[name="petID"]')[0]
+			let medicationName=document.querySelectorAll('[name="medicationName"]')[0]
+			let medType=document.querySelectorAll('[name="medType"]')[0]
+			let dosage=document.querySelectorAll('[name="dosage"]')[0]
+            let numberOfDailyDoses=document.querySelectorAll('[name="numberOfDailyDoses"]')[0]
+            let medNotes=document.querySelectorAll('[name="medNotes"]')[0]
+            let medImage=document.querySelectorAll('[name="medImage"]')[0]
+			let urlportion=medID.value
+			//let password=document.querySelectorAll('[name="password"]')[0]
+			axios({
+			method: 'post',
+			url: '/med/edit/'+ urlportion,
+			data: {
+				medID:medID.value,
+				petID:petID.value,
+				medicationName:medicationName.value,
+				medType:medType.value,
+                dosage:dosage.value,
+                numberOfDailyDoses:numberOfDailyDoses.value,
+                medNotes:medNotes.value,
+                medImage:medImage.value
+			}/*,
+				validateStatus:()=>true*/
+			})
+			.then(function (response) {
+                window.location="/medDetail/" + urlportion
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		})
+	</script>
+
+    <footer>
+        <%- include('../partials/footer') %>
+    </footer>
+</div>
 </body>
-<footer>
-    <%- include('../partials/footer') %>
-</footer>
 </html>
