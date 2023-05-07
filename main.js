@@ -233,7 +233,7 @@ app.route('/signOut')
         let mdbUserID = new ObjectId(ownerID)
         let allowedToEdit = false
 
-       cookiePlate = req.cookies
+       let cookiePlate = req.cookies
 
         // get info from current user
         let currentJWT=cookiePlate.AuthCookie
@@ -464,6 +464,12 @@ app.route('/userDetail/addPet/:userID')
         user.userID = ownerID
 
         // authentication
+         let cookiePlate = req.cookies
+
+        // get info from current user
+        let currentJWT=cookiePlate.AuthCookie
+        let currentRole=cookiePlate.RoleCookie
+        let currentEdit=cookiePlate.EditCookie
         let jwtMatch = await matchJWT(user.jwt,currentJWT)
         // Is current user this user or an admin?
         if(jwtMatch == true)
@@ -482,7 +488,7 @@ app.route('/userDetail/addPet/:userID')
             // send variables to the page to be used.
             res
             .cookie('EditCookie', `${allowedToEdit}`,('SameSite:Lax'))
-            .render('pages/userDetail',{
+            .render('pages/addPet',{
                 user:user
             })
         }
@@ -490,7 +496,7 @@ app.route('/userDetail/addPet/:userID')
              // send variables to the page to be used.
             res
             .cookie('EditCookie', `${allowedToEdit}`,('SameSite:Lax'))
-            .render('pages/userDetail',{
+            .render('pages/addPet',{
                 user:user
             })
         }

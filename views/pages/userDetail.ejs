@@ -44,16 +44,16 @@
             </div>
         </div>
     </div>
+    <!--Script for checking if current user is allowed to make changes.-->
     <script>
         window.addEventListener("load", (e) => {
 			e.preventDefault();
             /*
-                On windows load, check if the current user is allowed to make edits to the information displayed.
+                On window load, check if the current user is allowed to make edits to the information displayed.
                 If user is not allowed to make changes, disable the buttons/links to the pages that would allow that.
                 On the edit/add/delete pages, remove the ability to submit the data.
             */
-            let userID=document.querySelectorAll('[name="userID"]')[0]
-            // document.getElementById("div1").removeAttribute("align");
+
             // apparenlty this does not get autoformatted as a javascript object on client side. sadface.jpg
             let cookieJar = document.cookie
             // first split, temporary array.
