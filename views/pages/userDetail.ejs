@@ -8,18 +8,18 @@
    <%- include('../partials/header') %>
 </header>
 
-<body>
-    <h1 style="padding: 20px; background-color: #FFCD95;"><%= user.firstName %> <%= user.lastName %></h1>
+<body style="background-color:#FF9566">
+    <h1 style="padding: 20px; background-color: #FF9566;"><%= user.firstName %> <%= user.lastName %></h1>
     <div style="padding-left:20px;">
-            <button><a href="/users/">Back to users index</a></button> | <button><a id="btn-edit" href="../user/edit/<%= user.userID %>">Edit User</a></button> | <button><a id="btn-add" href="../userDetail/addPet/<%= user.userID %>">Add Pet</a> </button> | <button type="submit"><form method=".delete" action="../userDetail/<%= user.userID %>?_method=DELETE">Delete</form></button>    
+            <button class="btn btn-light btn-outline-dark"><a href="/users/">Back to users index</a></button> | <button class="btn btn-light btn-outline-dark"><a id="btn-edit" href="../user/edit/<%= user.userID %>">Edit User</a></button> | <button class="btn btn-light btn-outline-dark"><a id="btn-add" href="../userDetail/addPet/<%= user.userID %>">Add Pet</a> </button> | <button type="submit"><form method=".delete" action="../userDetail/<%= user.userID %>?_method=DELETE">Delete</form></button>
     </div>
     <div id="userDetail">
         <div style="padding: 20px;">
             <div class="card text-center">
-                <div class="card-body"> 
+                <div class="card-body">
                     <h5 class="card-title" id="nameOfUser"><%= user.firstName %> <%= user.lastName %></h5>
                     <p class="card-text" id="userEmail"><%= user.emailAddress %></p>
-                </div>  
+                </div>
             </div>
         </div>
     </div>
@@ -33,9 +33,9 @@
                     <div class="col-sm-4">
                         <div class="card" style="width: 22rem;">
                             <div class="card-body">
-                                <h5 class="card-title" style="color: #faa24f; font: size 20px;"><%= pet.petName %> </h5>
-                                <p class="card-text" style="color: #fdbc70;">Species: <%= pet.petType %></p><p class="card-text" style="color: #fdbc70;">Gender: <%= pet.petSex %></p> 
-                                <p class="card-text" style="color: #fdbc70;">Breed: <%= pet.petBreed %></p> <p class="card-text" style="color: #fdbc70;">Weight: <%= pet.petWeight %></p>
+                                <h5 class="card-title" style="color: #FF9566; font: size 20px;"><%= pet.petName %> </h5>
+                                <p class="card-text" style="color: #faa24f;">Species: <%= pet.petType %></p><p class="card-text" style="color: #fdbc70;">Gender: <%= pet.petSex %></p>
+                                <p class="card-text" style="color: #faa24f;">Breed: <%= pet.petBreed %></p> <p class="card-text" style="color: #fdbc70;">Weight: <%= pet.petWeight %></p>
                                 <a href="../petDetail/<%= pet.petID %>" class="btn btn-outline-dark">Details</a>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
         </div>
     </div>
 </body>
-   
+
     <footer>
         <%- include('../partials/footer') %>
     </footer>

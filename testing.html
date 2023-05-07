@@ -1,90 +1,50 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <%- include('../partials/head') %>
-   </head>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+</head>
 
-   <header>
-    <%- include('../partials/header') %>
-    </header>
+<header>
+   <%- include('../partials/header') %>
+</header>
 
-    <body style="background-color: #FF9566;">
-        <div>
-            <section class="vh-100">
-                <div class="container py-5 h-100">
-                    <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                        <div class="card shadow-2-strong" style="border-radius: 1rem;">
-                            <div class="card-body p-5 text-center">
-                                <!--Sign up-->
-                                <h3 class="mb-5">Sign Up</h3>
+<body style="background-color:#FF9566">
+    <h1 style="padding: 20px; background-color: #FF9566;"><%= user.firstName %> <%= user.lastName %></h1>
+    <div style="padding-left:20px;">
+            <button class="btn btn-light btn-outline-dark"><a href="/users/">Back to users index</a></button> | <button class="btn btn-light btn-outline-dark"><a id="btn-edit" href="../user/edit/<%= user.userID %>">Edit User</a></button> | <button class="btn btn-light btn-outline-dark"><a id="btn-add" href="../userDetail/addPet/<%= user.userID %>">Add Pet</a> </button> | <button type="submit"><form method=".delete" action="../userDetail/<%= user.userID %>?_method=DELETE">Delete</form></button>
+    </div>
+    <div id="userDetail">
+        <div style="padding: 20px;">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title" id="nameOfUser"><%= user.firstName %> <%= user.lastName %></h5>
+                    <p class="card-text" id="userEmail"><%= user.emailAddress %></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                                <form id="signup">
-                                    <div class="form-outline mb-4">
-                                        <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" />
-                                        <label class="form-label" for="firstName">First Name</label>
-                                    </div>
-                                    <div class="form-outline mb-4">
-                                        <input type="text" id="lastName" name="lastName" class="form-control form-control-lg" />
-                                        <label class="form-label" for="lastName">Last Name</label>
-                                    </div>
+    <div class="container text-center"><b>Pets</b></div>
 
-                                    <div class="form-outline mb-4">
-                                        <input type="email" id="typeEmailX-2" name="email" class="form-control form-control-lg" />
-                                        <label class="form-label" for="typeEmailX-2">Email</label>
-                                    </div>
-
-                                    <div class="form-outline mb-4">
-                                        <input type="password" id="typePasswordX-2" name="password" class="form-control form-control-lg" />
-                                        <label class="form-label" for="typePasswordX-2">Password</label>
-                                    </div>
-
-                                    <button class="btn btn-primary btn-lg btn-block" type="submit">Sign Up</button>
-                                </form>
+    <div style="padding: 20px;">
+        <div id="petDetail"class="container">
+            <div class="row">
+                <% pets.forEach(function(pet) { %>
+                    <div class="col-sm-4">
+                        <div class="card" style="width: 22rem;">
+                            <div class="card-body">
+                                <h5 class="card-title" style="color: #FF9566; font: size 20px;"><%= pet.petName %> </h5>
+                                <p class="card-text" style="color: #faa24f;">Species: <%= pet.petType %></p><p class="card-text" style="color: #fdbc70;">Gender: <%= pet.petSex %></p>
+                                <p class="card-text" style="color: #faa24f;">Breed: <%= pet.petBreed %></p> <p class="card-text" style="color: #fdbc70;">Weight: <%= pet.petWeight %></p>
+                                <a href="../petDetail/<%= pet.petID %>" class="btn btn-outline-dark">Details</a>
                             </div>
                         </div>
                     </div>
-                    </div>
-                </div>
-            </section>
+                <% }); %>
+            </div>
         </div>
-
-	    <script src="/assets/getAllURLParams.js"></script>
-	    <script src="/assets/cookies.js"></script>
-
-        <script>
-            // taken from code_12, 04, signup.html
-            const signup=document.getElementById('signup')
-
-            signup.addEventListener('submit',(e)=>{
-                e.preventDefault();
-                let emailAddress=document.querySelectorAll('[name="email"]')[0]
-                let password=document.querySelectorAll('[name="password"]')[0]
-                let firstName=document.querySelectorAll('[name="firstName"]')[0]
-                let lastName=document.querySelectorAll('[name="lastName"]')[0]
-
-                axios({
-                method: 'post',
-                url: '/signUp',
-                data: {
-                    firstName:firstName.value,
-                    lastName:lastName.value,
-                    emailAddress:emailAddress.value,
-                    password:password.value,
-                    role:'user'
-                },
-                    validateStatus:()=>true
-                })
-                .then(function (response) {
-                    // TODO: move to '/users' once logged in.
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            })
-        </script>
-    </body>
+    </div>
+</body>
 
     <footer>
         <%- include('../partials/footer') %>
