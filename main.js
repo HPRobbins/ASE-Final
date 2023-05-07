@@ -74,8 +74,8 @@ async function update(db, database, collection, documentID, document){
     return result;
 }
 
-// amaya's delete.
-async function remove(db,database, collection, documentID){
+  //DELETE data to mongoDB
+  async function remove(db,database, collection, documentID){
     let dbo=db.db(database)
     let result = await dbo.collection(collection).deleteOne({_id:documentID});
     return result
@@ -289,9 +289,24 @@ app.route('/signOut')
             });
         }
     })
+
+    app.route('/userDetail/delete/:userID')
+    .get(async function(req, res){
+        let ownerID = req.params.userID
+        // convert userID as string into ObjectID for search in MongoDB
+        let mdbUserID = new ObjectId(ownerID);
+        // returns the single user as part of an array
+        let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        // pull the user out of the array.
+        user=user[0];
+        user.userID = ownerID
+
+        // send variables to the page to be used.
+        res.render('pages/deleteUser',{
+            user:user
+        });
+    })
     .delete(async function(req, res){
-        res.send('Got a DELETE request from /userDetail/:userID')
-        //pull userID from url
         let ownerID = req.params.userID
         //convert for mango
         let mdbUserID = new ObjectId(ownerID);
@@ -308,7 +323,6 @@ app.route('/signOut')
             let result = await remove(db, 'Pet-Website-Project', 'Users', mdbUserID)
             res.redirect('/users')
         }
-
     })
 
 // User edit
@@ -408,9 +422,6 @@ app.route('/signOut')
             meds:meds
         });
     })
-    .delete(async function(req, res){
-        res.send('Got a DELETE request')
-    })
 
 // edit page for pet
     app.route('/pet/edit/:petID')
@@ -478,6 +489,42 @@ app.route('/userDetail/addPet/:userID')
         })
         res.render('pages/success')
     })
+
+//delete pet
+app.route('/petDetail/delete/:petID')
+.get(async function(req, res){
+    let ownerID = req.params.petID
+    // convert userID as string into ObjectID for search in MongoDB
+    let mdbPetID = new ObjectId(ownerID);
+    // returns the single user as part of an array
+    let pet=await find(db,'Pet-Website-Project','Pets',{_id:mdbPetID})
+    // pull the user out of the array.
+    pet=pet[0];
+    pet.petID = ownerID
+
+    // send variables to the page to be used.
+    res.render('pages/deletePet',{
+        pet:pet
+    });
+})
+.delete(async function(req, res){
+    let ownerID = req.params.petID
+    //convert for mango
+    let mdbPetID = new ObjectId(ownerID);
+    //find pet in db
+    let pet = await find(db, 'Pet-Website-Project', 'Pets', { _id: mdbPetID })
+    //find meds in db
+    let meds = await find(db, 'Pet-Website-Project', 'MedLog', { petID: ownerID })
+
+    //check if any pets, if so send Can not delete 
+    if (meds.length > 0) {
+        res.send("Can not delete pet. Pet has medication")
+    } else {
+        //remove pet from database
+        let result = await remove(db, 'Pet-Website-Project', 'Pets', mdbPetID)
+        res.redirect('/userDetail/:userID')
+    }
+})
 
 
 //-------------------------------------MEDICINE------------------------------------------
@@ -572,6 +619,32 @@ app.route('/userDetail/addPet/:userID')
         console.log(res.body);
     })
 
+//delete med
+app.route('/med/delete/:medID')
+.get(async function(req, res){
+    let ownerID = req.params.medID
+    // convert userID as string into ObjectID for search in MongoDB
+    let mdbMedID = new ObjectId(ownerID);
+    // returns the single user as part of an array
+    let med=await find(db,'Pet-Website-Project','MedLog',{_id:mdbMedID})
+    // pull the user out of the array.
+    med=med[0];
+    med.medID = ownerID
+
+    // send variables to the page to be used.
+    res.render('pages/deleteMed',{
+        med:med
+    });
+})
+.delete(async function(req, res){
+    let ownerID = req.params.medID
+    //convert for mango
+    let mdbMedID = new ObjectId(ownerID);
+    //remove med from database
+    let result = await remove(db, 'Pet-Website-Project', 'MedLog', mdbMedID)
+    res.redirect('/medDetail/:medID')
+    
+})
 
 
 // actually starts the connection and waits for connection.

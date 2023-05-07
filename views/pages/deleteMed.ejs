@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<header>
+   <%- include('../partials/header') %>
+</header>
+<body style="background-color: #FFF0DF;">
+	<div class="container"><p><h1>Med Delete</h1> <button><a href="/users/">Back to users index</a></button></p>
+        <form id="deleteMed" enctype="multipart/formdata">
+            <div class="form-group">
+                <label for="deleteMed" style="color: #FFCD95;">Delete Med?</label>
+                <input type="text" class="form-control" id="medID" name="deleteMed" aria-describedby="deleteMed" placeholder="deleteMed" value="<%= med.medID %>" disabled>
+            </div>          
+            <button type="button" class="btn btn-primary" id="deleteBtn">Submit</button>
+        </form>
+	</div>
+
+
+    <script> 	
+		const deleteBtn=document.getElementById('deleteBtn')
+		deleteBtn.addEventListener('click',()=>{
+            let urlportion=medID.value
+			
+			axios({
+			method: 'delete',
+			url: '/med/delete/' + urlportion,
+			data: {
+			}/*,
+				validateStatus:()=>true*/
+			})
+			.then(function (response) {
+                window.location="../../../medDetail/" + urlportion
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		})
+	</script> 
+
+</body>
+
+
+<footer>
+    <%- include('../partials/footer') %>
+</footer>
+</html>
