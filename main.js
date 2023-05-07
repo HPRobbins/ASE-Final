@@ -124,23 +124,12 @@ app.route('/')
                 })
 
                 if(loginResult.modifiedCount>0){
-                    //res.status(200).setHeader('Authorization',token).json({message:'User authenticated'})
-                    // res.cookie('AuthCookie',[`jwt=${token}`, `role=${result[0].role}`, `_id=${result[0]._id}`, 'path=/', 'httpOnly=true']).status(200).json({'message':"Logged in successfully! & Cookie created!"}).redirect('/users')
                     res.status(200)
                     .cookie('AuthCookie', `${token}`,('SameSite:Lax'))
                     .cookie('RoleCookie', result[0].role,('SameSite:Lax'))
                     .cookie('mdbIDCookie', result[0]._id,('SameSite:Lax'))
                     .json({'message':"Logged in successfully! & Cookie created!"})
-                    /*
-                    res.status(200)
-                    .cookie('AuthCookie', 'jwt ' + token, { 
-                        role:result[0].role,
-                        _id:result[0]._id,
-                        expires: new Date(Date.now() + 8 * 3600000), // cookie will be removed after 8 hours
-                        path:'/', httpOnly:true, SameSite:'Lax'
-                      })
-                      .json({'message':"Logged in successfully! & Cookie created!"})
-                      */
+        
                 }
                 else{
                     res.status(406).json({message:'Login Failed'})
@@ -162,53 +151,6 @@ app.route('/')
 	  res.send('Got a DELETE request')
 	})
 
-    /*
-app.route('/signUp')
-    // return the signUp.html
-	.get(async function(req, res) {
-	  // displays intial signUp page.
-      // console.log(req);
-      res.render('pages/signUp')
-	})
-    // yes! Creating new user in database
-	.post(async(req, res) => {
-        let email = req.body.emailAddress
-
-        // check if user exists.
-        let result=await find(db,'Pet-Website-Project','Users',{emailAddress:email})
-            // user already exists, display message.
-            if(result.length>0)
-            {
-                res.status(406).json({message:'User already exists. Go to sign in page.'})
-                // res.redirect(406,'/')
-                // console.log('User exists.')
-            }
-            // user does not exist.
-            else
-            {
-                req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')
-                let newResult=insert(db,'Pet-Website-Project','Users',req.body,function(err,result){
-                    if (err) throw err
-                    console.log(err)
-                    return newResult
-                })
-                // handle successful creation here.
-                res.status(201).json({message:'Success: User created!'})
-                //res.redirect(201,'/')
-            }
-	})
-	.put((req, res) => {
-	  res.send('Got a PUT request')
-	})
-	.patch((req, res) => {
-	  res.send('Got a PATCH request')
-	})
-    // unneeded, can be removed/ignored
-	.delete((req, res) => {
-	  res.send('Got a DELETE request')
-	})
-    */
-    
 app.route('/signOut')
     .get(async (req, res) => {
         res.clearCookie('AuthCookie')

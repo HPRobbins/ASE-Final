@@ -80,7 +80,7 @@
 			if(!passwordConfirmValue.length == false){
 				passwordConfirmValue.trim()
 				if(!passwordValue.length==false){
-					// do nothing
+					// do nothing, password has more than spaces in it.
 				}
 				else{
 					// there were no actual characters in the input.
@@ -101,7 +101,8 @@
 				}
 				})
 				.then(function (response) {
-					alert("Edit successful! Your previous password was not changed. Please return to User Detail.")
+					alert("Edit successful! Your previous password was not changed.")
+					window.location = "/userDetail/" + urlportion
 				})
 				.catch(function (error) {
 					console.log(error);
@@ -127,7 +128,8 @@
 						validateStatus:()=>true
 					})
 					.then(function (response) {
-						alert("Edit successful! Your password has been updated. Please return to User Detail.")
+						alert("Edit successful! Your password has been updated.")
+						window.location = "/userDetail/" + urlportion
 					})
 					.catch(function (error) {
 						console.log(error);
