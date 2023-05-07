@@ -7,36 +7,36 @@
 <header>
    <%- include('../partials/header') %>
 </header>
-<body style="background-color: #FFF0DF;">
+<body style="background-color: #FF9566;">
 <h1>User Edit</h1>
-<a href="/userDetail/<%= user.userID %>">Back to User Detail</a>
+<button class="btn btn-light btn-outline-dark"><a href="/userDetail/<%= user.userID %>">Back to User Detail</a></button>
 <form id="editUser" enctype="multipart/formdata">
 	<div class="form-group">
 		<label for="userID" ></label>
 		<input type="text" class="form-control" id="userID" name="userID" value="<%= user.userID %>" disabled>
 	</div>
 	<div class="form-group">
-	  <label for="firstName">User's First Name:</label>
+	  <label for="firstName" style="color: white; font-size: 20px">User's First Name:</label>
 	  <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="userFirstNameInput" value="<%= user.firstName %>" required>
 	</div>
 	<div class="form-group">
-		<label for="lastName">User's Last Name:</label>
+		<label for="lastName" style="color: white; font-size: 20px">User's Last Name:</label>
 		<input type="text" class="form-control" id="lastName" name="lastName" aria-describedby="userLastNameInput" value="<%= user.lastName %>" required>
 	  </div>
 	  <div class="form-group">
-		  <label for="emailAddress">Email:</label>
+		  <label for="emailAddress" style="color: white; font-size: 20px">Email:</label>
 		  <input type="text" class="form-control" id="emailAddress" name="email" aria-describedby="emailAddressInput" value="<%= user.emailAddress %>" required>
 	</div>
 	<div class="form-group">
-		<label class="form-label" for="typePasswordX-2">Password:</label>
+		<label class="form-label" for="typePasswordX-2" style="color: white; font-size: 20px">Password:</label>
 		<input type="password" id="typePasswordX-2" name="password" class="form-control" aria-describedby="passwordInput" />
   </div>
 	<div class="form-group">
-		<label class="form-label" for="typePasswordX-2">Confirm Password:</label>
+		<label class="form-label" for="typePasswordX-2" style="color: white; font-size: 20px">Confirm Password:</label>
 		<input type="password" id="typePasswordX-2" name="passwordConfirm" class="form-control" aria-describedby="passwordConfirmInput" />
   </div>
 
-		<button type="submit" class="btn btn-primary">Submit</button>
+		<button type="submit" class="btn btn-light btn-outline-dark">Submit</button>
 	</form>
 
 	<script src="/assets/getAllURLParams.js"></script>
@@ -44,8 +44,8 @@
 	<script src="/assets/axios.min.js"></script>
 
 
-	<script> 
-		// taken from code_12, 04, signup.html	
+	<script>
+		// taken from code_12, 04, signup.html
 		const editUser=document.getElementById('editUser')
 
 		editUser.addEventListener('submit',(e)=>{
@@ -57,7 +57,7 @@
 			let lastName=document.querySelectorAll('[name="lastName"]')[0]
 			let password=document.querySelectorAll('[name="password"]')[0]
 			let passwordConfirm=document.querySelectorAll('[name="passwordConfirm"]')[0]
-			
+
 			let urlportion=userID.value
 			let passwordValue = password.value
 			let passwordConfirmValue = passwordConfirm.value
@@ -114,7 +114,7 @@
 			else{
 				// check if passwords match.
 				if(passwordConfirmValue === passwordValue){
-					
+
 					axios({
 						method: 'put',
 						url: '/user/edit/'+ urlportion,
@@ -143,7 +143,7 @@
 				return
 			}
 		})
-	</script> 
+	</script>
 </body>
 
 <footer>

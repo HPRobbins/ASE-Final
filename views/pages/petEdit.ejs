@@ -9,39 +9,39 @@
 </header>
 <body style="background-color: #FF9566;">
     <div class="container">
-        <p><h1>Pet Edit</h1> <button><a href="/users/">Back to users index</a></button> <button><a href="/petDetail/<%= pet.petID %>">Back to pet</a></button></p>
+        <p><h1>Pet Edit</h1> <button class="btn btn-light btn-outline-dark"><a href="/users/">Back to users index</a></button> <button class="btn btn-light btn-outline-dark"><a href="/petDetail/<%= pet.petID %>">Back to pet</a></button></p>
 
         <form id="editPet" enctype="multipart/formdata">
             <div class="form-group">
-                <label for="petID" style="color: white;">Pet ID:</label>
+                <label for="petID" style="color: white; font-size: 20px">Pet ID:</label>
                 <input type="text" class="form-control" id="petIDInput" name="petID" aria-describedby="petID" placeholder="petID" value="<%= pet.petID %>" disabled>
             </div>
             <div class="form-group">
-                <label for="userID" style="color: white;">User ID:</label>
+                <label for="userID" style="color: white; font-size: 20px">User ID:</label>
                 <input type="text" class="form-control" id="userIDInput" name="userID" aria-describedby="userID" placeholder="userID" value="<%= pet.userID %>" disabled>
             </div>
             <div class="form-group">
-                <label for="petName" style="color: white;">Pet Name:</label>
+                <label for="petName" style="color: white; font-size: 20px">Pet Name:</label>
                 <input type="text" class="form-control" id="petNameInput" name="petName" aria-describedby="petName" placeholder="petName" value="<%= pet.petName %>">
             </div>
             <div class="form-group">
-                <label for="petType" style="color: white;">Pet Type:</label>
+                <label for="petType" style="color: white; font-size: 20px">Pet Type:</label>
                 <input type="text" class="form-control" id="petTypeInput" name="petType" aria-describedby="petType" placeholder="petType" value="<%= pet.petType %>">
             </div>
             <div class="form-group">
-                <label for="petSex" style="color: white;">Pet Sex:</label>
+                <label for="petSex" style="color: white; font-size: 20px">Pet Sex:</label>
                 <input type="text" class="form-control" id="petSexInput" name="petSex" aria-describedby="petSex" placeholder="petSex" value="<%= pet.petSex %>">
             </div>
             <div class="form-group">
-                <label for="petBreed" style="color: white;">Pet Breed:</label>
+                <label for="petBreed" style="color: white; font-size: 20px">Pet Breed:</label>
                 <input type="text" class="form-control" id="petBreedInput" name="petBreed" aria-describedby="petBreed" placeholder="petBreed" value="<%= pet.petBreed %>">
             </div>
             <div class="form-group">
-                <label for="petWeight" style="color: white;">Pet Weight:</label>
+                <label for="petWeight" style="color: white; font-size: 20px">Pet Weight:</label>
                 <input type="text" class="form-control" id="petWeightInput" name="petWeight" aria-describedby="petWeight" placeholder="NotepetWeights" value="<%= pet.petWeight %>">
             </div>
             <div class="form-group">
-                <label for="petDoB" style="color: white;">Pet DOB:</label>
+                <label for="petDoB" style="color: white; font-size: 20px">Pet DOB:</label>
                 <input type="text" class="form-control" id="petDoBInput" name="petDoB" aria-describedby="petDoB" placeholder="petDoB" value="<%= pet.petDoB %>">
             </div>
 
