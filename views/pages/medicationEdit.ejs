@@ -46,8 +46,58 @@
             <input type="text" class="form-control" id="medImageInput" name="medImage" aria-describedby="medImage" placeholder="medImage" value="<%= med.medImage %>">
         </div>
        
-		<button type="submit" class="btn btn-primary" >Submit</button>
+		<button type="submit" name="medEditSubmit" class="btn btn-primary" >Submit</button>
     </form>
+
+    	<!--Script for checking if current user is allowed to make changes.-->
+	<script>
+        window.addEventListener("load", (e) => {
+           e.preventDefault();
+           /*
+               On window load, check if the current user is allowed to make edits to the information displayed.
+               If user is not allowed to make changes, disable the buttons/links to the pages that would allow that.
+               On the edit/add/delete pages, remove the ability to submit the data.
+           */
+
+           // apparenlty this does not get autoformatted as a javascript object on client side. sadface.jpg
+           let cookieJar = document.cookie
+           // first split, temporary array.
+           const myArray = cookieJar.split(";")
+           // creating a js Object to use as a dictionary.
+           let cookiePlate = {}
+           // split fragment on = sign to get the CookieName and CookieValue
+           myArray.forEach(fragment => {
+               // getting rid of some excess spaces.
+               fragment = fragment.trim()
+               // do the splits splits splits
+               let fragmentParts = fragment.split("=")
+               
+               // if the fragmentPart has stuff in it, write to object//dictionary.
+               if(fragmentParts.length > 1)
+               {
+                   let key = fragmentParts[0]
+                   let value = fragmentParts[1]
+                   
+                   cookiePlate[key] = value
+               }
+           });
+           
+           // Checks if current user is allowed to make changes to the data (as determined serverside).
+           // If there is no "AllowedToChange" cookie, defaults to false.
+           let allowedToChange = cookiePlate["MedEditCookie"] === "true"
+           
+           // Grabs the element to be changed by name.
+           let medEditSubmit=document.querySelectorAll('[name="medEditSubmit"]')[0]
+           // changes the elements to not do anything.
+           if(allowedToChange == false)
+           {
+               medEditSubmit.disabled=true
+           }
+           else{
+               // allowed to make changes, do nothing.
+           }
+       });
+   </script>
 
     <script> 
 		// taken from code_12, 04, signup.html	

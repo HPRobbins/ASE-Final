@@ -31,8 +31,8 @@
 	<h1><%= med.medName %></h1>
 
     <div id="buttons" class="col-12">
-        <button><a href="../petDetail/<%= med.petID %>">Back to Pet</a></button> | <button><a id="btn-edit" href="../med/edit/<%= med.medID %>">Edit Medication</a></button> |
-          <button type="button" id="btn-delete">Delete Info</button>
+        <button><a href="../petDetail/<%= med.petID %>">Back to Pet</a></button> | <button><a id="btn-edit" name="medEditBtn" href="../med/edit/<%= med.medID %>">Edit Medication</a></button> |
+          <button type="button" name="medDltBtn" id="btn-delete">Delete Info</button>
     </div>
     <div class="container" id="medInfo">
         <!--medication identity-->
@@ -55,8 +55,62 @@
         </div>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <!--Script for checking if current user is allowed to make changes.-->
+    <script>
+        window.addEventListener("load", (e) => {
+			e.preventDefault();
+            /*
+                On window load, check if the current user is allowed to make edits to the information displayed.
+                If user is not allowed to make changes, disable the buttons/links to the pages that would allow that.
+                On the edit/add/delete pages, remove the ability to submit the data.
+            */
+
+            // apparenlty this does not get autoformatted as a javascript object on client side. sadface.jpg
+            let cookieJar = document.cookie
+            // first split, temporary array.
+            const myArray = cookieJar.split(";")
+            // creating a js Object to use as a dictionary.
+            let cookiePlate = {}
+            // split fragment on = sign to get the CookieName and CookieValue
+            myArray.forEach(fragment => {
+                // getting rid of some excess spaces.
+                fragment = fragment.trim()
+                // do the splits splits splits
+                let fragmentParts = fragment.split("=")
+                
+                // if the fragmentPart has stuff in it, write to object//dictionary.
+                if(fragmentParts.length > 1)
+                {
+                    let key = fragmentParts[0]
+                    let value = fragmentParts[1]
+                    
+                    cookiePlate[key] = value
+                }
+            });
+            
+            // Checks if current user is allowed to make changes to the data (as determined serverside).
+            // If there is no "MedEditCookie" cookie, defaults to false.
+            let allowedToChange = cookiePlate["MedEditCookie"] === "true"
+            
+            // Grabs the element to be changed by name.
+            let medEditBtn=document.querySelectorAll('[name="medEditBtn"]')[0]
+            let medDltBtn=document.querySelectorAll('[name="medDltBtn"]')[0]
+            // changes the elements to not do anything.
+            if(allowedToChange == false)
+            {
+                medEditBtn.href="#"
+                medEditBtn.onclick="return false;"
+                
+                medDltBtn.disabled=true
+            }
+            else{
+                // allowed to make changes, do nothing.
+            }
+        });
+    </script>
+
+
 </body>
 <footer>
     <%- include('../partials/footer') %>

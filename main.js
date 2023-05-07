@@ -164,6 +164,7 @@ app.route('/signOut')
         .clearCookie('mdbIDCookie')
         .clearCookie('EditCookie')
         .clearCookie('PetEditCookie')
+        .clearCookie('MedEditCookie')
         .status(200)
         .redirect("/")
     })
@@ -231,14 +232,6 @@ app.route('/signOut')
         let ownerID = req.params.userID
         // convert userID as string into ObjectID for search in MongoDB
         let mdbUserID = new ObjectId(ownerID)
-        let allowedToEdit = false
-
-       let cookiePlate = req.cookies
-
-        // get info from current user
-        let currentJWT=cookiePlate.AuthCookie
-        let currentRole=cookiePlate.RoleCookie
-        let currentEdit=cookiePlate.EditCookie
 
         // Look for the user in the database.
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
@@ -259,6 +252,13 @@ app.route('/signOut')
             })
 
             // authentication
+            let allowedToEdit = false
+            let cookiePlate = req.cookies
+    
+            // get info from current user
+            let currentJWT=cookiePlate.AuthCookie
+            let currentRole=cookiePlate.RoleCookie
+            let currentEdit=cookiePlate.EditCookie
             let jwtMatch = await matchJWT(user.jwt,currentJWT)
             // Is current user this user or an admin?
             if(jwtMatch == true)
@@ -327,6 +327,8 @@ app.route('/signOut')
         // pull the user out of the array.
         user=user[0];
         user.userID = ownerID
+
+
 
         // send variables to the page to be used.
         res.render('pages/userEdit',{
@@ -406,14 +408,12 @@ app.route('/signOut')
         })
 
         // authentication
+        let allowedToEdit = false
         let cookiePlate = req.cookies
         // Get user info.
         let mdbUserID = new ObjectId(pet.userID)
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
         user=user[0]
-
-        console.log("Checking pet owner.")
-        console.log(user)
 
         // get info from current user
         let currentJWT=cookiePlate.AuthCookie
@@ -467,6 +467,7 @@ app.route('/signOut')
             // pull the user out of the array.
             pet=pet[0];
             pet.petID = petID
+            
             // send variables to the page to be used.
             res.render('pages/petEdit',{
                 pet:pet
@@ -504,6 +505,7 @@ app.route('/userDetail/addPet/:userID')
         user.userID = ownerID
 
         // authentication
+        let allowedToEdit = false
          let cookiePlate = req.cookies
 
         // get info from current user
@@ -567,18 +569,67 @@ app.route('/userDetail/addPet/:userID')
         let med=await find(db,'Pet-Website-Project','MedLog',{_id:mdbMedID})
         med=med[0];
         med.medID = medicineID;
+        
         let meds=await find(db,'Pet-Website-Project','MedLog',{petID:medicineID})
         meds.forEach(med => {
             med['medID'] = med._id.toString();
         })
+
+        // authentication
+        let allowedToEdit = false
+        let cookiePlate = req.cookies
+
+        // Get pet info
+        let mdbPetID = new ObjectId(med.petID)
+        let pet=await find(db,'Pet-Website-Project','Pets',{_id:mdbPetID})
+        pet=pet[0]
+
+        // Get user info.
+        let mdbUserID = new ObjectId(pet.userID)
+        let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+        user=user[0]
+
+        // get info from current user
+        let currentJWT=cookiePlate.AuthCookie
+        let currentRole=cookiePlate.RoleCookie
+        let currentEdit=cookiePlate.MedEditCookie
+        let jwtMatch = await matchJWT(user.jwt,currentJWT)
+        // Is current user this user or an admin?
+        if(jwtMatch == true)
+        {
+            // set variables
+            allowedToEdit=true
+        }
+        else if(currentRole == 'admin'){
+            allowedToEdit=true
+        }
+        else{
+            allowedToEdit=false
+        }
+        // check if current cookie allows user to edit this page.
+        if((currentEdit===allowedToEdit)==true){
+            // send variables to the page to be used.
+            res
+            .cookie('MedEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+            .render('pages/medDetail',{
+                pet:pet
+            })
+        }
+        else{
+            // send variables to the page to be used.
+            res
+            .cookie('MedEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+            .render('pages/medDetail',{
+                med:med,
+                meds:meds
+            })
+        }
         
         res.render('pages/medDetail',{
             med:med,
             meds:meds
         });
     })
-
-
 
 //add medication
     app.route('/petDetail/addMedication/:petID')
@@ -590,11 +641,49 @@ app.route('/userDetail/addPet/:userID')
             pet=pet[0];
             pet.petID = ownerID
             console.log('in get add med')
+            
+            // authentication
+            let allowedToEdit = false
+            let cookiePlate = req.cookies
+            // Get user info.
+            let mdbUserID = new ObjectId(pet.userID)
+            let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+            user=user[0]
 
-            // send variables to the page to be used.
-            res.render('pages/addMedication',{
-                pet:pet
-            });
+            // get info from current user
+            let currentJWT=cookiePlate.AuthCookie
+            let currentRole=cookiePlate.RoleCookie
+            let currentEdit=cookiePlate.PetEditCookie
+            let jwtMatch = await matchJWT(user.jwt,currentJWT)
+            // Is current user this user or an admin?
+            if(jwtMatch == true)
+            {
+                // set variables
+                allowedToEdit=true
+            }
+            else if(currentRole == 'admin'){
+                allowedToEdit=true
+            }
+            else{
+                allowedToEdit=false
+            }
+            // check if current cookie allows user to edit this page.
+            if((currentEdit===allowedToEdit)==true){
+                // send variables to the page to be used.
+                res
+                .cookie('PetEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+                .render('pages/addMedication',{
+                    pet:pet
+                })
+            }
+            else{
+                // send variables to the page to be used.
+                res
+                .cookie('PetEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+                .render('pages/addMedication',{
+                    pet:pet
+                })
+            }
 
         })
         .post(async (req, res) => {
