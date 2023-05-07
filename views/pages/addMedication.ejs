@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<header>
+   <%- include('../partials/header') %>
+</header>
+<body style="background-color: #FFF0DF;">
+	<div class ="container">
+		<p><h1>Add Medication</h1> <button><a href="/users/">Back to users index</a></button> <button><a href="../<%= pet.petID %>">Back to pet details</a></button></p>
+	<form id="addMedication" enctype="multipart/formdata">
+		<div class="form-group">
+			<label for="petID" >Pet ID:</label>
+			<input type="text" class="form-control" id="petID" name="petID" value="<%= pet.petID %>" disabled>
+		</div>
+		<div class="form-group">
+			<label for="medicationName">Medication Name:</label>
+			<input type="text" class="form-control" id="medicationName" name="medicationName">
+		</div>
+		<div class="form-group">
+			<label for="medType">Med type:</label>
+			<input type="text" class="form-control" id="medType" name="medType">
+		</div>
+		<div class="form-group">
+			<label for="dosage">Dosage:</label>
+			<input type="text" class="form-control" id="dosage" name="dosage">
+		</div>
+		<div class="form-group">
+			<label for="numberOfDailyDoses">Number of daily doses:</label>
+			<input type="text" class="form-control" id="numberOfDailyDoses" name="numberOfDailyDoses">
+		</div>
+		<div class="form-group">
+			<label for="medNotes">Notes:</label>
+			<input type="text" class="form-control" id="medNotes" name="medNotes">
+		</div>
+
+		<button type="submit" class="btn btn-primary" >Submit</button>
+	</form>
+
+	<script src="/assets/getAllURLParams.js"></script>
+
+    <script src="/assets/cookies.js"></script>
+
+    <script src="/assets/axios.min.js"></script>
+
+
+	<script> 
+		// taken from code_12, 04, signup.html	
+		const addMedication=document.getElementById('addMedication')
+		addMedication.addEventListener('submit',(e)=>{
+			e.preventDefault();
+            let petID=document.querySelectorAll('[name="petID"]')[0]
+			let medicationName=document.querySelectorAll('[name="medicationName"]')[0]
+			let medType=document.querySelectorAll('[name="medType"]')[0]
+            let dosage=document.querySelectorAll('[name="dosage"]')[0]
+            let numberOfDailyDoses=document.querySelectorAll('[name="numberOfDailyDoses"]')[0]
+            let medNotes=document.querySelectorAll('[name="medNotes"]')[0]
+            let urlportion=petID.value
+			
+			axios({
+			method: 'post',
+			url: urlportion,
+			data: {
+                
+				petID:petID.value,
+				medicationName:medicationName.value,
+				medType:medType.value,
+				dosage:dosage.value,
+                numberOfDailyDoses:numberOfDailyDoses.value,
+                medNotes:medNotes.value
+			}
+			})
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		})
+	</script> 
+
+</body>
+
+<footer>
+    <%- include('../partials/footer') %>
+</footer>
+</html>

@@ -10,9 +10,8 @@
 
 <body>
     <h1 style="padding: 20px; background-color: #FFCD95;"><%= user.firstName %> <%= user.lastName %></h1>
-    <div class="container"></div>
-            <a href="/users/">Back to users index</a> | <a id="btn-edit" href="../user/edit/<%= user.userID %>">Edit User</a> | <a id="btn-add" href="../userDetail/addPet/<%= user.userID %>">Add Pet</a> | <form id="deleteUser"><button type="submit" <%= buttonStatus %>>Delete</button></form>
-            
+    <div style="padding-left:20px;">
+            <button><a href="/users/">Back to users index</a></button> | <button><a id="btn-edit" href="../user/edit/<%= user.userID %>">Edit User</a></button> | <button><a id="btn-add" href="../userDetail/addPet/<%= user.userID %>">Add Pet</a> </button> | <button type="submit"><form method=".delete" action="../userDetail/<%= user.userID %>?_method=DELETE">Delete</form></button>    
     </div>
     <div id="userDetail">
         <div style="padding: 20px;">
