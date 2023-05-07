@@ -642,7 +642,7 @@ app.route('/med/delete/:medID')
     let mdbMedID = new ObjectId(ownerID);
     //remove med from database
     let result = await remove(db, 'Pet-Website-Project', 'MedLog', mdbMedID)
-    res.redirect('/medDetail/:medID')
+    res.redirect('/medDetail/'+ ownerID)
     
 })
 
