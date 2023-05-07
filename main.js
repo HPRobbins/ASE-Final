@@ -181,7 +181,6 @@ app.route('/signOut')
     })
 
 
-
 //------------------------USERS----------------------------------------
 //list of users
     app.route('/users/')
@@ -400,7 +399,6 @@ app.route('/signOut')
 
         // convert _ID to a string & add to animal array
         meds.forEach(med => {
-            med['medID'] = med._id.toString();
             med['medID'] = med._id.toString();
         })
         
