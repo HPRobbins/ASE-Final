@@ -157,6 +157,37 @@ app.route('/')
 	  res.send('Got a DELETE request')
 	})
 
+    app.route('/signUp')
+        // return the signUp.html
+        .get(async function(req, res) {
+        // displays intial signUp page.
+        // console.log(req);
+        res.render('pages/signUp')
+        })
+        // yes! Creating new user in database
+        .post(async(req, res) => {
+            let email = req.body.emailAddress
+
+            // check if user exists.
+            let result=await find(db,'Pet-Website-Project','Users',{emailAddress:email})
+                // user already exists, display message.
+                if(result.length>0)
+                {
+                    res.status(406).json({message:'User already exists'})
+                }
+                else
+                {
+                    console.log("inserting into database")
+                    req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')
+                    let newResult=insert(db,'Pet-Website-Project','Users',req.body,function(err,result){
+                        if (err) throw err
+                        console.log(err)
+                        res.status(201).json({message:'User created'})
+                        return newResult
+                    })
+                }
+                res.send()
+        })
 app.route('/signOut')
     .get(async (req, res) => {
         res.clearCookie('AuthCookie')
