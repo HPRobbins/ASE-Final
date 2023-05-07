@@ -45,12 +45,12 @@
             <label for="medImage" style="color: #FFCD95;">Medication Image</label>
             <input type="text" class="form-control" id="medImageInput" name="medImage" aria-describedby="medImage" placeholder="medImage" value="<%= med.medImage %>">
         </div>
-       
+
 		<button type="submit" class="btn btn-primary" >Submit</button>
     </form>
 
-    <script> 
-		// taken from code_12, 04, signup.html	
+    <script>
+		// taken from code_12, 04, signup.html
 		const editMed=document.getElementById('editMed')
 		editMed.addEventListener('submit',(e)=>{
 			e.preventDefault();
@@ -87,7 +87,7 @@
 				console.log(error);
 			});
 		})
-	</script> 
+	</script>
 
     <footer>
         <%- include('../partials/footer') %>
