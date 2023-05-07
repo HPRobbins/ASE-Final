@@ -7,26 +7,26 @@
 <header>
    <%- include('../partials/header') %>
 </header>
-<body style="background-color: #FFF0DF;">
-	<div class="container"><p><h1>Delete Med</h1> <button><a href="/users/">Back to users index</a></button></p>
+<body style="background-color: #FF9566;">
+	<div class="container"><p><h1 style="color: white">Delete Med</h1> <button><a href="/users/">Back to users index</a></button></p>
         <form id="deleteMed" enctype="multipart/formdata">
             <div class="form-group">
                 <label for="deleteMed" style="color: #FFCD95;">Delete Med?</label>
                 <input type="text" class="form-control" id="medID" name="deleteMed" aria-describedby="deleteMed" placeholder="deleteMed" value="<%= med.medID %>" disabled>
-            </div>  
+            </div>
             <div class="form-group">
                 <input type="text" class="form-control" id="petID" name="petID" aria-describedby="petID" placeholder="petID" value="<%= med.petID %>" style="display: none;">
-            </div>         
+            </div>
             <button type="button" class="btn btn-primary" id="deleteBtn">Submit</button>
         </form>
 	</div>
 
 
-    <script> 	
+    <script>
 		const deleteBtn=document.getElementById('deleteBtn')
 		deleteBtn.addEventListener('click',()=>{
             let urlportion = document.getElementById('medID').value;
-  
+
 			axios({
 			method: 'delete',
 			url: '/med/delete/' + urlportion,
@@ -41,7 +41,7 @@
 				console.log(error);
 			});
 		})
-	</script> 
+	</script>
 
 </body>
 

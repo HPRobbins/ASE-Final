@@ -7,101 +7,53 @@
 <header>
    <%- include('../partials/header') %>
 </header>
-<body style="background-color: #FFF0DF;">
+<body style="background-color: #FF9566;">
 	<div class ="container">
-		<p><h1>Add Pet</h1> <button><a href="/users/">Back to users index</a></button></p>
-		
+		<p><h1 style="color: white;">Add Pet</h1> <button class="btn btn-light btn-outline-dark"><a href="/users/">Back to users index</a></button></p>
+
 		<form id="addPet" enctype="multipart/formdata">
 			<div class="form-group">
-				<label for="userID" >User ID:</label>
+				<label for="userID" style="color: white; font-size: 20px" >User ID:</label>
 				<input type="text" class="form-control" id="userID" name="userID" value="<%= user.userID %>" disabled>
 			</div>
 			<div class="form-group">
-				<label for="petName">Pet's Name:</label>
+				<label for="petName" style="color: white; font-size: 20px">Pet's Name:</label>
 				<input type="text" class="form-control" id="petName" name="petName">
 			</div>
 			<div class="form-group">
-				<label for="petType">Pet type:</label>
+				<label for="petType" style="color: white; font-size: 20px">Pet Type:</label>
 				<input type="text" class="form-control" id="petType" name="petType">
 			</div>
 			<div class="form-group">
-				<label for="petSex">Pet's sex:</label>
+				<label for="petSex" style="color: white; font-size: 20px">Pet's Sex:</label>
 				<input type="text" class="form-control" id="petSex" name="petSex">
 			</div>
 			<div class="form-group">
-				<label for="petBreed">Pet's breed:</label>
+				<label for="petBreed" style="color: white; font-size: 20px">Pet's Breed:</label>
 				<input type="text" class="form-control" id="petBreed" name="petBreed">
 			</div>
 			<div class="form-group">
-				<label for="petWeight">Pet's weight:</label>
+				<label for="petWeight" style="color: white; font-size: 20px">Pet's Weight:</label>
 				<input type="text" class="form-control" id="petWeight" name="petWeight">
 			</div>
 			<div class="form-group">
-				<label for="petDoB">Pet's date of birth:</label>
+				<label for="petDoB" style="color: white; font-size: 20px">Pet's Date of Birth:</label>
 				<input type="text" class="form-control" id="petDoB" name="petDoB">
 			</div>
-			<button type="submit" name="PetAddSubmit" class="btn btn-primary">Submit</button>
+			<button type="submit" class="btn btn-light btn-outline-dark">Submit</button>
 		</form>
 	</div>
 
 
 	<script src="/assets/getAllURLParams.js"></script>
+
     <script src="/assets/cookies.js"></script>
+
     <script src="/assets/axios.min.js"></script>
 
-	<!--Script for checking if current user is allowed to make changes.-->
+
 	<script>
-		window.addEventListener("load", (e) => {
-		   e.preventDefault();
-		   /*
-			   On window load, check if the current user is allowed to make edits to the information displayed.
-			   If user is not allowed to make changes, disable the buttons/links to the pages that would allow that.
-			   On the edit/add/delete pages, remove the ability to submit the data.
-		   */
-
-		   // apparenlty this does not get autoformatted as a javascript object on client side. sadface.jpg
-		   let cookieJar = document.cookie
-		   // first split, temporary array.
-		   const myArray = cookieJar.split(";")
-		   // creating a js Object to use as a dictionary.
-		   let cookiePlate = {}
-		   // split fragment on = sign to get the CookieName and CookieValue
-		   myArray.forEach(fragment => {
-			   // getting rid of some excess spaces.
-			   fragment = fragment.trim()
-			   // do the splits splits splits
-			   let fragmentParts = fragment.split("=")
-			   
-			   // if the fragmentPart has stuff in it, write to object//dictionary.
-			   if(fragmentParts.length > 1)
-			   {
-				   let key = fragmentParts[0]
-				   let value = fragmentParts[1]
-				   
-				   cookiePlate[key] = value
-			   }
-		   });
-		   
-		   // Checks if current user is allowed to make changes to the data (as determined serverside).
-		   // If there is no "AllowedToChange" cookie, defaults to false.
-		   let allowedToChange = cookiePlate["EditCookie"] === "true"
-		   
-		   // Grabs the element to be changed by name.
-		   let PetAddSubmit=document.querySelectorAll('[name="PetAddSubmit"]')[0]
-		   // changes the elements to not do anything.
-		   if(allowedToChange == false)
-		   {
-			   PetAddSubmit.disabled=true
-		   }
-		   else{
-			   // allowed to make changes, do nothing.
-		   }
-	   });
-   </script>
-
-   	<!-- Script for handling an edit submission. -->
-	<script> 
-		// taken from code_12, 04, signup.html	
+		// taken from code_12, 04, signup.html
 		const addPet=document.getElementById('addPet')
 		addPet.addEventListener('submit',(e)=>{
 			e.preventDefault();
@@ -114,12 +66,10 @@
             let petDoB=document.querySelectorAll('[name="petDoB"]')[0]
             //let petDoB=document.querySelectorAll('[name="petDob"]')[0]
             let urlportion=userID.value
-			
 			axios({
 			method: 'post',
 			url: urlportion,
 			data: {
-                
 				userID:userID.value,
 				petName:petName.value,
 				petType:petType.value,
@@ -136,7 +86,7 @@
 				console.log(error);
 			});
 		})
-	</script> 
+	</script>
 
 </body>
 

@@ -7,23 +7,23 @@
 <header>
    <%- include('../partials/header') %>
 </header>
-<body style="background-color: #FFF0DF;">
-	<div class="container"><p><h1>User Edit</h1> <button><a href="/users/">Back to users index</a></button></p>
+<body style="background-color: #FF9566;">
+	<div class="container"><p><h1 style="color: white">User Edit</h1> <button><a href="/users/">Back to users index</a></button></p>
         <form id="deleteUser" enctype="multipart/formdata">
             <div class="form-group">
                 <label for="deleteUser" style="color: #FFCD95;">Delete User?</label>
                 <input type="text" class="form-control" id="userID" name="deleteUser" aria-describedby="deleteUser" placeholder="deleteUser" value="<%= user.userID %>" disabled>
-            </div>          
+            </div>
             <button type="button" class="btn btn-primary" id="deleteBtn">Submit</button>
         </form>
 	</div>
 
 
-    <script> 	
+    <script>
 		const deleteBtn=document.getElementById('deleteBtn')
 		deleteBtn.addEventListener('click',()=>{
             let urlportion=userID.value
-			
+
 			axios({
 			method: 'delete',
 			url: '/userDetail/delete/' + urlportion,
@@ -39,7 +39,7 @@
 				console.log(error);
 			});
 		})
-	</script> 
+	</script>
 
 </body>
 
