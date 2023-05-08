@@ -290,7 +290,8 @@ app.route('/signOut')
             let currentJWT=cookiePlate.AuthCookie
             let currentRole=cookiePlate.RoleCookie
             let currentEdit=cookiePlate.EditCookie
-            let jwtMatch = await matchJWT(user.jwt,currentJWT)
+            let jwtMatch=await matchJWT(user.jwt,currentJWT)
+
             // Is current user this user or an admin?
             if(jwtMatch == true)
             {
@@ -306,6 +307,7 @@ app.route('/signOut')
             // check if current cookie allows user to edit this page.
             if((currentEdit===allowedToEdit)==true){
                 // send variables to the page to be used.
+            console.log("are we here?")
                 res
                 .cookie('EditCookie', `${allowedToEdit}`,('SameSite:Lax'))
                 .render('pages/userDetail',{
@@ -315,6 +317,7 @@ app.route('/signOut')
             }
             else{
                  // send variables to the page to be used.
+                 console.log(user)
                 res
                 .cookie('EditCookie', `${allowedToEdit}`,('SameSite:Lax'))
                 .render('pages/userDetail',{
