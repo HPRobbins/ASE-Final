@@ -44,6 +44,10 @@
                 <label for="petDoB" style="color: #FFCD95;">Pet DOB:</label>
                 <input type="text" class="form-control" id="petDoBInput" name="petDoB" aria-describedby="petDoB" placeholder="petDoB" value="<%= pet.petDoB %>">
             </div>
+            <div class="form-group">
+                <label for="petImage" style="color: #FFCD95;">Pet DOB:</label>
+                <input type="text" class="form-control" id="petImageInput" name="petImage" aria-describedby="petImage" placeholder="petImage" value="<%= pet.petImage %>">
+            </div>
             
 		<button type="submit" name="petEditBtn" class="btn btn-primary" >Submit</button>
         </form>
@@ -111,6 +115,8 @@
                 let petBreed=document.querySelectorAll('[name="petBreed"]')[0]
                 let petWeight=document.querySelectorAll('[name="petWeight"]')[0]
                 let petDoB=document.querySelectorAll('[name="petDoB"]')[0]
+                let petImage=document.querySelectorAll('[name="petImage"]')[0]
+
                 let urlportion=petID.value
                 
                 axios({
@@ -124,7 +130,8 @@
                     petSex:petSex.value,
                     petBreed:petBreed.value,
                     petWeight:petWeight.value,
-                    petDoB:petDoB.value
+                    petDoB:petDoB.value,
+                    petImage:petImage.value
                 }/*,
                     validateStatus:()=>true*/
                 })
