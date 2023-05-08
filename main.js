@@ -321,12 +321,8 @@ app.route('/signOut')
         // returns the single user as part of an array
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
         // pull the user out of the array.
-        console.log(user)
-        console.log(ownerID)
         user=user[0]
-        console.log(user)
         user.userID = ownerID
-        console.log(user.userID)
 
         // send variables to the page to be used.
         res.render('pages/userEdit',{
