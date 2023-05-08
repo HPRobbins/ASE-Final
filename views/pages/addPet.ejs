@@ -138,6 +138,8 @@
 			})
 			.then(function (response) {
 				console.log(response);
+				alert("Pet added!")
+				window.location = `/userDetail/${urlportion}`
 			})
 			.catch(function (error) {
 				console.log(error);
