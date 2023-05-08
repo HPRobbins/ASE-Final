@@ -212,14 +212,13 @@ app.route('/signOut')
         res.send('Got a DELETE request')
     })
 
-
 //------------------------USERS----------------------------------------
 //list of users
     app.route('/users/')
     // would return index.html and the list of users
 	.get(async function(req, res){
         
-       console.log("Cookies in /users/")
+       console.log("In /users/. Current cookies:")
        console.log(req.cookies)
        
         // everything in the Users collection is put into an array called result
