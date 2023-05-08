@@ -625,11 +625,17 @@ app.route('/petDetail/delete/:petID')
 
     //check if any pets, if so send Can not delete 
     if (meds.length > 0) {
-        res.send("Can not delete pet. Pet has medication")
+        res.status(406).json({message:"Pet has medications. Delete those first before deleting the pet."})
     } else {
         //remove pet from database
         let result = await remove(db, 'Pet-Website-Project', 'Pets', mdbPetID)
-        //res.redirect('/userDetail/:userID')
+
+        if(result.acknowledged == true){
+            res.status(201).json({message:'Pet Deleted Successfully. Return to User Profile to see the results.'})
+        }
+        else{
+            res.status(406).json({message:"Delete incomplete."})
+        }
     }
 })
 

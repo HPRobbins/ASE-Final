@@ -36,7 +36,9 @@
 				validateStatus:()=>true*/
 			})
 			.then(function (response) {
-				console.log(response);
+                let responseData = response.data
+				alert(response.status+' '+ responseData.message)
+				window.location = "/users"
 			})
 			.catch(function (error) {
 				console.log(error);
