@@ -31,7 +31,7 @@
 	<h1><%= med.medName %></h1>
 
     <div id="buttons" class="col-12">
-        <button><a href="../petDetail/<%= med.petID %>">Back to Pet</a></button> | <button name="medEditBtn"><a id="btn-edit" name="medEditHref" href="../med/edit/<%= med.medID %>">Edit Medication</a></button> | <button name="medDltBtn"><a id="btn-delete" name="medDltHref" href="../med/delete/<%= med.medID %>">Delete</a></button>
+        <a class="btn btn-light btn-outline-dark" href="../petDetail/<%= med.petID %>">Back to Pet</a> | <a id="btn-edit" class="btn btn-light btn-outline-dark" name="medEditHref" href="../med/edit/<%= med.medID %>">Edit Medication</a> | <a id="btn-delete" class="btn btn-light btn-outline-dark" name="medDltHref" href="../med/delete/<%= med.medID %>">Delete</a>
     </div>
     <div class="container" id="medInfo">
         <!--medication identity-->
@@ -93,18 +93,14 @@
             let allowedToChange = cookiePlate["MedEditCookie"] === "true"
             
             // Grabs the element to be changed by name.
-            let medEditBtn=document.querySelectorAll('[name="medEditBtn"]')[0]
             let medEditHref=document.querySelectorAll('[name="medEditHref"]')[0]
-            let medDltBtn=document.querySelectorAll('[name="medDltBtn"]')[0]
             let medDltHref=document.querySelectorAll('[name="medDltHref"]')[0]
             // changes the elements to not do anything.
             if(allowedToChange == false)
             {
-                medEditBtn.disabled=true
                 medEditHref.href="#"
                 medEditHref.onclick="return false;"
                 
-                medDltBtn.disabled=true
                 medDltHref.href="#"
                 medDltHref.onclick="return false;"
             }

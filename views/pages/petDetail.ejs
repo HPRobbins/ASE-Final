@@ -31,7 +31,7 @@
     <h1 style="padding: 20px; background-color: #FFCD95;"><%= pet.petName %></h1>
     <div class="container">
         <div class="navbar">
-        <button><a href="/users/">Back to users index</a></button> | <button><a href="../userDetail/<%= pet.userID %>">Back to User</a></button> | <button name="petEditBtn"><a id="btn-edit" name="petEditHref"  href="../pet/edit/<%= pet.petID %>">Edit pet</a></button> | <button name="medAddBtn"><a id="btn-add" name="medAddHref" href="../petDetail/addMedication/<%=pet.petID %>">Add Medication</a></button> | <button name="petDltBtn"><a id="btn-delete" name="petDltHref" href="../petDetail/delete/<%= pet.petID %>">Delete</a></button>
+        <a class="btn btn-light btn-outline-dark" href="/users/">Back to users index</a>| <a class="btn btn-light btn-outline-dark" href="../userDetail/<%= pet.userID %>">Back to User</a> | <a id="btn-edit" class="btn btn-light btn-outline-dark" name="petEditHref"  href="../pet/edit/<%= pet.petID %>">Edit pet</a> | <a id="btn-add" class="btn btn-primary" name="medAddHref" href="../petDetail/addMedication/<%=pet.petID %>">Add Medication</a> | <a id="btn-delete" class="btn btn-light btn-outline-dark" name="petDltHref" href="../petDetail/delete/<%= pet.petID %>">Delete</a>
         </div>
         <div id="petDetail">
             <div padding="20px" class="card-body card text-center">
@@ -97,7 +97,7 @@
                     If user is not allowed to make changes, disable the buttons/links to the pages that would allow that.
                     On the edit/add/delete pages, remove the ability to submit the data.
                 */
-    
+                console.log(document.cookie)
                 // apparenlty this does not get autoformatted as a javascript object on client side. sadface.jpg
                 let cookieJar = document.cookie
                 // first split, temporary array.
@@ -120,31 +120,27 @@
                         cookiePlate[key] = value
                     }
                 });
-                
+
+                console.log(cookiePlate)
                 // Checks if current user is allowed to make changes to the data (as determined serverside).
                 // If there is no "PetEditCookie" cookie, defaults to false.
                 let allowedToChange = cookiePlate["PetEditCookie"] === "true"
+                console.log(cookiePlate["PetEditCookie"])
                 
                 // Grabs the element to be changed by name.
-                
-                let petEditBtn=document.querySelectorAll('[name="petEditBtn"]')[0]
                 let petEditHref=document.querySelectorAll('[name="petEditHref"]')[0]
-                let medAddBtn=document.querySelectorAll('[name="medAddBtn"]')[0]
                 let medAddHref=document.querySelectorAll('[name="medAddHref"]')[0]
-                let petDltBtn=document.querySelectorAll('[name="petDltBtn"]')[0]
                 let petDltHref=document.querySelectorAll('[name="petDltHref"]')[0]
+
                 // changes the elements to not do anything.
                 if(allowedToChange == false)
                 {
-                    petEditBtn.disabled=true
                     petEditHref.href="#"
                     petEditHref.onclick="return false;"
     
-                    medAddBtn.disabled=true
                     medAddHref.href="#"
                     medAddHref.onclick="return false;"
                     
-                    petDltBtn.disabled=true
                     petDltHref.href="#"
                     petDltHref.onclick="return false;"
                 }

@@ -240,20 +240,6 @@ app.route('/signOut')
             });
         }
 	})
-    // possibly unneeded, can be ignored/removed.
-	.post((req, res) => {
-	  res.send('Got a POST request')
-	})
-	.put((req, res) => {
-	  res.send('Got a PUT request')
-	})
-	.patch((req, res) => {
-	  res.send('Got a PATCH request')
-	})
-    // maybe an admin only feature?
-    .delete((req, res) => {
-        res.send('Got a DELETE request')
-    })
 
 // calls the userDetail page
     app.route('/userDetail/:userID')
@@ -291,7 +277,6 @@ app.route('/signOut')
             let currentRole=cookiePlate.RoleCookie
             let currentEdit=cookiePlate.EditCookie
             let jwtMatch=await matchJWT(user.jwt,currentJWT)
-
             // Is current user this user or an admin?
             if(jwtMatch == true)
             {
@@ -307,7 +292,6 @@ app.route('/signOut')
             // check if current cookie allows user to edit this page.
             if((currentEdit===allowedToEdit)==true){
                 // send variables to the page to be used.
-            console.log("are we here?")
                 res
                 .cookie('EditCookie', `${allowedToEdit}`,('SameSite:Lax'))
                 .render('pages/userDetail',{
@@ -317,7 +301,6 @@ app.route('/signOut')
             }
             else{
                  // send variables to the page to be used.
-                 console.log(user)
                 res
                 .cookie('EditCookie', `${allowedToEdit}`,('SameSite:Lax'))
                 .render('pages/userDetail',{
@@ -341,7 +324,6 @@ app.route('/signOut')
         // pull the user out of the array.
         user=user[0];
         user.userID = ownerID
-
 
 
         // send variables to the page to be used.
@@ -457,6 +439,64 @@ app.route('/userDetail/delete/:userID')
             med['medID'] = med._id.toString();
         })
         
+        if(pet.length==0)
+        {
+            res.status(404).redirect("/")
+        }
+        // if user exists, allow data edits.
+        else{
+            // pull the user out of the array.
+            
+            let mdbUserID = new ObjectId(pet.userID)
+            let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+            user=user[0]
+            // authentication
+            let allowedToEdit = false
+            let cookiePlate = req.cookies
+    
+            // get info from current user
+            let currentJWT=cookiePlate.AuthCookie
+            let currentRole=cookiePlate.RoleCookie
+            let currentEdit=cookiePlate.PetEditCookie
+            let jwtMatch=await matchJWT(user.jwt,currentJWT)
+            console.log("Do our jwts match?")
+            console.log(jwtMatch)
+
+            // Is current user this user or an admin?
+            if(jwtMatch == true)
+            {
+                // set variables
+                allowedToEdit=true
+            }
+            else if(currentRole == 'admin'){
+                allowedToEdit=true
+            }
+            else{
+                allowedToEdit=false
+            }
+            console.log("Does the current permission match our current cookie?")
+            console.log((currentEdit===allowedToEdit))
+            // check if current cookie allows user to edit this page.
+            if((currentEdit===allowedToEdit)==true){
+                // send variables to the page to be used.
+                res
+                .cookie('PetEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+                .render('pages/petDetail',{
+                    pet:pet,
+                    meds:meds
+                })
+            }
+            else{
+                 // send cookies & variables to the page to be used.
+                res
+                .cookie('PetEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+                .render('pages/petDetail',{
+                    pet:pet,
+                    meds:meds
+                })
+            }
+        }
+        
         // should petDetail be turned into a template? How do we integrate databse pull with that?
         res.render('pages/petDetail',{
             pet:pet,
@@ -500,8 +540,6 @@ app.route('/userDetail/delete/:userID')
             let petID = req.params.petID
             let mdbPetID = new ObjectId(petID);
             
-            console.log("in pet/edit put")
-            console.log(res.body);
         })
 
 //add a pet
