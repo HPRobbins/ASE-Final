@@ -31,10 +31,11 @@
 			method: 'delete',
 			url: '/med/delete/' + urlportion,
 			data: {
-			}/*,
-				validateStatus:()=>true*/
+			},
+				validateStatus:()=>true
 			})
 			.then(function (response) {
+				console.log("We are here.")
 				console.log(response);
 			})
 			.catch(function (error) {

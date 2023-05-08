@@ -40,8 +40,6 @@ async function connect(){
 	return connection
 }
 
-// TODO: equivalents to PUT and DELETE, alter and remove
-
 // PUSHes data to mongoDB
  // returns result of attempt.
 async function insert(db,database,collection,document){
@@ -459,8 +457,6 @@ app.route('/userDetail/delete/:userID')
             let currentRole=cookiePlate.RoleCookie
             let currentEdit=cookiePlate.PetEditCookie
             let jwtMatch=await matchJWT(user.jwt,currentJWT)
-            console.log("Do our jwts match?")
-            console.log(jwtMatch)
 
             // Is current user this user or an admin?
             if(jwtMatch == true)
@@ -474,8 +470,6 @@ app.route('/userDetail/delete/:userID')
             else{
                 allowedToEdit=false
             }
-            console.log("Does the current permission match our current cookie?")
-            console.log((currentEdit===allowedToEdit))
             // check if current cookie allows user to edit this page.
             if((currentEdit===allowedToEdit)==true){
                 // send variables to the page to be used.
@@ -504,8 +498,6 @@ app.route('/userDetail/delete/:userID')
         });
     })
 
-
-
 // edit page for pet
     app.route('/pet/edit/:petID')
         .get(async function(req, res){
@@ -528,7 +520,6 @@ app.route('/userDetail/delete/:userID')
             res.send('Got a POST request in pet/edit/:petID')
             let petID = req.params.petID
             let mdbPetID = new ObjectId(petID);
-            //console.log(req.body)
             var newValues=req.body 
             let result=await update(db,'Pet-Website-Project','Pets',mdbPetID,newValues,function(err,result){
                 if (err) throw err
@@ -777,6 +768,7 @@ app.route('/petDetail/delete/:petID')
 
             var information=req.body
 
+
             let result=await insert(db,'Pet-Website-Project','MedLog',information,function(err,result){
                 if (err) throw err
                 console.log(err)
@@ -810,14 +802,19 @@ app.route('/petDetail/delete/:petID')
         
         let result=await update(db,'Pet-Website-Project','MedLog',mdbMedID,newValues,function(err,result){
             if (err) throw err
-            console.log(err)
+            return result            
         })
+        
+        if(result.length>0)
+        {
+            res.status(200)
+            .json({'message':"Medicine added!"})
+        }
         //res.render()
     })
     .put(async function(req, res){
         let medID = req.params.medID
         let mdbmedID = new ObjectId(medID);
-        
         console.log("in med/edit put")
         console.log(res.body);
     })
@@ -847,6 +844,8 @@ app.route('/med/delete/:medID')
     //remove med from database
     let result = await remove(db, 'Pet-Website-Project', 'MedLog', mdbMedID)
     //res.redirect('/medDetail/'+ medID)
+    console.log(result)
+    console.log("Medication deleted.")
     
 })
 

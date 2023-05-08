@@ -108,19 +108,22 @@
             let urlportion=petID.value
 			
 			axios({
-			method: 'post',
-			url: urlportion,
-			data: {
-                
-				petID:petID.value,
-				medicationName:medicationName.value,
-				medType:medType.value,
-				dosage:dosage.value,
-                numberOfDailyDoses:numberOfDailyDoses.value,
-                medNotes:medNotes.value
-			}
+				method: 'post',
+				url: urlportion,
+				data: {
+					
+					petID:petID.value,
+					medicationName:medicationName.value,
+					medType:medType.value,
+					dosage:dosage.value,
+					numberOfDailyDoses:numberOfDailyDoses.value,
+					medNotes:medNotes.value
+				},
+                validateStatus:()=>true
 			})
 			.then(function (response) {
+				console.log(response.status)
+				console.log("Congrats on the new expensive medication to keep your loved one alive!")
 				alert('You added a medication')
 				console.log(response);
 			})
