@@ -32,23 +32,6 @@ Current Data Flow
 4) ejs page runs internal javascript to display page & data.
 5) ejs page sends api calls to main.js
 
-<<<<<<< HEAD
-
-Pages Converted:
-index
-petDetail
-signUp
-userDetail
-userEdit 
-welcomePage
-
-Pages to be converted:
-addPet
-petEdit
-medDetail
-medicationEdit
-
-=======
 ----------------------------------------------------------Pages----------------------------------------------------------
 Landing page - Sign in:
         The main landing page is our Sign in page. Basic authentication where users can sign in or sign up. If a user is signing up, they are signed up as default: user. Upon clicking "Login", the user is taken to the index page.
@@ -64,8 +47,14 @@ Pet detail page:
 
 Medication detail page:
         Shows info about the Pet's mediation. Ability to edit medication, and delete medication if signed in.
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 
-
-
-Icon credits: Image by <a href="https://pixabay.com/users/mk_al-19145027/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6063639">Maks</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6063639">Pixabay</a>
+----------------------------------------------------------Authentication----------------------------------------------------------
+Authentication is handled with checks on both client-side and server side.
+Server-side authentication consists of creating cookies that are a boolean that declare if the user is allowed to access the priviledges associated with that cookie.
+        CookieEdit      - Is set to true if user looking at a page is the user who owns the information on the page, or has the admin role.
+                        - Allows user to perform: edits to user being viewed, add a pet to the user being viewed, and delete the user being viewed.
+        PetEditCookie   - Is set to true if user looking at a page is the user who owns the information on the page, or has the admin role.
+                        - Allows user to perform: edits to the pet being viewed, add a medication to the pet, or delete the pet being viewed.
+        MedEditCookie   - Is set to true if user looking at a page is the user who owns the information on the page, or has the admin role.
+                        - Allows user to perform: edits to medication being viewed, or delete the pet being viewed.
+Client-side authentication consists of disabling the associated link/button on the webpage to disabled. 
