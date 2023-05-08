@@ -843,10 +843,13 @@ app.route('/med/delete/:medID')
     let mdbMedID = new ObjectId(medID);
     //remove med from database
     let result = await remove(db, 'Pet-Website-Project', 'MedLog', mdbMedID)
-    //res.redirect('/medDetail/'+ medID)
-    console.log(result)
-    console.log("Medication deleted.")
-    
+
+    if(result.acknowledged == true){
+        res.status(201).json({message:'Medicine Deleted Successfully. Return to Pet Detail to see the results.'})
+    }
+    else{
+        res.status(406).json({message:"Delete incomplete."})
+    }
 })
 
 
