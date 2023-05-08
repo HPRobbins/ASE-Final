@@ -311,7 +311,6 @@ app.route('/signOut')
         }
     })
 
-
 // User edit
     app.route('/user/edit/:userID')
     // get details of user & the userEdit page
@@ -322,9 +321,8 @@ app.route('/signOut')
         // returns the single user as part of an array
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
         // pull the user out of the array.
-        user=user[0];
+        user=user[0]
         user.userID = ownerID
-
 
         // send variables to the page to be used.
         res.render('pages/userEdit',{
@@ -338,7 +336,6 @@ app.route('/signOut')
         // using post becaue PUT doesn't work for the form.
         let ownerID = req.params.userID
         let mdbUserID = new ObjectId(ownerID);
-        console.log("Insider user/edit/:userID .put")
         
         var newValues=req.body
 
