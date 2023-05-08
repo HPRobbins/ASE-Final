@@ -8,7 +8,11 @@
     <%- include('../partials/header') %>
     </header>
 
+<<<<<<< HEAD
     <body style="background-color: #FF9566;">
+=======
+    <body style="background-color: #FFF0DF;">
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
         <div>
             <section class="vh-100">
                 <div class="container py-5 h-100">
@@ -18,7 +22,11 @@
                             <div class="card-body p-5 text-center">
                                 <!--Sign up-->
                                 <h3 class="mb-5">Sign Up</h3>
+<<<<<<< HEAD
 
+=======
+                            
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
                                 <form id="signup">
                                     <div class="form-outline mb-4">
                                         <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" />
@@ -33,12 +41,20 @@
                                         <input type="email" id="typeEmailX-2" name="email" class="form-control form-control-lg" />
                                         <label class="form-label" for="typeEmailX-2">Email</label>
                                     </div>
+<<<<<<< HEAD
 
+=======
+                        
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
                                     <div class="form-outline mb-4">
                                         <input type="password" id="typePasswordX-2" name="password" class="form-control form-control-lg" />
                                         <label class="form-label" for="typePasswordX-2">Password</label>
                                     </div>
+<<<<<<< HEAD
 
+=======
+                        
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
                                     <button class="btn btn-primary btn-lg btn-block" type="submit">Sign Up</button>
                                 </form>
                             </div>
@@ -48,6 +64,7 @@
                 </div>
             </section>
         </div>
+<<<<<<< HEAD
 
 	    <script src="/assets/getAllURLParams.js"></script>
 	    <script src="/assets/cookies.js"></script>
@@ -55,12 +72,26 @@
         <script>
             // taken from code_12, 04, signup.html
             const signup=document.getElementById('signup')
+=======
+        
+	    <script src="/assets/getAllURLParams.js"></script>
+	    <script src="/assets/cookies.js"></script>
+
+        <script> 
+            // taken from code_12, 04, signup.html	
+            const signup=document.getElementById('signup')
+    
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
             signup.addEventListener('submit',(e)=>{
                 e.preventDefault();
                 let emailAddress=document.querySelectorAll('[name="email"]')[0]
                 let password=document.querySelectorAll('[name="password"]')[0]
                 let firstName=document.querySelectorAll('[name="firstName"]')[0]
                 let lastName=document.querySelectorAll('[name="lastName"]')[0]
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
                 axios({
                 method: 'post',
                 url: '/signUp',
@@ -74,16 +105,28 @@
                     validateStatus:()=>true
                 })
                 .then(function (response) {
+<<<<<<< HEAD
                     // TODO: move to '/users' once logged in.
                     console.log(response);
+=======
+                    let responseData = response.data
+                    alert('Success! Login Complete'+' '+ responseData.message)
+                    window.location = "/users"
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             })
+<<<<<<< HEAD
         </script>
     </body>
 
+=======
+        </script> 
+    </body>
+    
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
     <footer>
         <%- include('../partials/footer') %>
     </footer>

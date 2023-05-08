@@ -157,6 +157,40 @@ app.route('/')
 	  res.send('Got a DELETE request')
 	})
 
+<<<<<<< HEAD
+=======
+    app.route('/signUp')
+        // return the signUp.html
+        .get(async function(req, res) {
+        // displays intial signUp page.
+        // console.log(req);
+        res.render('pages/signUp')
+        })
+        // yes! Creating new user in database
+        .post(async(req, res) => {
+            let email = req.body.emailAddress
+
+            // check if user exists.
+            let result=await find(db,'Pet-Website-Project','Users',{emailAddress:email})
+                // user already exists, display message.
+                if(result.length>0)
+                {
+                    res.status(406).json({message:'User already exists'})
+                }
+                else
+                {
+                    console.log("inserting into database")
+                    req.body.password=bcrypt.hashSync(req.body.password,salt).replace(`${salt}.`,'')
+                    let newResult=insert(db,'Pet-Website-Project','Users',req.body,function(err,result){
+                        if (err) throw err
+                        console.log(err)
+                        res.status(201).json({message:'User created'})
+                        return newResult
+                    })
+                }
+                res.send()
+        })
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 app.route('/signOut')
     .get(async (req, res) => {
         res.clearCookie('AuthCookie')
@@ -209,6 +243,7 @@ app.route('/signOut')
             });
         }
 	})
+<<<<<<< HEAD
     // possibly unneeded, can be ignored/removed.
 	.post((req, res) => {
 	  res.send('Got a POST request')
@@ -223,6 +258,8 @@ app.route('/signOut')
     .delete((req, res) => {
         res.send('Got a DELETE request')
     })
+=======
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 
 // calls the userDetail page
     app.route('/userDetail/:userID')
@@ -259,7 +296,11 @@ app.route('/signOut')
             let currentJWT=cookiePlate.AuthCookie
             let currentRole=cookiePlate.RoleCookie
             let currentEdit=cookiePlate.EditCookie
+<<<<<<< HEAD
             let jwtMatch = await matchJWT(user.jwt,currentJWT)
+=======
+            let jwtMatch=await matchJWT(user.jwt,currentJWT)
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
             // Is current user this user or an admin?
             if(jwtMatch == true)
             {
@@ -309,7 +350,10 @@ app.route('/signOut')
         user.userID = ownerID
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
         // send variables to the page to be used.
         res.render('pages/userEdit',{
             user:user
@@ -423,6 +467,67 @@ app.route('/userDetail/delete/:userID')
             med['medID'] = med._id.toString();
         })
         
+<<<<<<< HEAD
+=======
+        if(pet.length==0)
+        {
+            res.status(404).redirect("/")
+        }
+        // if user exists, allow data edits.
+        else{
+            // pull the user out of the array.
+            
+            let mdbUserID = new ObjectId(pet.userID)
+            let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
+            user=user[0]
+            // authentication
+            let allowedToEdit = false
+            let cookiePlate = req.cookies
+    
+            // get info from current user
+            let currentJWT=cookiePlate.AuthCookie
+            let currentRole=cookiePlate.RoleCookie
+            let currentEdit=cookiePlate.PetEditCookie
+            let jwtMatch=await matchJWT(user.jwt,currentJWT)
+            console.log("Do our jwts match?")
+            console.log(jwtMatch)
+
+            // Is current user this user or an admin?
+            if(jwtMatch == true)
+            {
+                // set variables
+                allowedToEdit=true
+            }
+            else if(currentRole == 'admin'){
+                allowedToEdit=true
+            }
+            else{
+                allowedToEdit=false
+            }
+            console.log("Does the current permission match our current cookie?")
+            console.log((currentEdit===allowedToEdit))
+            // check if current cookie allows user to edit this page.
+            if((currentEdit===allowedToEdit)==true){
+                // send variables to the page to be used.
+                res
+                .cookie('PetEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+                .render('pages/petDetail',{
+                    pet:pet,
+                    meds:meds
+                })
+            }
+            else{
+                 // send cookies & variables to the page to be used.
+                res
+                .cookie('PetEditCookie', `${allowedToEdit}`,('SameSite:Lax'))
+                .render('pages/petDetail',{
+                    pet:pet,
+                    meds:meds
+                })
+            }
+        }
+        
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
         // should petDetail be turned into a template? How do we integrate databse pull with that?
         res.render('pages/petDetail',{
             pet:pet,
@@ -466,8 +571,11 @@ app.route('/userDetail/delete/:userID')
             let petID = req.params.petID
             let mdbPetID = new ObjectId(petID);
             
+<<<<<<< HEAD
             console.log("in pet/edit put")
             console.log(res.body);
+=======
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
         })
 
 //add a pet

@@ -7,23 +7,40 @@
 <header>
    <%- include('../partials/header') %>
 </header>
+<<<<<<< HEAD
 <body style="background-color: #FF9566;">
 	<div class="container"><p><h1 style="color: white">User Edit</h1> <button><a href="/users/">Back to users index</a></button></p>
+=======
+<body style="background-color: #FFF0DF;">
+	<div class="container"><p><h1>User Edit</h1> <a href="/users/" class="btn btn-light btn-outline-dark">Back to users index</a></p>
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
         <form id="deleteUser" enctype="multipart/formdata">
             <div class="form-group">
                 <label for="deleteUser" style="color: #FFCD95;">Delete User?</label>
                 <input type="text" class="form-control" id="userID" name="deleteUser" aria-describedby="deleteUser" placeholder="deleteUser" value="<%= user.userID %>" disabled>
+<<<<<<< HEAD
             </div>
+=======
+            </div>          
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
             <button type="button" class="btn btn-primary" id="deleteBtn">Submit</button>
         </form>
 	</div>
 
 
+<<<<<<< HEAD
     <script>
 		const deleteBtn=document.getElementById('deleteBtn')
 		deleteBtn.addEventListener('click',()=>{
             let urlportion=userID.value
 
+=======
+    <script> 	
+		const deleteBtn=document.getElementById('deleteBtn')
+		deleteBtn.addEventListener('click',()=>{
+            let urlportion=userID.value
+			
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 			axios({
 			method: 'delete',
 			url: '/userDetail/delete/' + urlportion,
@@ -39,7 +56,11 @@
 				console.log(error);
 			});
 		})
+<<<<<<< HEAD
 	</script>
+=======
+	</script> 
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 
 </body>
 
@@ -47,4 +68,8 @@
 <footer>
     <%- include('../partials/footer') %>
 </footer>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2

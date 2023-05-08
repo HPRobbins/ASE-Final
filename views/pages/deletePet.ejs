@@ -7,13 +7,22 @@
 <header>
    <%- include('../partials/header') %>
 </header>
+<<<<<<< HEAD
 <body style="background-color: #FF9566;">
 	<div class="container"><p><h1 style="color: white">Delete Pet</h1> <button href="/users/">Back to users index</button></p>
+=======
+<body style="background-color: #FFF0DF;">
+	<div class="container"><p><h1>Delete Pet</h1> <a href="/users/" class="btn btn-light btn-outline-dark">Back to users index</a></p>
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
         <form id="deleteUser" enctype="multipart/formdata">
             <div class="form-group">
                 <label for="deleteUser" style="color: #FFCD95;">Delete Pet?</label>
                 <input type="text" class="form-control" id="petID" name="petID" aria-describedby="petID" placeholder="petID" value="<%= pet.petID %>" disabled>
+<<<<<<< HEAD
             </div>
+=======
+            </div>          
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
             <div class="form-group">
                 <input type="text" class="form-control" id="userID" name="userID" aria-describedby="userID" placeholder="userID" value="<%= pet.userID %>" style="display: none;">
             </div>
@@ -23,11 +32,19 @@
 
 
     <script>
+<<<<<<< HEAD
 
 		const deleteBtn=document.getElementById('deleteBtn')
 		deleteBtn.addEventListener('click',()=>{
             let urlportion=petID.value
 
+=======
+    	
+		const deleteBtn=document.getElementById('deleteBtn')
+		deleteBtn.addEventListener('click',()=>{
+            let urlportion=petID.value
+			
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 			axios({
 			method: 'delete',
 			url: '/petDetail/delete/' + urlportion,
@@ -42,7 +59,11 @@
 				console.log(error);
 			});
 		})
+<<<<<<< HEAD
 	</script>
+=======
+	</script> 
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 
 </body>
 
@@ -50,4 +71,8 @@
 <footer>
     <%- include('../partials/footer') %>
 </footer>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
