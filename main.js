@@ -186,7 +186,6 @@ app.route('/')
                         return newResult
                     })
                 }
-                res.send()
         })
 app.route('/signOut')
     .get(async (req, res) => {
