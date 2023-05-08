@@ -315,13 +315,18 @@ app.route('/signOut')
     // get details of user & the userEdit page
     .get(async function(req, res){
         let ownerID = req.params.userID
+        console.log(req.params.userID)
         // convert userID as string into ObjectID for search in MongoDB
         let mdbUserID = new ObjectId(ownerID);
         // returns the single user as part of an array
         let user=await find(db,'Pet-Website-Project','Users',{_id:mdbUserID})
         // pull the user out of the array.
+        console.log(user)
+        console.log(ownerID)
         user=user[0]
+        console.log(user)
         user.userID = ownerID
+        console.log(user.userID)
 
         // send variables to the page to be used.
         res.render('pages/userEdit',{
