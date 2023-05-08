@@ -14,13 +14,8 @@
         }
         #card{
             border-radius: 25px;
-<<<<<<< HEAD
-            border: 2px solid white;
-            padding: 20px;
-=======
             border: 2px solid #a6763f;
             padding: 20px; 
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
             width: 200px;
             height: 150px;
         }
@@ -32,20 +27,11 @@
     <%- include('../partials/header') %>
  </header>
 
-<<<<<<< HEAD
 <body style="background-color:#FF9566">
-	<h1 style="color: white"><%= med.medName %></h1>
-
-    <div id="buttons" class="col-12">
-        <button class="btn btn-light btn-outline-dark"><a href="../petDetail/<%= med.petID %>">Back to Pet</a></button> | <button class="btn btn-light btn-outline-dark"><a id="btn-edit" href="../med/edit/<%= med.medID %>">Edit Medication</a></button> |
-          <button type="button" id="btn-delete" class="btn btn-light btn-outline-dark">Delete Info</button>
-=======
-<body style="background-color:#FFF0DF">
 	<h1><%= med.medName %></h1>
 
     <div id="buttons" class="col-12">
         <a class="btn btn-light btn-outline-dark" href="../petDetail/<%= med.petID %>">Back to Pet</a> | <a id="btn-edit" class="btn btn-light btn-outline-dark" name="medEditHref" href="../med/edit/<%= med.medID %>">Edit Medication</a> | <a id="btn-delete" class="btn btn-light btn-outline-dark" name="medDltHref" href="../med/delete/<%= med.medID %>">Delete</a>
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
     </div>
     <div class="container" id="medInfo">
         <!--medication identity-->
@@ -53,17 +39,6 @@
             <div class="row" id="med-ident">
             <div class="col-md-6">
                 <!--med image uses a web address, have to copy from google to insert: "Copy image address"-->
-<<<<<<< HEAD
-                <img src="<%= med.medImage %>" alt="Medication Image" class="img-fluid">
-            </div>
-            <div class="col-md-6">
-                <h2 style="color: white"><%= med.medicationName %></h2>
-                <p style="color: white">Medication Type: <%= med.medType %></p>
-                <ul>
-                <li style="color: white">Dosage: <span class="text-muted"><%= med.dosage %></span></li>
-                <li style="color: white">Number of Daily Doses: <span class="text-muted"><%= med.numberOfDailyDoses %></span></li>
-                <li style="color: white">Notes: <span class="text-muted"> <%= med.medNotes %></span></li>
-=======
                 <img src="<%= med.medImage %>" alt="<%= med.medType %> Image" class="img-fluid">
             </div>
             <div class="col-md-6">
@@ -73,17 +48,12 @@
                 <li>Dosage: <span class="text-muted"><%= med.dosage %></span></li>
                 <li>Number of Daily Doses: <span class="text-muted"><%= med.numberOfDailyDoses %></span></li>
                 <li>Notes: <span class="text-muted"> <%= med.medNotes %></span></li>
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
                 </ul>
             </div>
             </div>
         </div>
     </div>
 
-<<<<<<< HEAD
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-=======
     
     <!--Script for checking if current user is allowed to make changes.-->
     <script>
@@ -94,7 +64,6 @@
                 If user is not allowed to make changes, disable the buttons/links to the pages that would allow that.
                 On the edit/add/delete pages, remove the ability to submit the data.
             */
-
             // apparenlty this does not get autoformatted as a javascript object on client side. sadface.jpg
             let cookieJar = document.cookie
             // first split, temporary array.
@@ -141,13 +110,8 @@
     </script>
 
 
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 </body>
 <footer>
     <%- include('../partials/footer') %>
 </footer>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2

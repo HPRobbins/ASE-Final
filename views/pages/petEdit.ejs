@@ -7,10 +7,9 @@
 <header>
    <%- include('../partials/header') %>
 </header>
-<<<<<<< HEAD
-<body style="background-color: #FF9566;">
+<body style="background-color:#FF9566">
     <div class="container">
-        <p><h1>Pet Edit</h1> <button class="btn btn-light btn-outline-dark"><a href="/users/">Back to users index</a></button> <button class="btn btn-light btn-outline-dark"><a href="/petDetail/<%= pet.petID %>">Back to pet</a></button></p>
+        <p><h1>Pet Edit</h1> <a href="/users/" class="btn btn-light btn-outline-dark">Back to users index</a> | <a href="/petDetail/<%= pet.petID %>" class="btn btn-light btn-outline-dark">Back to pet</a></p> 
 
         <form id="editPet" enctype="multipart/formdata">
             <div class="form-group">
@@ -45,52 +44,8 @@
                 <label for="petDoB" style="color: white; font-size: 20px">Pet DOB:</label>
                 <input type="text" class="form-control" id="petDoBInput" name="petDoB" aria-describedby="petDoB" placeholder="petDoB" value="<%= pet.petDoB %>">
             </div>
-
-		<button type="submit" class="btn btn-primary" >Submit</button>
-        </form>
-
-        <script>
-            // taken from code_12, 04, signup.html
-=======
-<body style="background-color: #FFF0DF;">
-    <div class="container">
-        <p><h1>Pet Edit</h1> <a href="/users/" class="btn btn-light btn-outline-dark">Back to users index</a> | <a href="/petDetail/<%= pet.petID %>" class="btn btn-light btn-outline-dark">Back to pet</a></p> 
-
-        <form id="editPet" enctype="multipart/formdata">
             <div class="form-group">
-                <label for="petID" style="color: #FFCD95;">Pet ID:</label>
-                <input type="text" class="form-control" id="petIDInput" name="petID" aria-describedby="petID" placeholder="petID" value="<%= pet.petID %>" disabled>
-            </div>
-            <div class="form-group">
-                <label for="userID" style="color: #FFCD95;">User ID:</label>
-                <input type="text" class="form-control" id="userIDInput" name="userID" aria-describedby="userID" placeholder="userID" value="<%= pet.userID %>" disabled>
-            </div>
-            <div class="form-group">
-                <label for="petName" style="color: #FFCD95;">Pet Name:</label>
-                <input type="text" class="form-control" id="petNameInput" name="petName" aria-describedby="petName" placeholder="petName" value="<%= pet.petName %>">
-            </div>
-            <div class="form-group">
-                <label for="petType" style="color: #FFCD95;">Pet Type:</label>
-                <input type="text" class="form-control" id="petTypeInput" name="petType" aria-describedby="petType" placeholder="petType" value="<%= pet.petType %>">
-            </div>
-            <div class="form-group">
-                <label for="petSex" style="color: #FFCD95;">Pet Sex:</label>
-                <input type="text" class="form-control" id="petSexInput" name="petSex" aria-describedby="petSex" placeholder="petSex" value="<%= pet.petSex %>">
-            </div>
-            <div class="form-group">
-                <label for="petBreed" style="color: #FFCD95;">Pet Breed:</label>
-                <input type="text" class="form-control" id="petBreedInput" name="petBreed" aria-describedby="petBreed" placeholder="petBreed" value="<%= pet.petBreed %>">
-            </div>
-            <div class="form-group">
-                <label for="petWeight" style="color: #FFCD95;">Pet Weight:</label>
-                <input type="text" class="form-control" id="petWeightInput" name="petWeight" aria-describedby="petWeight" placeholder="NotepetWeights" value="<%= pet.petWeight %>">
-            </div>
-            <div class="form-group">
-                <label for="petDoB" style="color: #FFCD95;">Pet DOB:</label>
-                <input type="text" class="form-control" id="petDoBInput" name="petDoB" aria-describedby="petDoB" placeholder="petDoB" value="<%= pet.petDoB %>">
-            </div>
-            <div class="form-group">
-                <label for="petImage" style="color: #FFCD95;">Pet DOB:</label>
+                <label for="petImage" style="color: white; font-size: 20px">Pet DOB:</label>
                 <input type="text" class="form-control" id="petImageInput" name="petImage" aria-describedby="petImage" placeholder="petImage" value="<%= pet.petImage %>">
             </div>
             
@@ -106,7 +61,6 @@
                If user is not allowed to make changes, disable the buttons/links to the pages that would allow that.
                On the edit/add/delete pages, remove the ability to submit the data.
            */
-
            // apparenlty this does not get autoformatted as a javascript object on client side. sadface.jpg
            let cookieJar = document.cookie
            // first split, temporary array.
@@ -149,7 +103,6 @@
 
         <script> 
             // taken from code_12, 04, signup.html	
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
             const editPet=document.getElementById('editPet')
             editPet.addEventListener('submit',(e)=>{
                 e.preventDefault();
@@ -161,14 +114,9 @@
                 let petBreed=document.querySelectorAll('[name="petBreed"]')[0]
                 let petWeight=document.querySelectorAll('[name="petWeight"]')[0]
                 let petDoB=document.querySelectorAll('[name="petDoB"]')[0]
-<<<<<<< HEAD
-                let urlportion=petID.value
-=======
                 let petImage=document.querySelectorAll('[name="petImage"]')[0]
-
                 let urlportion=petID.value
                 
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
                 axios({
                 method: 'post',
                 url: '/pet/edit/'+ urlportion,
@@ -180,12 +128,8 @@
                     petSex:petSex.value,
                     petBreed:petBreed.value,
                     petWeight:petWeight.value,
-<<<<<<< HEAD
-                    petDoB:petDoB.value
-=======
                     petDoB:petDoB.value,
                     petImage:petImage.value
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
                 }/*,
                     validateStatus:()=>true*/
                 })
@@ -197,19 +141,11 @@
                     console.log(error);
                 });
             })
-<<<<<<< HEAD
-        </script>
-=======
         </script> 
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 
         <footer>
             <%- include('../partials/footer') %>
         </footer>
     </div>
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2

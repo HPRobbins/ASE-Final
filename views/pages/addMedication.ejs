@@ -7,10 +7,9 @@
 <header>
    <%- include('../partials/header') %>
 </header>
-<<<<<<< HEAD
 <body style="background-color: #FF9566;">
 	<div class ="container">
-		<p><h1>Add Medication</h1> <button class="btn btn-light btn-outline-dark"><a href="/users/">Back to users index</a></button> <button class="btn btn-light btn-outline-dark"><a href="../<%= pet.petID %>">Back to pet details</a></button></p>
+		<p><h1>Add Medication</h1> <a href="/users/" class="btn btn-light btn-outline-dark">Back to users index</a> <a href="../<%= pet.petID %>" class="btn btn-light btn-outline-dark">Back to pet details</a></p>
 	<form id="addMedication" enctype="multipart/formdata">
 		<div class="form-group">
 			<label for="petID" style="color: white; font-size: 20px">Pet ID:</label>
@@ -21,7 +20,7 @@
 			<input type="text" class="form-control" id="medicationName" name="medicationName">
 		</div>
 		<div class="form-group">
-			<label for="medType" style="color: white; font-size: 20px">Med Type:</label>
+			<label for="medType" style="color: white; font-size: 20px">Med type:</label>
 			<input type="text" class="form-control" id="medType" name="medType">
 		</div>
 		<div class="form-group">
@@ -29,53 +28,11 @@
 			<input type="text" class="form-control" id="dosage" name="dosage">
 		</div>
 		<div class="form-group">
-			<label for="numberOfDailyDoses" style="color: white; font-size: 20px">Number of Daily Doses:</label>
+			<label for="numberOfDailyDoses" style="color: white; font-size: 20px">Number of daily doses:</label>
 			<input type="text" class="form-control" id="numberOfDailyDoses" name="numberOfDailyDoses">
 		</div>
 		<div class="form-group">
 			<label for="medNotes" style="color: white; font-size: 20px">Notes:</label>
-			<input type="text" class="form-control" id="medNotes" name="medNotes">
-		</div>
-
-		<button type="submit" class="btn btn-primary" >Submit</button>
-	</form>
-
-	<script src="/assets/getAllURLParams.js"></script>
-
-    <script src="/assets/cookies.js"></script>
-
-    <script src="/assets/axios.min.js"></script>
-
-
-	<script>
-		// taken from code_12, 04, signup.html
-=======
-<body style="background-color: #FFF0DF;">
-	<div class ="container">
-		<p><h1>Add Medication</h1> <a href="/users/" class="btn btn-light btn-outline-dark">Back to users index</a> <a href="../<%= pet.petID %>" class="btn btn-light btn-outline-dark">Back to pet details</a></p>
-	<form id="addMedication" enctype="multipart/formdata">
-		<div class="form-group">
-			<label for="petID" >Pet ID:</label>
-			<input type="text" class="form-control" id="petID" name="petID" value="<%= pet.petID %>" disabled>
-		</div>
-		<div class="form-group">
-			<label for="medicationName">Medication Name:</label>
-			<input type="text" class="form-control" id="medicationName" name="medicationName">
-		</div>
-		<div class="form-group">
-			<label for="medType">Med type:</label>
-			<input type="text" class="form-control" id="medType" name="medType">
-		</div>
-		<div class="form-group">
-			<label for="dosage">Dosage:</label>
-			<input type="text" class="form-control" id="dosage" name="dosage">
-		</div>
-		<div class="form-group">
-			<label for="numberOfDailyDoses">Number of daily doses:</label>
-			<input type="text" class="form-control" id="numberOfDailyDoses" name="numberOfDailyDoses">
-		</div>
-		<div class="form-group">
-			<label for="medNotes">Notes:</label>
 			<input type="text" class="form-control" id="medNotes" name="medNotes">
 		</div>
 
@@ -139,7 +96,6 @@
    	<!-- Script for handling an edit submission. -->
 	<script> 
 		// taken from code_12, 04, signup.html	
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 		const addMedication=document.getElementById('addMedication')
 		addMedication.addEventListener('submit',(e)=>{
 			e.preventDefault();
@@ -150,18 +106,11 @@
             let numberOfDailyDoses=document.querySelectorAll('[name="numberOfDailyDoses"]')[0]
             let medNotes=document.querySelectorAll('[name="medNotes"]')[0]
             let urlportion=petID.value
-<<<<<<< HEAD
-=======
 			
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 			axios({
 			method: 'post',
 			url: urlportion,
-			data: {
-<<<<<<< HEAD
-=======
-                
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
+			data: { 
 				petID:petID.value,
 				medicationName:medicationName.value,
 				medType:medType.value,
@@ -178,11 +127,7 @@
 				console.log(error);
 			});
 		})
-<<<<<<< HEAD
-	</script>
-=======
 	</script> 
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 
 </body>
 

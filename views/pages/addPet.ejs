@@ -7,14 +7,13 @@
 <header>
    <%- include('../partials/header') %>
 </header>
-<<<<<<< HEAD
 <body style="background-color: #FF9566;">
 	<div class ="container">
-		<p><h1 style="color: white;">Add Pet</h1> <button class="btn btn-light btn-outline-dark"><a href="/users/">Back to users index</a></button></p>
-
+		<p><h1>Add Pet</h1> <a href="/users/" class="btn btn-light btn-outline-dark">Back to users index</a></p>
+		
 		<form id="addPet" enctype="multipart/formdata">
 			<div class="form-group">
-				<label for="userID" style="color: white; font-size: 20px" >User ID:</label>
+				<label for="userID" style="color: white; font-size: 20px">User ID:</label>
 				<input type="text" class="form-control" id="userID" name="userID" value="<%= user.userID %>" disabled>
 			</div>
 			<div class="form-group">
@@ -22,81 +21,35 @@
 				<input type="text" class="form-control" id="petName" name="petName">
 			</div>
 			<div class="form-group">
-				<label for="petType" style="color: white; font-size: 20px">Pet Type:</label>
+				<label for="petType" style="color: white; font-size: 20px">Pet type:</label>
 				<input type="text" class="form-control" id="petType" name="petType">
 			</div>
 			<div class="form-group">
-				<label for="petSex" style="color: white; font-size: 20px">Pet's Sex:</label>
+				<label for="petSex" style="color: white; font-size: 20px">Pet's sex:</label>
 				<input type="text" class="form-control" id="petSex" name="petSex">
 			</div>
 			<div class="form-group">
-				<label for="petBreed" style="color: white; font-size: 20px">Pet's Breed:</label>
+				<label for="petBreed" style="color: white; font-size: 20px">Pet's breed:</label>
 				<input type="text" class="form-control" id="petBreed" name="petBreed">
 			</div>
 			<div class="form-group">
-				<label for="petWeight" style="color: white; font-size: 20px">Pet's Weight:</label>
+				<label for="petWeight" style="color: white; font-size: 20px">Pet's weight:</label>
 				<input type="text" class="form-control" id="petWeight" name="petWeight">
 			</div>
 			<div class="form-group">
-				<label for="petDoB" style="color: white; font-size: 20px">Pet's Date of Birth:</label>
-				<input type="text" class="form-control" id="petDoB" name="petDoB">
-			</div>
-			<button type="submit" class="btn btn-light btn-outline-dark">Submit</button>
-=======
-<body style="background-color: #FFF0DF;">
-	<div class ="container">
-		<p><h1>Add Pet</h1> <a href="/users/" class="btn btn-light btn-outline-dark">Back to users index</a></p>
-		
-		<form id="addPet" enctype="multipart/formdata">
-			<div class="form-group">
-				<label for="userID" >User ID:</label>
-				<input type="text" class="form-control" id="userID" name="userID" value="<%= user.userID %>" disabled>
-			</div>
-			<div class="form-group">
-				<label for="petName">Pet's Name:</label>
-				<input type="text" class="form-control" id="petName" name="petName">
-			</div>
-			<div class="form-group">
-				<label for="petType">Pet type:</label>
-				<input type="text" class="form-control" id="petType" name="petType">
-			</div>
-			<div class="form-group">
-				<label for="petSex">Pet's sex:</label>
-				<input type="text" class="form-control" id="petSex" name="petSex">
-			</div>
-			<div class="form-group">
-				<label for="petBreed">Pet's breed:</label>
-				<input type="text" class="form-control" id="petBreed" name="petBreed">
-			</div>
-			<div class="form-group">
-				<label for="petWeight">Pet's weight:</label>
-				<input type="text" class="form-control" id="petWeight" name="petWeight">
-			</div>
-			<div class="form-group">
-				<label for="petDoB">Pet's date of birth:</label>
+				<label for="petDoB" style="color: white; font-size: 20px">Pet's date of birth:</label>
 				<input type="text" class="form-control" id="petDoB" name="petDoB">
 			</div>
 			<div class="form-group">
-				<label for="petImage">Pet image:</label>
+				<label for="petImage" style="color: white; font-size: 20px">Pet image:</label>
 				<input type="text" class="form-control" id="petImage" name="petImage">
 			</div>
 			<button type="submit" name="PetAddSubmit" class="btn btn-primary">Submit</button>
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 		</form>
 	</div>
 
 
 	<script src="/assets/getAllURLParams.js"></script>
-<<<<<<< HEAD
-
-    <script src="/assets/cookies.js"></script>
-
-    <script src="/assets/axios.min.js"></script>
-
-
-	<script>
-		// taken from code_12, 04, signup.html
-=======
     <script src="/assets/cookies.js"></script>
     <script src="/assets/axios.min.js"></script>
 
@@ -153,7 +106,6 @@
    	<!-- Script for handling an edit submission. -->
 	<script> 
 		// taken from code_12, 04, signup.html	
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 		const addPet=document.getElementById('addPet')
 		addPet.addEventListener('submit',(e)=>{
 			e.preventDefault();
@@ -164,36 +116,24 @@
             let petBreed=document.querySelectorAll('[name="petBreed"]')[0]
             let petWeight=document.querySelectorAll('[name="petWeight"]')[0]
             let petDoB=document.querySelectorAll('[name="petDoB"]')[0]
-<<<<<<< HEAD
-            //let petDoB=document.querySelectorAll('[name="petDob"]')[0]
-            let urlportion=userID.value
-=======
 			let petImage=document.querySelectorAll('[name="petImage"]')[0]
 
             //let petDoB=document.querySelectorAll('[name="petDob"]')[0]
             let urlportion=userID.value
 			
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 			axios({
 			method: 'post',
 			url: urlportion,
 			data: {
-<<<<<<< HEAD
-=======
                 
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 				userID:userID.value,
 				petName:petName.value,
 				petType:petType.value,
 				petSex:petSex.value,
                 petBreed:petBreed.value,
                 petWeight:petWeight.value,
-<<<<<<< HEAD
-                petDoB:petDoB.value
-=======
                 petDoB:petDoB.value,
 				petImage:petImage.value
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 			}
 			})
 			.then(function (response) {
@@ -203,19 +143,11 @@
 				console.log(error);
 			});
 		})
-<<<<<<< HEAD
-	</script>
-=======
 	</script> 
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 
 </body>
 
 <footer>
     <%- include('../partials/footer') %>
 </footer>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2

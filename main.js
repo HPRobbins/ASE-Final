@@ -157,8 +157,6 @@ app.route('/')
 	  res.send('Got a DELETE request')
 	})
 
-<<<<<<< HEAD
-=======
     app.route('/signUp')
         // return the signUp.html
         .get(async function(req, res) {
@@ -190,7 +188,6 @@ app.route('/')
                 }
                 res.send()
         })
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 app.route('/signOut')
     .get(async (req, res) => {
         res.clearCookie('AuthCookie')
@@ -243,23 +240,6 @@ app.route('/signOut')
             });
         }
 	})
-<<<<<<< HEAD
-    // possibly unneeded, can be ignored/removed.
-	.post((req, res) => {
-	  res.send('Got a POST request')
-	})
-	.put((req, res) => {
-	  res.send('Got a PUT request')
-	})
-	.patch((req, res) => {
-	  res.send('Got a PATCH request')
-	})
-    // maybe an admin only feature?
-    .delete((req, res) => {
-        res.send('Got a DELETE request')
-    })
-=======
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
 
 // calls the userDetail page
     app.route('/userDetail/:userID')
@@ -296,11 +276,7 @@ app.route('/signOut')
             let currentJWT=cookiePlate.AuthCookie
             let currentRole=cookiePlate.RoleCookie
             let currentEdit=cookiePlate.EditCookie
-<<<<<<< HEAD
-            let jwtMatch = await matchJWT(user.jwt,currentJWT)
-=======
             let jwtMatch=await matchJWT(user.jwt,currentJWT)
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
             // Is current user this user or an admin?
             if(jwtMatch == true)
             {
@@ -350,10 +326,6 @@ app.route('/signOut')
         user.userID = ownerID
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
         // send variables to the page to be used.
         res.render('pages/userEdit',{
             user:user
@@ -467,8 +439,6 @@ app.route('/userDetail/delete/:userID')
             med['medID'] = med._id.toString();
         })
         
-<<<<<<< HEAD
-=======
         if(pet.length==0)
         {
             res.status(404).redirect("/")
@@ -527,7 +497,6 @@ app.route('/userDetail/delete/:userID')
             }
         }
         
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
         // should petDetail be turned into a template? How do we integrate databse pull with that?
         res.render('pages/petDetail',{
             pet:pet,
@@ -571,11 +540,6 @@ app.route('/userDetail/delete/:userID')
             let petID = req.params.petID
             let mdbPetID = new ObjectId(petID);
             
-<<<<<<< HEAD
-            console.log("in pet/edit put")
-            console.log(res.body);
-=======
->>>>>>> 6d92c74ece40a0d52f1533321250a130eb133bb2
         })
 
 //add a pet
