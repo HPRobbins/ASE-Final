@@ -134,10 +134,12 @@
                 petWeight:petWeight.value,
                 petDoB:petDoB.value,
 				petImage:petImage.value
-			}
+			},
+                    validateStatus:()=>true
 			})
-			.then(function (response) {
-				console.log(response);
+			.then(function (response) {				
+				alert("Pet added!")
+				window.location = `/userDetail/${urlportion}`
 			})
 			.catch(function (error) {
 				console.log(error);

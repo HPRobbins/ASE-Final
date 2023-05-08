@@ -32,11 +32,13 @@
 			method: 'delete',
 			url: '/petDetail/delete/' + urlportion,
 			data: {
-			}/*,
-				validateStatus:()=>true*/
+			},
+				validateStatus:()=>true
 			})
-			.then(function (response) {
-				console.log(response);
+			.then(function (response) {                
+				let responseData = response.data
+				alert(response.status+' '+ responseData.message)
+				window.location = "/users"
 			})
 			.catch(function (error) {
 				console.log(error);

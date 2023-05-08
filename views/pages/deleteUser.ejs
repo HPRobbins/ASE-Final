@@ -28,12 +28,13 @@
 			method: 'delete',
 			url: '/userDetail/delete/' + urlportion,
 			data: {
-			}/*,
-				validateStatus:()=>true*/
+			},
+				validateStatus:()=>true
 			})
-			.then(function (response) {
-                //window.location="/users/" + urlportion
-				console.log(response);
+			.then(function (response) { 
+				let responseData = response.data
+				alert(response.status+' '+ responseData.message)
+				window.location = "/users"
 			})
 			.catch(function (error) {
 				console.log(error);

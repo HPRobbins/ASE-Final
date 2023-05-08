@@ -130,12 +130,13 @@
                     petWeight:petWeight.value,
                     petDoB:petDoB.value,
                     petImage:petImage.value
-                }/*,
-                    validateStatus:()=>true*/
+                },
+                    validateStatus:()=>true
                 })
                 .then(function (response) {
+                    let responseData = response.data
+				    alert(response.status+' '+ responseData.message)
                     window.location="/petDetail/" + urlportion
-                    console.log(response);
                 })
                 .catch(function (error) {
                     console.log(error);

@@ -408,11 +408,17 @@ app.route('/userDetail/delete/:userID')
 
     //check if any pets, if so send Can not delete 
     if (pets.length > 0) {
-    res.send("Can not delete user. User has pets")
+        res.status(406).json({message:"Pet has medications. Delete those first before deleting the pet."})
     } else {
-        //remove user from database
+        //remove pet from database
         let result = await remove(db, 'Pet-Website-Project', 'Users', mdbUserID)
-        res.redirect('/users/')
+
+        if(result.acknowledged == true){
+            res.status(201).json({message:'User Deleted Successfully. Returning to user index.'})
+        }
+        else{
+            res.status(406).json({message:"Delete incomplete."})
+        }
     }
 })
 
@@ -634,11 +640,17 @@ app.route('/petDetail/delete/:petID')
 
     //check if any pets, if so send Can not delete 
     if (meds.length > 0) {
-        res.send("Can not delete pet. Pet has medication")
+        res.status(406).json({message:"Pet has medications. Delete those first before deleting the pet."})
     } else {
         //remove pet from database
         let result = await remove(db, 'Pet-Website-Project', 'Pets', mdbPetID)
-        //res.redirect('/userDetail/:userID')
+
+        if(result.acknowledged == true){
+            res.status(201).json({message:'Pet Deleted Successfully. Return to User Profile to see the results.'})
+        }
+        else{
+            res.status(406).json({message:"Delete incomplete."})
+        }
     }
 })
 
@@ -846,7 +858,13 @@ app.route('/med/delete/:medID')
     let mdbMedID = new ObjectId(medID);
     //remove med from database
     let result = await remove(db, 'Pet-Website-Project', 'MedLog', mdbMedID)
-    //res.redirect('/medDetail/'+ medID)
+    if(result.acknowledged == true){
+        res.status(201).json({message:'Medicine Deleted Successfully. Return to Pet Detail to see the results.'})
+    }
+    else{
+        res.status(406).json({message:"Delete incomplete."})
+    }
+        
     
 })
 
